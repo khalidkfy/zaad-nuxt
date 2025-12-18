@@ -1,0 +1,189 @@
+{
+  "meta": {
+    "default": {
+      "title": "Zaadoman Online shopping for electronic devices, clothes, computers, mobiles",
+      "desc": "Online shopping at the best prices and specifications for mobiles, tablets, laptops, home appliances, clothes, cosmetics, makeup, perfume, watches and accessories Free Shipping Payment on receipt Zaadoman ",
+      "keywords": "zaad, oman, shopping, ecommerce"
+    }
+  },
+  "cookies": {
+    "text": "By using this website, you agree to our use of cookies. Learn more in our",
+    "privacy": " Privacy Policy."
+  },
+  "langs": {
+    "en": "English",
+    "ar": "Arabic"
+  },
+  "general": {
+    "ok": "Ok",
+    "hello": "Hello",
+    "bestSales": "Season Best Sales",
+    "bestStores": "Best Stores",
+    "showMore": "Show More",
+    "showAll": "Show All",
+    "shopByCateg": "Shopping offers by category",
+    "keepShopping": "Keep Shopping",
+    "preferancesProducts": "Our prodcuts on your taste",
+    "activeStores": "Most active stores",
+    "customers": "Customers",
+    "seller": "Seller",
+    "send": "Send",
+    "wait": "Please Wait ..."
+  },
+  "links": {
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms and conditions",
+    "returnPolicy": "Return Policy",
+    "contactUs": "Contact us",
+    "aboutUs": "About us",
+    "blog": "Blog",
+    "home":"Home",
+    "faq": "FAQ",
+    "accountInfo":"Account information"
+  },
+  "register": {
+    "asSeller": "register as a seller",
+    "asShipping": "register Shipping company",
+    "h1": "Register/Create Account",
+    "name": "Name",
+    "namePlace": "Enter Name",
+    "phone": "Phone number",
+    "phonePlace": "Enter Phone number",
+    "email": "Email address",
+    "emailPlace": "Enter Email address",
+    "password": "Password",
+    "passwordPlace": "Enter password",
+    "passwordConfirm": "Password Confirmation",
+    "passwordConfirmPlace": "Enter Password Confirmation",
+    "clickHere": "Click here",
+    "btn": "Create Account",
+    "Account": "Have Account?",
+    "registerd": "Account Created ! You can sign in , redirecting .."
+  },
+  "navbar": {
+    "deliverOrReceive": "Deliver or receive?",
+    "signInUp": "Sign in / Up"
+  },
+  "search": {
+    "whatLookingFor": "What are you looking for?",
+    "button": "Search"
+  },
+  "cart": {
+    "title": "Cart",
+    "add": "Add to cart"
+  },
+  "categs": {
+    "allCategs": "All Categories",
+    "services": "Services",
+    "shopBy": "Shop By Category"
+  },
+  "features": {
+    "support": {
+      "title": "دعم فني 7/24",
+      "sub": "فريق دعم فني متخصص"
+    },
+    "payment": {
+      "title": "نظام دفع امن",
+      "sub": "100% دفع امن"
+    },
+    "refund": {
+      "title": "ارجاع خلال 15 يوم",
+      "sub": "في حال وجود مشكله"
+    },
+    "shipment": {
+      "title": "طرق شحن متعددة",
+      "sub": "شحن باسعار مخفضة"
+    }
+  },
+  "footer": {
+    "downloadApp": "Download app"
+  },
+  "contact": {
+    "form": {
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter Your First Name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter Your Last Name",
+      "email": "Email",
+      "emailPlaceholder": "Enter Your Email",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "Enter Your Phone Number",
+      "problemType": "Problem Type",
+      "problemTypePlaceholder": "Choose Problem Type",
+      "msg": "Your Message",
+      "msgPlaceholder": "Enter Your Your Message",
+      "confirm": "اكد ان كل بياناتي صحيحة"
+    },
+    "h1": "Contact us we will listen",
+    "p": "نضمن لك أعلى معايير الحماية والسرية لبياناتك الشخصية، لتتسوق براحة واطمئنان. ثقتك أساس نجاحنا، وخصوصيتك أمانة نحافظ عليها في كل خطوة."
+  },
+  "login": {
+    "h1": "Register/Login",
+    "emailPhone": "Email or phone",
+    "emailPhonePlace": "Enter your email or phone",
+    "password": "Password",
+    "passwordPlace": "Enter your password",
+    "remember": "Remember me",
+    "forgot": "forget your password?",
+    "clickHere": "Click here",
+    "loginBtn": "Log in",
+    "noAccount": "Dont have account",
+    "signed-in": "You are successfully signed in!"
+  },
+  "validations": {
+    "422": "Make sure to fill in all fields.",
+    "required": "{key} is required",
+    "requiredField": "This field is required",
+    "mustBe10Digits": "Phone number must be exactly 12 digits.",
+    "onlyNumbersAllowed": "Phone number must contain only numbers.",
+    "invalidCountry": "Invalid country name. Please select a country from the list.",
+    "noSpecialCharacters": "Special characters like  are not allowed.",
+    "invalidImageType": "Only JPG and PNG and jpeg images are allowed.",
+    "imageTooLarge": "Image must be smaller than 5MB.",
+    "name": "Name",
+    "noEmojisAllowed": "Emojis are not allowed in the name field.",
+    "lengthRange": "Sorry! This field must be between {min} and {max} characters long.",
+    "noNumbersAllowed": "Feild should not contain numbers.",
+    "phone-number": {
+      "is_possible": "Number is not possible",
+      "invalid_country": "Country code is invalid",
+      "too_short": "Number is too short",
+      "too_long": "Number is too long",
+      "invalid_length": "Number has invalid length",
+      "invalid": "Number is invalid",
+      "valid": "Number is valid"
+    },
+    "email": {
+      "taken": "The email has already been taken.",
+      "invalid-email": "The {key} must be a valid email address.",
+      "no-space-start-end": "The {key} must not contain spaces at the beginning or end.",
+      "no-emoji": "The {key} must not contain emojis or special characters."
+    },
+    "nameTooLong": "The name must not exceed 100 characters.",
+    "required-full-name": "Full name is required",
+    "min-full-name": "{field} must be at least {min} characters.",
+    "max-full-name": "{field} must not exceed {max} characters.",
+    "min-length": "{key} must be at least {length} characters.",
+    "passwords-not-match": "Passwords do not match.",
+    "password-weak": "Password is too weak.",
+    "submitErr": "There are some errors in your submission. Please correct them and try again"
+  },
+  "blog": {
+    "title": "Zaad Blog",
+    "desc": "Zaad Blog",
+    "h1": "Discover our latest news",
+    "p": "مدونة اكتشف آخر أخبارنا اكتشف الإنجازات التي تميزنا. من المشاريع الرائدة إلى الجوائز المرموقة في الصناعة، نفخر بإنجازاتنا",
+    "latest": "Latest blogs",
+    "related": "Related blogs",
+    "keywords":"blog, blogs",
+    "search": "What are you looking at?",
+    "viewMore": "View More"
+  },
+  "whish":{
+    "title":"Whish List",
+    "add":"Add to whishlist"
+  },
+  "faq":{
+    "search":"What are you looking at?"
+  }
+}
