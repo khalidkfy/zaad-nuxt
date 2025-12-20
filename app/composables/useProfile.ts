@@ -2,7 +2,7 @@ export const useProfile = () => {
   const profileRes = useState("profile-res", () => []);
   const { locale } = useI18n();
 
-  const getProfileLoading = ref(false);
+  const getProfileLoading = useState("profile-loading", () => true);
 
   const profileData = computed(() => {
     if (!profileRes.value) return {};

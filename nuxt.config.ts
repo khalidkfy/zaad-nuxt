@@ -17,7 +17,14 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "@nuxtjs/i18n",
     "nuxt-auth-utils",
+    "nuxt-toast"
   ],
+  toast:{
+ settings: {
+      // Global iziToast settings applied to all toasts
+      position: 'topRight',
+    }
+  },
   i18n: {
     strategy: "prefix_except_default",
     locales: [

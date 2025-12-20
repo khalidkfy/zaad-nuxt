@@ -28,7 +28,11 @@
     "customers": "Customers",
     "seller": "Seller",
     "send": "Send",
-    "wait": "Please Wait ..."
+    "wait": "Please Wait ...",
+    "edit": "Edit",
+    "save": "Save",
+    "addAddress": "Add New Address",
+    "showLess": "Show Less",
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -37,9 +41,14 @@
     "contactUs": "Contact us",
     "aboutUs": "About us",
     "blog": "Blog",
-    "home":"Home",
+    "home": "Home",
     "faq": "FAQ",
-    "accountInfo":"Account information"
+    "accountInfo": "Account information",
+    "accountsecurity": "Security settings",
+    "accountAdresses": "Addresses",
+    "bank-transfers": "Bank transfers",
+    "disputes": "Disputes",
+    "orders": "Orders"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -175,15 +184,36 @@
     "p": "مدونة اكتشف آخر أخبارنا اكتشف الإنجازات التي تميزنا. من المشاريع الرائدة إلى الجوائز المرموقة في الصناعة، نفخر بإنجازاتنا",
     "latest": "Latest blogs",
     "related": "Related blogs",
-    "keywords":"blog, blogs",
+    "keywords": "blog, blogs",
     "search": "What are you looking at?",
     "viewMore": "View More"
   },
-  "whish":{
-    "title":"Whish List",
-    "add":"Add to whishlist"
+  "whish": {
+    "title": "Whish List",
+    "add": "Add to whishlist"
   },
-  "faq":{
-    "search":"What are you looking at?"
+  "faq": {
+    "search": "What are you looking at?"
+  },
+  "profile": {
+    "personalInfo": "Personal information",
+    "name": "Name",
+    "country": "Country",
+    "gender": "Gender",
+    "registerDate": "Registration date",
+    "lang": "Default language",
+    "email": "Email address",
+    "phone": "Phone number",
+    "male": "Male",
+    "female": "Female",
+    "postcode": "Postcode",
+    "city":"City",
+    "streetAddress":"Street Address"
+  },
+  "submit": {
+    "success": "Success!.",
+    "successP": "Your action was completed successfully.",
+    "error": "Error!",
+    "errorP": "There was an error processing your request. Please try again."
   }
 }
