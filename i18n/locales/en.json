@@ -33,6 +33,7 @@
     "save": "Save",
     "addAddress": "Add New Address",
     "showLess": "Show Less",
+    "filter": "Filter"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -48,7 +49,8 @@
     "accountAdresses": "Addresses",
     "bank-transfers": "Bank transfers",
     "disputes": "Disputes",
-    "orders": "Orders"
+    "orders": "Orders",
+    "prodcuts": "Prodcuts"
   },
   "register": {
     "asSeller": "register as a seller",

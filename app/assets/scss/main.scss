@@ -113,3 +113,17 @@ a {
 .skeleton.rounded {
   border-radius: 8px;
 }
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.modal-content {
+  border-radius: 24px;
+}
+.modal-header {
+  border: 0;
+}
+input, select {
+  box-shadow: none !important;
+}

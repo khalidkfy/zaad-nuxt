@@ -3,6 +3,7 @@ export const useCountry = () => {
     const getCountriesLoading = useState("countries-loading", () => true);
 
     const getCountriesRes = async () => {
+        // if (countryRes.value) return
         getCountriesLoading.value = true;
 
         try {

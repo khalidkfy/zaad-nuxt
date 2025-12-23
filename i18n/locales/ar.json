@@ -32,7 +32,8 @@
     "edit": "تعديل",
     "save": "حفظ",
     "addAddress":" اضافة عنوان جديد",
-    "showLess": "عرض أقل"
+    "showLess": "عرض أقل",
+    "filter":"الفلتر"
   },
   "links": {
     "privacyPolicy": "سياسة الخصوصية",
@@ -48,7 +49,8 @@
     "accountAdresses": "العناوين",
     "bank-transfers": "حوالاتي البنكية",
     "disputes": "النزاعات",
-    "orders": "طلبات"
+    "orders": "طلبات",
+    "prodcuts":"المنتجات"
   },
   "register": {
     "asSeller": "تسجيل كبائع",
@@ -82,7 +84,7 @@
     "add": "اضف الى السلة"
   },
   "categs": {
-    "allCategs": "كل الأصناف",
+    "allCategs": "كل الأقسام",
     "services": "الخدمات",
     "shopBy": "تسوق الأقسام"
   },

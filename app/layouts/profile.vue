@@ -88,7 +88,7 @@ onMounted(async () => {
                       <span>مصر - الشاهرة الجديده</span>
                     </div>
                   </div>
-                  <button class="add-address">اضافة عنوان جديد</button>
+                  <button class="add-address">{{$t("general.addAddress")}}</button>
                 </template>
                 <template v-else>
                   <div>

@@ -2,6 +2,9 @@
 useSeo({})
 const { getReturnPage, returnPage } = usePages();
 await getReturnPage();
+definePageMeta({
+  prerender: true,
+});
 </script>
 <template>
     <div class="page-content">

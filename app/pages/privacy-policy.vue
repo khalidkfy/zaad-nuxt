@@ -2,6 +2,9 @@
    useSeo({})
 const { getPrivacyPage, privacyPage } = usePages();
 await getPrivacyPage();
+definePageMeta({
+  prerender: true,
+});
 </script>
 <template>
    <div class="page-content">

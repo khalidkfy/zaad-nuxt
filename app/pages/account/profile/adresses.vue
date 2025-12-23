@@ -12,12 +12,47 @@ definePageMeta({
   ],
 });
 const { getProfileLoading, profileData, getProfileRes } = useProfile();
+
+const showModal = () => {
+  const adressModal = new bootstrap.Modal(
+    document.getElementById("adressModal"),
+    {}
+  );
+  adressModal.show();
+};
+
+const hideModal = () => {
+  const myModalEl = document.getElementById("adressModal");
+  const adressModal = bootstrap.Modal.getInstance(myModalEl);
+  if (adressModal) {
+    adressModal.hide();
+  }
+};
+const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
+  {
+    country: "",
+  },
+  {
+    country: [
+      {
+        required: true,
+        message: t("validations.required", { key: t("profile.country") }),
+      },
+    ],
+  }
+);
+const { getCountriesRes, getCountriesLoading, countryRes } = useCountry();
+
+const handleSubmit = async () => {};
+onMounted(async () => {
+  await getCountriesRes();
+});
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="section-title">{{ $t("links.accountAdresses") }}</h1>
     <template v-if="!getProfileLoading">
-      <button class="btn action">
+      <button @click.prevent="showModal()" class="btn action">
         {{ $t("general.addAddress") }}
       </button>
     </template>
@@ -25,7 +60,7 @@ const { getProfileLoading, profileData, getProfileRes } = useProfile();
   <div class="content">
     <div class="row">
       <div
-        class="col-md-3"
+        class="col-md-3 mb-4"
         v-for="(adress, i) in profileData?.addresses"
         :key="i"
       >
@@ -67,6 +102,75 @@ const { getProfileLoading, profileData, getProfileRes } = useProfile();
               `${adress.address_line_1} - ${adress.address_line_2}`
             }}</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal adressModal"
+    id="adressModal"
+    role="dialog"
+    tabindex="-1"
+    aria-labelledby="adressModal"
+    aria-hidden="true"
+    ref="modalRef"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+            {{ $t("general.addAddress") }}
+          </div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body pt-0">
+          <form
+            @submit.prevent="handleSubmit()"
+            class="personal-info-form h-100 d-flex justify-content-between flex-column"
+          >
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <div class="form-group">
+                  <label for="country" class="form-label">
+                    {{ $t("profile.country") }}</label
+                  >
+                  <select
+                    v-model="values.country"
+                    class="form-select"
+                    name="country"
+                    :class="{ invalid: errors?.country?.length }"
+                    id="country"
+                  >
+                    <option v-if="!getCountriesLoading" disabled selected>
+                      {{ $t("profile.country") }}
+                    </option>
+                    <option v-else disabled selected>
+                      {{ $t("general.wait") }}
+                    </option>
+                    <option
+                      v-for="(country, i) in countryRes?.resources"
+                      :key="i"
+                      :value="country?.id"
+                    >
+                      {{ country?.title }}
+                    </option>
+                  </select>
+                  <div
+                    v-if="errors.country?.length"
+                    class="form-text text-danger text-sm"
+                  >
+                    {{ errors.country[0] }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -122,6 +226,10 @@ button.action {
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: var(--trans);
+        &:hover {
+          background-color: #e2e2e2;
+        }
       }
     }
     &:hover {

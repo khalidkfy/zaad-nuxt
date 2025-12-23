@@ -18,74 +18,26 @@ export interface Product {
 }
 
 export const useProducts = () => {
-  const products = [
-    {
-      id: 1,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/laptop.svg",
-      slug: "laptop",
-      discount: "",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-      customOffer: "الجمعة البيضاء",
-    },
-    {
-      id: 2,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/laptopcase.svg",
-      slug: "laptop",
-      discount: "",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-      customOffer: "الجمعة البيضاء",
-    },
-    {
-      id: 3,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/tablets.svg",
-      slug: "laptop",
-      discount: "",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-    },
-    {
-      id: 4,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/headphone.svg",
-      slug: "laptop",
-      discount: "70",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-      customOffer: "الجمعة البيضاء",
-    },
-    {
-      id: 5,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/watch.png",
-      slug: "laptop",
-      discount: "70",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-    },
-    {
-      id: 6,
-      name: "HP - لابتوب بشاشة لمس عالية الدقة مقاس 15.6 بوصة - معالج Intel Core i7 - سعة 16 جيجابايت",
-      img: "/assets/images/glasses.png",
-      slug: "laptop",
-      discount: "70",
-      categ: "الكترونيات",
-      price: 219,
-      discountedPrice: 499,
-      customOffer: "الجمعة البيضاء",
-    },
-  ];
+  const { locale } = useI18n();
+
+
+  const getProductsLoading = ref(false);
+  const productsRes = useState("products-items-list", () => [])
+  const getProducts = async () => {
+    try {
+      productsRes.value = await $fetch("/api/products/list", {
+        headers: {
+          Lang: locale.value,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  }
 
   return {
-    products,
+    getProducts,
+    productsRes 
   };
 };
