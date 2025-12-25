@@ -2,6 +2,7 @@ export interface Product {
   id: number;
   title: string;
   src: string;
+  logo: string;
   type: string;
   discount?: string;
   slug: string;
@@ -22,22 +23,45 @@ export const useProducts = () => {
 
 
   const getProductsLoading = ref(false);
-  const productsRes = useState("products-items-list", () => [])
-  const getProducts = async () => {
+  const productsRes = useState<any>("products-items-list", () => ({
+    filters: [],
+    resources: [],
+    next_page_url: null,
+    prev_page_url: null,
+  }))
+
+  const getProducts = async (options: {
+    categId: any, append?: boolean
+  }) => {
     try {
-      productsRes.value = await $fetch("/api/products/list", {
+      getProductsLoading.value = true
+
+      const res = await $fetch("/api/products/list", {
         headers: {
           Lang: locale.value,
         },
+        query: {
+          category_id: options.categId || null,
+        }
       });
+
+      if (options?.append) {
+        productsRes.value.resources.push(...res.resources);
+      } else {
+        productsRes.value = res;
+      }
+
     } catch (error) {
       console.log(error);
     } finally {
+      getProductsLoading.value = false
+
     }
   }
 
   return {
     getProducts,
-    productsRes 
+    productsRes,
+    getProductsLoading
   };
 };

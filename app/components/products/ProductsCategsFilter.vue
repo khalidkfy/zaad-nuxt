@@ -13,7 +13,7 @@ const props = defineProps({
       <div v-for="(categ, i) in productsCategs" :key="i">
         <NuxtLink
           :class="{ active: activeCateg == categ.id }"
-          :href="$localePath(`/products?category_id=${categ.id}`)"
+          :href="$localePath(`/products/${categ.id}`)"
         >
           <NuxtImg
             :src="

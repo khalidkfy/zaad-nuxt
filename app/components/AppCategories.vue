@@ -73,7 +73,7 @@ const sortedServices = computed(() => {
           class="marquee-item"
           v-for="categ in categs"
           :key="categ.id"
-          :href="$localePath(`/products?category_id=${categ.id}`)"
+          :href="$localePath(`/products/${categ.id}`)"
         >
           {{ categ.name }}</NuxtLink
         >
@@ -85,7 +85,7 @@ const sortedServices = computed(() => {
           class=""
           v-for="categ in categs"
           :key="categ.id"
-          :href="$localePath(`/products?category_id=${categ.id}`)"
+          :href="$localePath(`/products/${categ.id}`)"
         >
           {{ categ.name }}</NuxtLink
         >

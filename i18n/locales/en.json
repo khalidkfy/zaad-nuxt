@@ -23,7 +23,7 @@
     "showAll": "Show All",
     "shopByCateg": "Shopping offers by category",
     "keepShopping": "Keep Shopping",
-    "preferancesProducts": "Our prodcuts on your taste",
+    "preferancesProducts": "Our products on your taste",
     "activeStores": "Most active stores",
     "customers": "Customers",
     "seller": "Seller",
@@ -50,7 +50,7 @@
     "bank-transfers": "Bank transfers",
     "disputes": "Disputes",
     "orders": "Orders",
-    "prodcuts": "Prodcuts"
+    "products": "Products"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -80,8 +80,10 @@
     "button": "Search"
   },
   "cart": {
-    "title": "Cart",
-    "add": "Add to cart"
+    "title": "Shopping Cart",
+    "add": "Add to cart",
+    "authErr": "Please log in to add items to your cart",
+    "addSuccess": "Item is now in your cart"
   },
   "categs": {
     "allCategs": "All Categories",
@@ -209,8 +211,8 @@
     "male": "Male",
     "female": "Female",
     "postcode": "Postcode",
-    "city":"City",
-    "streetAddress":"Street Address"
+    "city": "City",
+    "streetAddress": "Street Address"
   },
   "submit": {
     "success": "Success!.",

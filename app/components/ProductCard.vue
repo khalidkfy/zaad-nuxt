@@ -9,18 +9,41 @@ const props = defineProps({
   textColor: String,
   discountedPriceColor: String,
 });
+
+const cartRef = ref<HTMLElement | null>(null);
+
+const { addToCart, addToCartErr, addToCartLoading } = useCart();
+
+watch(addToCartErr, (val) => {
+  if (val && cartRef.value) {
+    cartRef.value.classList.remove("shake");
+    void cartRef.value.offsetWidth; // force reflow
+    cartRef.value.classList.add("shake");
+  }
+});
 </script>
 <template>
   <div class="product-card" :aria-label="`Product: ${product?.title}`">
     <div class="img-box">
-      <div class="cart">
+      <div
+        class="cart"
+        ref="cartRef"
+        :title="$t('cart.add')"
+        data-bs-toggle="tooltip"
+        @click.prevent="addToCart(product?.id)"
+      >
         <NuxtImg
+          v-if="!addToCartLoading"
           width="19"
           height="19"
           src="/assets/images/addcart.svg"
-          :title="$t('cart.add')"
           :alt="$t('cart.add')"
         />
+        <div v-else>
+          <span
+            class="spinner-border text-white spinner-border-sm ms-2"
+          ></span>
+        </div>
       </div>
       <div
         class="whish"
@@ -57,7 +80,7 @@ const props = defineProps({
       <NuxtImg
         class="product"
         width="185"
-        :src="product?.src"
+        :src="product?.logo || product?.src"
         :alt="product?.title"
         :title="product?.title"
       />
@@ -126,6 +149,9 @@ const props = defineProps({
 
   img {
     transition: var(--trans);
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   .name {

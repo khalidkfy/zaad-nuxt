@@ -5,7 +5,16 @@
   </NuxtLayout>
 </template>
 <script setup lang="ts">
-const { locale } = useI18n()
+const { locale } = useI18n();
+
+onMounted(() => {
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });   
+});
 // onMounted(() => {
 //   if (process.client) {
 //     const script = document.createElement('script')
@@ -15,18 +24,18 @@ const { locale } = useI18n()
 //   }
 // })
 useHead(() => {
-  const isRTL = locale.value === 'ar'
+  const isRTL = locale.value === "ar";
 
   const links: any[] = [
     // Bootstrap CSS
     {
-      rel: 'stylesheet',
+      rel: "stylesheet",
       href: isRTL
-        ? '/assets/bootstrap.rtl.min.css'
-        : '/assets/bootstrap.min.css',
-      id: 'bootstrap-style',
+        ? "/assets/bootstrap.rtl.min.css"
+        : "/assets/bootstrap.min.css",
+      id: "bootstrap-style",
     },
-  ]
+  ];
 
   //  RTL style
   if (isRTL) {
@@ -37,14 +46,12 @@ useHead(() => {
     // })
   }
 
-
   return {
     htmlAttrs: {
       lang: locale.value,
-      dir: isRTL ? 'rtl' : 'ltr',
+      dir: isRTL ? "rtl" : "ltr",
     },
     link: links,
-  }
-})
-
+  };
+});
 </script>

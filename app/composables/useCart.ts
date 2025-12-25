@@ -1,7 +1,8 @@
 export const useCart = () => {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
+  const toast = useToast();
 
-  const cartCount = ref(0);
+  const cartCount = useState('cartCount',() => 0);
   const getCartCount = async () => {
     try {
       const data = await $fetch("/api/cart/count", {
@@ -16,8 +17,56 @@ export const useCart = () => {
     } finally {
     }
   };
+
+  const addToCartLoading = ref(false);
+  const addToCartErr = ref(false);
+  const addToCart = async (itemId: any, quantity: any = 1) => {
+    addToCartErr.value = false;
+    addToCartLoading.value = true;
+    try {
+      const data = await $fetch("/api/cart/add", {
+        method: 'POST',
+        headers: {
+          Lang: locale.value,
+        },
+        body: {
+          item_id: itemId,
+          quantity
+        }
+      });
+
+      if (data?.data.item_id && !data?.error.length) {
+        toast.success({
+          title: t("submit.success"),
+          message: `${t("cart.addSuccess")} - ${data?.data.title}`,
+          rtl: locale.value === "ar",
+        });
+
+        await getCartCount();
+      }
+
+    } catch (error) {
+      addToCartErr.value = true;
+      console.error(error.data);
+
+      if (error?.data?.statusCode == 401) {
+        toast.error({
+          title: t("submit.error"),
+          message: t("cart.authErr"),
+          rtl: locale.value === "ar",
+        });
+      }
+
+    } finally {
+      addToCartLoading.value = false;
+    }
+  }
+
   return {
     getCartCount,
     cartCount,
+    addToCart,
+    addToCartLoading,
+    addToCartErr
   };
 };

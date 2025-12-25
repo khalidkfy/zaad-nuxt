@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
     const query = getQuery(event);
 
-    const body: any = [];
+    const body: any = query;
     // Call the API endpoint with the updated body
 
     const apiServie = new HttpService(event);
@@ -23,8 +23,10 @@ export default defineEventHandler(async (event) => {
                 url: "api/items",
                 body: body,
                 headers: headers,
+            
             })
             .then((res) => {
+                
                 return res;
             })
             .catch((err) => {

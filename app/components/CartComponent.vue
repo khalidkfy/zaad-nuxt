@@ -4,7 +4,7 @@ const { cartCount, getCartCount } = useCart()
 await getCartCount();
 </script>
 <template>
-    <NuxtLink area-label="Cart" :href="$localePath('cart')" class="cart-header">
+    <NuxtLink area-label="Cart" :href="$localePath('shopping-cart')" class="cart-header">
         <NuxtImg class="me-2" width="28" height="28" alt="location" src="/assets/images/cart.svg" />
         <div class="cart">
             <span class="cart-badge">{{ cartCount }}</span>
