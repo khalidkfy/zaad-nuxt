@@ -11,14 +11,24 @@ const props = defineProps({
 });
 
 const cartRef = ref<HTMLElement | null>(null);
+const whishRef = ref<HTMLElement | null>(null);
 
 const { addToCart, addToCartErr, addToCartLoading } = useCart();
+const { addToWhishLoading, addToWhishErr, addToWhish } = useWhish();
 
 watch(addToCartErr, (val) => {
   if (val && cartRef.value) {
     cartRef.value.classList.remove("shake");
     void cartRef.value.offsetWidth; // force reflow
     cartRef.value.classList.add("shake");
+  }
+});
+
+watch(addToWhishErr, (val) => {
+  if (val && whishRef.value) {
+    whishRef.value.classList.remove("shake");
+    void whishRef.value.offsetWidth; // force reflow
+    whishRef.value.classList.add("shake");
   }
 });
 </script>
@@ -40,15 +50,15 @@ watch(addToCartErr, (val) => {
           :alt="$t('cart.add')"
         />
         <div v-else>
-          <span
-            class="spinner-border text-white spinner-border-sm ms-2"
-          ></span>
+          <span class="spinner-border text-white spinner-border-sm ms-2"></span>
         </div>
       </div>
       <div
+        ref="whishRef"
         class="whish"
         :class="{ fav: product?.favorite_item == true }"
         :title="$t('whish.add')"
+        @click.prevent="addToWhish(product?.id)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
