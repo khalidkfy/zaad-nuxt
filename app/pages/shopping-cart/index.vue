@@ -1,8 +1,12 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
-
+const { getCartItems, getCartItemsLoading, cartItems } = useCart();
 useSeo({
   title: t("cart.title"),
+});
+onMounted(async () => {
+  await getCartItems();
+  console.log(cartItems.value);
 });
 </script>
 <template>
@@ -17,83 +21,127 @@ useSeo({
       </div>
     </div>
   </section>
-  <section class="mt-4 cart-page" dir="rtl">
+  <section class="mt-4 cart-page">
     <div class="container">
       <h1>{{ $t("cart.title") }}</h1>
-        
-    </div>
+      <div v-if="!getCartItemsLoading" class="row mt-4">
+        <div class="col-md-8">
+          <div class="cart-items">
+            <div
+              v-for="(cartItem, i) in cartItems"
+              :key="i"
+              class="seller-group"
+            >
+              <div class="seller-title mb-3">
+                {{ cartItem?.seller?.store_name }}
+              </div>
 
-    <div class="cart-grid">
-      <!-- RIGHT: SUMMARY -->
-      <aside class="cart-summary">
-        <section class="summary-box">
-          <h2>سعر الكلي في السلة</h2>
+              <div
+                v-for="(product, i) in cartItem?.items"
+                :key="i"
+                class="product-row mb-2"
+              >
+                <div class="img">
+                  <NuxtImg
+                    width="100"
+                    height="100"
+                    :src="product?.image"
+                    :alt="product?.title"
+                  />
+                </div>
+                <div class="content">
+                  <div class="info">
+                    <div>{{product?.title}}</div>
+                  </div>
 
-          <ul class="summary-list">
-            <li>
-              <span>سعر الإجمالي</span>
-              <strong>$50</strong>
-            </li>
-            <li class="discount">
-              <span>الخصم</span>
-              <strong>-10%</strong>
-            </li>
-            <li class="total">
-              <span>السعر الكلي</span>
-              <strong>$40</strong>
-            </li>
-          </ul>
+                  <div class="qty">
+                    <button>-</button>
+                    <span>20</span>
+                    <button>+</button>
+                  </div>
 
-          <button class="primary-btn">تأكيد الشراء</button>
-        </section>
-
-        <section class="coupon-box">
-          <h2>كوبون شراء</h2>
-          <p>هل لديك كوبون خصم؟ أدخل الكود هنا</p>
-
-          <form class="coupon-form">
-            <input type="text" placeholder="إدخال الكود" />
-            <button type="submit">تأكيد</button>
-          </form>
-        </section>
-      </aside>
-
-      <!-- LEFT: CART ITEMS -->
-      <section class="cart-items">
-        <h1>سلة المشتريات</h1>
-
-        <article class="seller-group">
-          <h2 class="seller-title">اسم البائع</h2>
-
-          <div class="product-row">
-            <NuxtImg src="/assets/images/product.svg" alt="" />
-            <div class="info">
-              <h3>اسم المنتج</h3>
-              <span class="meta">20×20 سم</span>
+                  <strong class="price">$400</strong>
+                </div>
+              </div>
             </div>
-
-            <div class="qty">
-              <button>-</button>
-              <span>20</span>
-              <button>+</button>
-            </div>
-
-            <strong class="price">$400</strong>
           </div>
-        </article>
+        </div>
+        <div class="col-md-4">
+          <aside class="cart-summary">
+            <section class="summary-box">
+              <h2>سعر الكلي في السلة</h2>
 
-        <article class="seller-group">
-          <h2 class="seller-title">بائع آخر</h2>
-        </article>
-      </section>
+              <ul class="summary-list">
+                <li>
+                  <span>سعر الإجمالي</span>
+                  <strong>$50</strong>
+                </li>
+                <li class="discount">
+                  <span>الخصم</span>
+                  <strong>-10%</strong>
+                </li>
+                <li class="total">
+                  <span>السعر الكلي</span>
+                  <strong>$40</strong>
+                </li>
+              </ul>
+
+              <button class="primary-btn">تأكيد الشراء</button>
+            </section>
+
+            <section class="coupon-box">
+              <h2>كوبون شراء</h2>
+              <p>هل لديك كوبون خصم؟ أدخل الكود هنا</p>
+
+              <form class="coupon-form">
+                <input type="text" placeholder="إدخال الكود" />
+                <button type="submit">تأكيد</button>
+              </form>
+            </section>
+          </aside>
+        </div>
+      </div>
+      <div v-else>loading....</div>
     </div>
   </section>
 </template>
 <style lang="scss" scoped>
 .cart-page {
-  h1 {
+  .seller-title {
     font-size: 18px;
     font-weight: 700;
+  }
+  .cart-items {
+    .seller-group {
+        background-color: #004A980D;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+      h2 {
+        font-size: 16px;
+      }
+      .product-row {
+        display: flex;
+        gap: 25px;
+        .img {
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 16px;
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+          }
+        }
+        .content {
+            .info {
+                div {
+                    font-size: 18px;
+                }
+            }
+        }
+      }
+    }
   }
 }
 .breadcrumbs {
@@ -118,84 +166,6 @@ useSeo({
   div {
     color: #888888;
     margin: 0 7px;
-  }
-}
-.cart-grid {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 1fr 340px; /* LEFT | RIGHT */
-  gap: 24px;
-}
-
-/* SUMMARY (RIGHT) */
-.cart-summary section {
-  background: #f6f9fc;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.summary-list {
-  list-style: none;
-  padding: 0;
-}
-
-.summary-list li {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.primary-btn {
-  width: 100%;
-  background: #0d5bd7;
-  color: #fff;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-}
-
-/* CART ITEMS (LEFT) */
-.cart-items h1 {
-  margin-bottom: 16px;
-}
-
-.seller-group {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-}
-
-.seller-title {
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.product-row {
-  display: grid;
-  grid-template-columns: 80px 1fr auto auto;
-  gap: 12px;
-  align-items: center;
-}
-
-.product-row img {
-  width: 80px;
-}
-
-.qty {
-  display: flex;
-  gap: 6px;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .cart-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cart-summary {
-    order: -1;
   }
 }
 </style>

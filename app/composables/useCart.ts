@@ -2,7 +2,7 @@ export const useCart = () => {
   const { t, locale } = useI18n();
   const toast = useToast();
 
-  const cartCount = useState('cartCount',() => 0);
+  const cartCount = useState('cartCount', () => 0);
   const getCartCount = async () => {
     try {
       const data = await $fetch("/api/cart/count", {
@@ -62,11 +62,41 @@ export const useCart = () => {
     }
   }
 
+  const getCartItemsLoading = ref(false);
+  const cartItems = ref([])
+  const getCartItems = async () => {
+    getCartItemsLoading.value = true;
+    try {
+      const data = await $fetch("/api/cart/items", {
+        headers: {
+          Lang: locale.value,
+        },
+      });
+      console.log(data?.data, "data?.datadata?.data");
+
+      if (data?.data?.cart?.length) {
+        cartItems.value = data?.data?.cart;
+      }
+      console.log(data, "datadatadata");
+
+
+    } catch (error) {
+      addToCartErr.value = true;
+
+
+    } finally {
+      getCartItemsLoading.value = false;
+    }
+  }
+
   return {
     getCartCount,
     cartCount,
     addToCart,
     addToCartLoading,
-    addToCartErr
+    addToCartErr,
+    getCartItemsLoading,
+    getCartItems,
+    cartItems
   };
 };
