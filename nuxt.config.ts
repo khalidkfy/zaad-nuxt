@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/scss/main.scss"],
   runtimeConfig: {
-    apiBase: process.env.API_URL,
+    apiBase: process.env.API_URL, 
     baseUrl: process.env.BASE_URL,
   },
   modules: [
