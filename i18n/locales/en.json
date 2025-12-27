@@ -16,6 +16,7 @@
   },
   "general": {
     "ok": "Ok",
+    "price": "Price",
     "hello": "Hello",
     "bestSales": "Season Best Sales",
     "bestStores": "Best Stores",
@@ -33,7 +34,9 @@
     "save": "Save",
     "addAddress": "Add New Address",
     "showLess": "Show Less",
-    "filter": "Filter"
+    "filter": "Filter",
+    "curr_value": "{value} R.O",
+    "confirm": "Confirm"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -70,6 +73,7 @@
     "btn": "Create Account",
     "Account": "Have Account?",
     "registerd": "Account Created ! You can sign in , redirecting .."
+
   },
   "navbar": {
     "deliverOrReceive": "Deliver or receive?",
@@ -83,7 +87,15 @@
     "title": "Shopping Cart",
     "add": "Add to cart",
     "authErr": "Please log in to add items to your cart",
-    "addSuccess": "Item is now in your cart"
+    "addSuccess": "Item is now in your cart",
+    "summary": "Total price in shopping cart",
+    "totalPrice": "Total price",
+    "confirm": "Confirm purshase",
+    "removeSuccess": "Item removed your cart",
+    "coupon": "Purchase coupon",
+    "couponP": "Do you have a shipping coupon? You will get a purchase discount.",
+    "couponCode": "coupon code",
+    "enterCoupon": "Enter the code"
   },
   "categs": {
     "allCategs": "All Categories",

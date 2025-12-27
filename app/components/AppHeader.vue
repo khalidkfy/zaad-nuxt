@@ -69,13 +69,13 @@ const { user, loggedIn } = useUserSession();
                                 <span class="fw-bold">{{ $t("navbar.signInUp") }}</span>
                             </div>
                         </NuxtLink>
-                        <div v-else class="auth cursor-pointer ms-4">
+                        <NuxtLink :href="$localePath('/account/profile')" v-else class="auth cursor-pointer ms-4">
                             <NuxtImg class="me-2" width="28" height="28" alt="location" :src="user?.image || '/assets/images/user.svg'" />
                             <div class="d-flex">
                                 <span>{{ $t("general.hello") }}</span>
                                 <span class="fw-bold">{{ user?.name }}</span>
                             </div>
-                        </div>
+                        </NuxtLink>
 
                         <!-- Whish -->
                         <WhishListComponent  v-if="loggedIn"/>

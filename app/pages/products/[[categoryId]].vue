@@ -17,18 +17,18 @@ useSeo({
     : t("links.products"),
 });
 
-console.log(productsCategs.value);
-
-console.log(activeCategory, ".find");
-
-const { getProducts, productsRes, getProductsLoading } = useProducts();
+const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =
+  useProducts();
 await getProducts({ categId: category_id.value });
 
 const products = computed(() => productsRes.value.resources);
-const hasMore = computed(() => !!productsRes.value.next_page_url);
 
 const loadMore = async () => {
   if (!productsRes.value.next_page_url) return;
+
+  if (!hasMore.value) return;
+
+  currentPage.value += 1;
 
   await getProducts({
     categId: category_id.value,

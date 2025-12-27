@@ -62,7 +62,7 @@ export const useCart = () => {
     }
   }
 
-  const getCartItemsLoading = ref(false);
+  const getCartItemsLoading = ref(true);
   const cartItems = ref([])
   const getCartItems = async () => {
     getCartItemsLoading.value = true;
@@ -89,6 +89,40 @@ export const useCart = () => {
     }
   }
 
+  const deleteCartLoading = ref(false);
+  const deleteCartErr = ref(false);
+  const deleteFromCart = async (item: any) => {
+    deleteCartErr.value = false;
+    deleteCartLoading.value = true;
+    try {
+      const data = await $fetch("/api/cart/delete", {
+        method: 'delete',
+        headers: {
+          Lang: locale.value,
+        },
+        body: {
+          item_id: item?.item_id
+        }
+      });
+
+      toast.success({
+        title: t("submit.success"),
+        message: `${t("cart.removeSuccess")} - ${item.title}`,
+        rtl: locale.value === "ar",
+      });
+      await getCartItems();
+
+    } catch (error) {
+      deleteCartErr.value = true;
+      console.error(error.data);
+
+
+
+    } finally {
+      deleteCartLoading.value = false;
+    }
+  }
+
   return {
     getCartCount,
     cartCount,
@@ -97,6 +131,9 @@ export const useCart = () => {
     addToCartErr,
     getCartItemsLoading,
     getCartItems,
-    cartItems
+    cartItems,
+    deleteFromCart,
+    deleteCartLoading,
+    deleteCartErr
   };
 };

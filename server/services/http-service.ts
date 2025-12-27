@@ -62,7 +62,7 @@ export class HttpService {
     return $fetch(`${this.api_prefix}/${params.url}`, {
       method: "delete",
       headers: headers,
-      body: params.body,
+      // body: params.body,
     });
   };
 }

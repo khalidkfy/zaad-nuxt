@@ -18,18 +18,22 @@ export interface Product {
   seller: object;
 }
 
+
 export const useProducts = () => {
   const { locale } = useI18n();
 
 
   const getProductsLoading = ref(false);
-  const productsRes = useState<any>("products-items-list", () => ({
+  const productsRes = ref({
     filters: [],
     resources: [],
     next_page_url: null,
     prev_page_url: null,
-  }))
+  });
 
+  const currentPage = ref(1)
+
+  const hasMore = ref(false);
   const getProducts = async (options: {
     categId: any, append?: boolean
   }) => {
@@ -42,8 +46,12 @@ export const useProducts = () => {
         },
         query: {
           category_id: options.categId || null,
+          page: currentPage.value ?? 1
         }
       });
+
+
+       hasMore.value = res?.next_page_url.length > 0;
 
       if (options?.append) {
         productsRes.value.resources.push(...res.resources);
@@ -62,6 +70,8 @@ export const useProducts = () => {
   return {
     getProducts,
     productsRes,
-    getProductsLoading
+    getProductsLoading,
+    currentPage,
+    hasMore
   };
 };
