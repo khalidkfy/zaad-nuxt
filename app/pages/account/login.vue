@@ -93,7 +93,7 @@ const handleLogin = async () => {
 const config = useRuntimeConfig();
 
 onMounted(() => {
-  console.log("TEST_KEYTEST_KEYTEST_KEYTEST_KEY", config.public.TEST_KEY);
+  console.log("TEST_KEYTEST_KEYTEST_KEYTEST_KEY =>", config.public.TEST_KEY);
 });
 </script>
 <template>

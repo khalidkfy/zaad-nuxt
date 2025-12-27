@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     apiBase: process.env.API_URL, 
     baseUrl: process.env.BASE_URL,
     public:{
-      TEST_KEY:"12312312123"
+      TEST_KEY:process.env.NUXT_PUBLIC_TEST_KEY
     }
   },
   modules: [
