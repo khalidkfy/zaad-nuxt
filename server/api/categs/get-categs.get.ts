@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
 
   const apiServie = new HttpService(event);
 
-    return categsData
   try {
     const data = apiServie
       .get({
