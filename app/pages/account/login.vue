@@ -90,6 +90,11 @@ const handleLogin = async () => {
     formLoading.value = false;
   }
 };
+const config = useRuntimeConfig();
+
+onMounted(() => {
+  console.log("TEST_KEYTEST_KEYTEST_KEYTEST_KEY", config.public.TEST_KEY);
+});
 </script>
 <template>
   <section class="auth-section p-5">

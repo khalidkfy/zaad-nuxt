@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiBase: process.env.API_URL, 
     baseUrl: process.env.BASE_URL,
+    public:{
+      TEST_KEY:"12312312123"
+    }
   },
   modules: [
     "@nuxt/eslint",
