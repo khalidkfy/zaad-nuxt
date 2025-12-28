@@ -36,7 +36,8 @@
     "showLess": "Show Less",
     "filter": "Filter",
     "curr_value": "{value} R.O",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "update":"Update"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -53,7 +54,10 @@
     "bank-transfers": "Bank transfers",
     "disputes": "Disputes",
     "orders": "Orders",
-    "products": "Products"
+    "products": "Products",
+    "phoneSettings": "Mobile settings",
+    "emailSettings":"Email settings",
+    "passwordSettings":"Password settings"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -206,7 +210,9 @@
   },
   "whish": {
     "title": "Whish List",
-    "add": "Add to whishlist"
+    "add": "Add to whishlist",
+    "addSuccess":"Item is now in your whish list",
+    "addErr":"Item already in whish list"
   },
   "faq": {
     "search": "What are you looking at?"

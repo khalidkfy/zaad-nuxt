@@ -1,6 +1,6 @@
 export const useWhish = () => {
-  const { locale } = useI18n();
-
+  const { t, locale } = useI18n();
+  const toast = useToast();
   const favCount = ref(0);
   const getFavCount = async () => {
     try {
@@ -33,20 +33,44 @@ export const useWhish = () => {
         }
       });
 
-      console.log(data, "whish dataasf");
+      toast.success({
+        title: t("submit.success"),
+        message: `${t("whish.addSuccess")}`,
+        rtl: locale.value === "ar",
+      });
 
 
     } catch (error) {
       addToWhishErr.value = true;
-      console.error(error.data);
-      toast.error({
+     
+      toast.warning({
         title: t("submit.error"),
-        message: t("cart.authErr"),
+        message: t("whish.addErr"),
         rtl: locale.value === "ar",
       });
 
     } finally {
       addToWhishLoading.value = false;
+    }
+  }
+
+  const getItemsLoading = ref(true);
+  const getItems = async () => {
+    getItemsLoading.value = true;
+    try {
+      const data = await $fetch("/api/whish-list/items", {
+        headers: {
+          Lang: locale.value,
+        },
+      });
+
+
+
+    } catch (error) {
+
+
+    } finally {
+      getItemsLoading.value = false;
     }
   }
   return {
@@ -55,5 +79,7 @@ export const useWhish = () => {
     addToWhishLoading,
     addToWhishErr,
     addToWhish,
+    getItems,
+    getItemsLoading
   };
 };

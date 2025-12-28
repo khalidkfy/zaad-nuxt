@@ -282,10 +282,10 @@ const getTotalCart = () => {
               </button>
             </div>
             <div class="discount">
-              <div class="title">{{$t("cart.coupon")}}</div>
-              <p>{{$t("cart.couponP")}}</p>
+              <div class="title">{{ $t("cart.coupon") }}</div>
+              <p>{{ $t("cart.couponP") }}</p>
               <div class="form-group">
-                <label for="discount-code">{{$t("cart.couponCode")}}</label>
+                <label for="discount-code">{{ $t("cart.couponCode") }}</label>
                 <input
                   type="text"
                   name="discount-code"
@@ -293,7 +293,7 @@ const getTotalCart = () => {
                   id="discount-code"
                 />
               </div>
-              <button class="mt-4 w-100">{{$t("general.confirm")}}</button>
+              <button class="mt-4 w-100">{{ $t("general.confirm") }}</button>
             </div>
           </div>
         </div>

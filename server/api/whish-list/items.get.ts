@@ -18,27 +18,24 @@ export default defineEventHandler(async (event) => {
 
   const userAgent = headers["user-agent"] || null;
 
-  // const query = getQuery(event);
+  const query = getQuery(event);
 
-  const body = await readBody(event);
+  const body: any = query;
   // Call the API endpoint with the updated body
-  
+
   const apiServie = new HttpService(event);
 
   try {
     const data = apiServie
-      .post({
+      .get({
         url: `api/favorite/items`,
         body: body,
         headers: headers,
       })
       .then((res) => {
-        console.log("res => ", res);
-        
         return res;
       })
       .catch((err) => {
-        console.log("err => ", err);
         return err;
       });
 

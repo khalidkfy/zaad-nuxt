@@ -61,6 +61,7 @@ watch(addToWhishErr, (val) => {
         @click.prevent="addToWhish(product?.id)"
       >
         <svg
+          v-if="!addToWhishLoading"
           xmlns="http://www.w3.org/2000/svg"
           width="15"
           height="15"
@@ -82,6 +83,9 @@ watch(addToWhishErr, (val) => {
             </clipPath>
           </defs>
         </svg>
+        <div v-else>
+          <span class="spinner-border text-dark spinner-border-sm ms-2"></span>
+        </div>
       </div>
       <div v-if="product?.discount" class="discount-label">
         -{{ product?.discount }}%
