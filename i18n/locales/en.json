@@ -95,7 +95,7 @@
     "summary": "Total price in shopping cart",
     "totalPrice": "Total price",
     "confirm": "Confirm purshase",
-    "removeSuccess": "Item removed your cart",
+    "removeSuccess": "Item removed from your cart",
     "coupon": "Purchase coupon",
     "couponP": "Do you have a shipping coupon? You will get a purchase discount.",
     "couponCode": "coupon code",
@@ -212,7 +212,8 @@
     "title": "Whish List",
     "add": "Add to whishlist",
     "addSuccess":"Item is now in your whish list",
-    "addErr":"Item already in whish list"
+    "addErr":"Item already in whish list",
+    "removeSuccess":"Item removed from your whish list"
   },
   "faq": {
     "search": "What are you looking at?"

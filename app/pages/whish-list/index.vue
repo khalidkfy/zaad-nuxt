@@ -5,7 +5,7 @@ useSeo({
   title: t("whish.title"),
 });
 
-const { getItems } = useWhish();
+const { getItems, whishItems, getItemsLoading } = useWhish();
 
 await getItems();
 </script>
@@ -21,8 +21,30 @@ await getItems();
       </div>
     </div>
   </section>
+  <section class="mt-4">
+    <div class="container">
+      <div v-if="!getItemsLoading" class="row">
+        <div
+          class="col-sm-3 col-6 mb-4"
+          v-for="(product, i) in whishItems"
+          :key="i"
+        >
+          <ProductCard @removed="getItems()" styleFor="whish" :product="product" />
+        </div>
+      </div>
+      <div v-else class="loader-container">
+        <div class="content-loader"></div>
+      </div>
+    </div>
+  </section>
 </template>
 <style scoped lang="scss">
+.loader-container {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  height: 100px;
+}
 .breadcrumbs {
   display: flex;
 

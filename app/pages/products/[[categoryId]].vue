@@ -35,6 +35,16 @@ const loadMore = async () => {
     append: true,
   });
 };
+
+const handleWhishRemove = ({item, value}) => {
+  console.log(item, "itemitemitem");
+  
+  const product = productsRes.value.resources.find((p: any) => p.id === item.id);
+  if (product) {
+    product.favorite_item = value;
+  }
+};
+
 </script>
 <template>
   <section class="mt-4">
@@ -64,7 +74,7 @@ const loadMore = async () => {
               v-for="(product, i) in products"
               :key="i"
             >
-              <ProductCard :product="product" />
+              <ProductCard @removed="handleWhishRemove" :product="product" />
             </div>
           </div>
           <div class="text-center mt-4" v-if="hasMore">

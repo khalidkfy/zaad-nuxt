@@ -1,7 +1,8 @@
 export const useWhish = () => {
   const { t, locale } = useI18n();
   const toast = useToast();
-  const favCount = ref(0);
+  const favCount = useState('favCount', () => 0);
+
   const getFavCount = async () => {
     try {
       const data = await $fetch("/api/whish-list/count", {
@@ -38,11 +39,21 @@ export const useWhish = () => {
         message: `${t("whish.addSuccess")}`,
         rtl: locale.value === "ar",
       });
+      await getFavCount();
 
 
     } catch (error) {
       addToWhishErr.value = true;
-     
+
+      if (error?.data?.statusCode == 401) {
+        toast.error({
+          title: t("submit.error"),
+          message: t("cart.authErr"),
+          rtl: locale.value === "ar",
+        });
+        return;
+      }
+
       toast.warning({
         title: t("submit.error"),
         message: t("whish.addErr"),
@@ -55,6 +66,7 @@ export const useWhish = () => {
   }
 
   const getItemsLoading = ref(true);
+  const whishItems = ref([]);
   const getItems = async () => {
     getItemsLoading.value = true;
     try {
@@ -63,7 +75,7 @@ export const useWhish = () => {
           Lang: locale.value,
         },
       });
-
+      whishItems.value = data?.data;
 
 
     } catch (error) {
@@ -73,6 +85,51 @@ export const useWhish = () => {
       getItemsLoading.value = false;
     }
   }
+
+
+  const removeWhishLoading = ref(false);
+  const removeWhishErr = ref(false);
+  const removeFromWhish = async (item: any, mode = 'item') => {
+    removeWhishErr.value = false;
+    removeWhishLoading.value = true;
+
+    let id;
+
+    if (mode === 'item') {
+      id = item?.item_id
+    } else if (mode === 'product') {
+      id = item?.id
+    } else if (mode === 'product_id') {
+      id = item?.product_id
+    }
+    try {
+      const data = await $fetch("/api/whish-list/remove", {
+        method: 'delete',
+        headers: {
+          Lang: locale.value,
+        },
+        body: {
+          item_id: id
+        }
+      });
+
+      toast.success({
+        title: t("submit.success"),
+        message: `${t("whish.removeSuccess")} - ${item.title}`,
+        rtl: locale.value === "ar",
+      });
+
+      await getFavCount();
+    } catch (error) {
+      removeWhishErr.value = true;
+      console.error(error.data);
+
+
+
+    } finally {
+      removeWhishLoading.value = false;
+    }
+  }
   return {
     getFavCount,
     favCount,
@@ -80,6 +137,10 @@ export const useWhish = () => {
     addToWhishErr,
     addToWhish,
     getItems,
-    getItemsLoading
+    getItemsLoading,
+    whishItems,
+    removeFromWhish,
+    removeWhishLoading,
+    removeWhishErr,
   };
 };

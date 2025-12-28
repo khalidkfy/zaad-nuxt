@@ -6,6 +6,11 @@ const props = defineProps({
     default: true,
     type: Boolean,
   },
+  styleFor: {
+    required: false,
+    default: "default",
+    type: String,
+  },
   textColor: String,
   discountedPriceColor: String,
 });
@@ -14,7 +19,44 @@ const cartRef = ref<HTMLElement | null>(null);
 const whishRef = ref<HTMLElement | null>(null);
 
 const { addToCart, addToCartErr, addToCartLoading } = useCart();
-const { addToWhishLoading, addToWhishErr, addToWhish } = useWhish();
+const {
+  addToWhishLoading,
+  addToWhishErr,
+  addToWhish,
+  removeWhishErr,
+  removeWhishLoading,
+  removeFromWhish,
+  getItems,
+} = useWhish();
+
+const emit = defineEmits(["removed", "added"]);
+
+const handleWhishSubmit = async (product: any) => {
+  if (props.styleFor === "whish") {
+    try {
+      await removeFromWhish(product, "product_id");
+      emit("removed");
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    if (product?.favorite_item == true) {
+      try {
+        await removeFromWhish(product, "product");
+        emit("removed", { item: product, value: false });
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      try {
+        await addToWhish(product?.id);
+        emit("removed", { item: product, value: true });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+};
 
 watch(addToCartErr, (val) => {
   if (val && cartRef.value) {
@@ -25,6 +67,14 @@ watch(addToCartErr, (val) => {
 });
 
 watch(addToWhishErr, (val) => {
+  if (val && whishRef.value) {
+    whishRef.value.classList.remove("shake");
+    void whishRef.value.offsetWidth; // force reflow
+    whishRef.value.classList.add("shake");
+  }
+});
+
+watch(removeWhishErr, (val) => {
   if (val && whishRef.value) {
     whishRef.value.classList.remove("shake");
     void whishRef.value.offsetWidth; // force reflow
@@ -56,12 +106,12 @@ watch(addToWhishErr, (val) => {
       <div
         ref="whishRef"
         class="whish"
-        :class="{ fav: product?.favorite_item == true }"
+        :class="{ fav: product?.favorite_item == true || styleFor === 'whish' }"
         :title="$t('whish.add')"
-        @click.prevent="addToWhish(product?.id)"
+        @click.prevent="handleWhishSubmit(product)"
       >
         <svg
-          v-if="!addToWhishLoading"
+          v-if="!addToWhishLoading && !removeWhishLoading"
           xmlns="http://www.w3.org/2000/svg"
           width="15"
           height="15"
@@ -94,7 +144,7 @@ watch(addToWhishErr, (val) => {
       <NuxtImg
         class="product"
         width="185"
-        :src="product?.logo || product?.src"
+        :src="product?.logo || product?.src || product?.image"
         :alt="product?.title"
         :title="product?.title"
       />
@@ -115,7 +165,7 @@ watch(addToWhishErr, (val) => {
       >
         {{ product?.title }} {{ product?.title }}
       </div>
-      <div class="price">
+      <div v-if="styleFor === 'default'" class="price">
         <div>
           <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
             product?.regular_price
@@ -126,6 +176,16 @@ watch(addToWhishErr, (val) => {
         </div>
         <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
                     product?.regular_price }}</span> -->
+      </div>
+      <div v-if="styleFor === 'whish'" class="price">
+        <div>
+          <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
+            product?.price
+          }}</span>
+          <span :style="{ color: textColor ? textColor : '' }" class="currency"
+            >ر.ع</span
+          >
+        </div>
       </div>
     </NuxtLink>
   </div>

@@ -20,7 +20,7 @@ export const useCart = () => {
 
   const addToCartLoading = ref(false);
   const addToCartErr = ref(false);
-  const addToCart = async (itemId: any, quantity: any = 1) => {
+  const addToCart = async (itemId: any, quantity: any = 1, mood = "id") => {
     addToCartErr.value = false;
     addToCartLoading.value = true;
     try {
@@ -55,7 +55,13 @@ export const useCart = () => {
           message: t("cart.authErr"),
           rtl: locale.value === "ar",
         });
+        return;
       }
+      toast.error({
+        title: t("submit.error"),
+        message: error?.data?.data?.error,
+        rtl: locale.value === "ar",
+      });
 
     } finally {
       addToCartLoading.value = false;
