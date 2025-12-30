@@ -5,11 +5,11 @@ import page1Data from "~~/server/data/pages/page1.json";
 
 export default defineEventHandler(async (event) => {
   // Retrieve user-agent from headers using getRequestHeaders
-  const headers = getRequestHeaders(event);
+  // const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
-  const userAgent = headers["user-agent"] || null;
+  // const userAgent = headers["user-agent"] || null;
 
   const query = getQuery(event);
 
@@ -22,7 +22,6 @@ export default defineEventHandler(async (event) => {
     return await apiService.get({
       url: "api/pages/1",
       body: [],
-      headers,
     });
   } catch (err) {
     console.warn("API offline → loading local fallback JSON", err);
