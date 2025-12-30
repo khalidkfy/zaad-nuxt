@@ -8,6 +8,8 @@ export class HttpService {
     const config = useRuntimeConfig();
     this.api_prefix = config.apiBase;
     this.event = event;
+    console.log("this.api_prefix", this.api_prefix);
+    
   }
 
   prepareRequestHeaders = async (headers?: {}): Promise<{}> => {
@@ -28,6 +30,7 @@ export class HttpService {
 
   post = async (params: { url: String; body: Array<any>; headers?: {} }) => {
     const headers = await this.prepareRequestHeaders(params.headers);
+    console.log("this.api_prefix", this.api_prefix);
 
     return $fetch(`${this.api_prefix}/${params.url}`, {
       method: "POST",
