@@ -57,7 +57,9 @@
     "products": "Products",
     "phoneSettings": "Mobile settings",
     "emailSettings":"Email settings",
-    "passwordSettings":"Password settings"
+    "passwordSettings":"Password settings",
+    "productsStores":"Products stores",
+    "servicesStores":"Services stores"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -238,5 +240,10 @@
     "successP": "Your action was completed successfully.",
     "error": "Error!",
     "errorP": "There was an error processing your request. Please try again."
+  },
+  "stores":{
+    "products":{
+      "title":""
+    }
   }
 }

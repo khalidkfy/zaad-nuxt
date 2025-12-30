@@ -20,7 +20,7 @@ export const useCart = () => {
 
   const addToCartLoading = ref(false);
   const addToCartErr = ref(false);
-  const addToCart = async (itemId: any, quantity: any = 1, mood = "id") => {
+  const addToCart = async (itemId: any, quantity: any = 1) => {
     addToCartErr.value = false;
     addToCartLoading.value = true;
     try {

@@ -6,7 +6,7 @@ export const useCategs = () => {
   const PRODUCT_CATEG_SLUG = "products";
   const SERVIVES_SLUG = "service";
   const productsCategs = computed(() => {
-    if (!categs.value || !categs.value.data.length) return [];
+    if (!categs.value || !categs.value?.data?.length) return [];
     let product = categs.value.data.find(
       (item) => item.slug === PRODUCT_CATEG_SLUG
     );
@@ -14,7 +14,7 @@ export const useCategs = () => {
   });
 
   const servicesCategs = computed(() => {
-    if (!categs.value || !categs.value.data.length) return [];
+    if (!categs.value || !categs.value?.data?.length) return [];
     let product = categs.value.data.find(
       (item) => item.slug === SERVIVES_SLUG
     );

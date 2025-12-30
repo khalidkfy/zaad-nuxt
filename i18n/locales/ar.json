@@ -57,7 +57,9 @@
     "products": "المنتجات",
     "phoneSettings": "اعدادات الهاتف",
     "emailSettings": "اعدادات البريد الالكتروني",
-    "passwordSettings":"اعدادات كلمة المرور"
+    "passwordSettings":"اعدادات كلمة المرور",
+    "productsStores":"متاجر المنتجات",
+    "servicesStores":"متاجر الخدمات"
   },
   "register": {
     "asSeller": "تسجيل كبائع",

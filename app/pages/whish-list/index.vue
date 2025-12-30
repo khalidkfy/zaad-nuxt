@@ -7,6 +7,13 @@ useSeo({
 
 const { getItems, whishItems, getItemsLoading } = useWhish();
 
+const convertToProduct = (item: any) => {
+  let newProduct = item;
+  newProduct.id = item.product_id;
+
+  return newProduct;
+};
+
 await getItems();
 </script>
 <template>
@@ -29,7 +36,11 @@ await getItems();
           v-for="(product, i) in whishItems"
           :key="i"
         >
-          <ProductCard @removed="getItems()" styleFor="whish" :product="product" />
+          <ProductCard
+            @removed="getItems()"
+            styleFor="whish"
+            :product="convertToProduct(product)"
+          />
         </div>
       </div>
       <div v-else class="loader-container">
