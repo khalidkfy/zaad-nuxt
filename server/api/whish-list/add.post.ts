@@ -12,11 +12,11 @@ export default defineEventHandler(async (event) => {
   }
 
   // Retrieve user-agent from headers using getRequestHeaders
-  const headers = getRequestHeaders(event);
+  // const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
-  const userAgent = headers["user-agent"] || null;
+  // const userAgent = headers["user-agent"] || null;
 
   // const query = getQuery(event);
 
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
       .post({
         url: `api/favorite/items`,
         body: body,
-        headers: headers,
+        // headers: headers,
       })
       .then((res) => {
         console.log("res => ", res);

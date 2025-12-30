@@ -10,10 +10,10 @@ export default defineEventHandler(async (event) => {
   // await requireAuth(event);
 
 
-  const userAgent = getHeader(event, "user-agent");
+  // const userAgent = getHeader(event, "user-agent");
 
-  const headers: Record<string, string> = {};
-  if (userAgent) headers["user-agent"] = userAgent;
+  // const headers: Record<string, string> = {};
+  // if (userAgent) headers["user-agent"] = userAgent;
 
   const query = getQuery(event);
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       .get({
         url: "website-api/categories",
         body: body,
-        headers: headers,
+        // headers: headers,
       })
       .then((res) => {
         return res;

@@ -4,11 +4,11 @@ import { HttpService } from "@@/server/services/http-service";
 
 export default defineEventHandler(async (event) => {
     // Retrieve user-agent from headers using getRequestHeaders
-    const headers = getRequestHeaders(event);
+    // const headers = getRequestHeaders(event);
 
     // await requireAuth(event);
 
-    const userAgent = headers["user-agent"] || null;
+    // const userAgent = headers["user-agent"] || null;
 
     const query = getQuery(event);
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
             .get({
                 url: "api/stores/activity/2",
                 body: body,
-                headers: headers,
+                // headers: headers,
             
             })
             .then((res) => {

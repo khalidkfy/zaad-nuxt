@@ -5,11 +5,11 @@ import categsData from "~~/server/data/categs.json";
 
 export default defineEventHandler(async (event) => {
   // Retrieve user-agent from headers using getRequestHeaders
-  const headers = getRequestHeaders(event);
+  // const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
-  const userAgent = headers["user-agent"] || null;
+  // const userAgent = headers["user-agent"] || null;
 
   const query = getQuery(event);
 
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       .get({
         url: "api/blog/list",
         body: body,
-        headers: headers,
+        // headers: headers,
       })
       .then((res) => {
         return res;

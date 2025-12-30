@@ -3,11 +3,11 @@ import { HttpService } from "@@/server/services/http-service";
 
 export default defineEventHandler(async (event) => {
     // Retrieve user-agent from headers using getRequestHeaders
-    const headers = getRequestHeaders(event);
+    // const headers = getRequestHeaders(event);
 
     // await requireAuth(event);
 
-    const userAgent = headers["user-agent"] || null;
+    // const userAgent = headers["user-agent"] || null;
 
     const query = getQuery(event);
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
             .post({
                 url: "api/profile",
                 body: body,
-                headers: headers,
+                // headers: headers,
             })
             .then(async (res) => {
                 await setUserSession(event, {
