@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       headers,
     });
   } catch (err) {
-    console.warn("API offline → loading local fallback JSON");
+    console.warn("API offline → loading local fallback JSON", err);
 
     // Path to the fallback file
     return page1Data;

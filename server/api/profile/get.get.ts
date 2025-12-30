@@ -45,6 +45,6 @@ export default defineEventHandler(async (event) => {
 
     return data;
   } catch (err) {
-    console.warn("API offline → loading local fallback JSON");
+    console.warn("API offline → loading local fallback JSON", err);
   }
 });
