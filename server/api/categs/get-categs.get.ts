@@ -5,11 +5,15 @@ import categsData from "~~/server/data/categs.json";
 
 export default defineEventHandler(async (event) => {
   // Retrieve user-agent from headers using getRequestHeaders
-  const headers = getRequestHeaders(event);
+  // const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
-  const userAgent = headers["user-agent"] || null;
+
+  const userAgent = getHeader(event, "user-agent");
+
+  const headers: Record<string, string> = {};
+  if (userAgent) headers["user-agent"] = userAgent;
 
   const query = getQuery(event);
 
