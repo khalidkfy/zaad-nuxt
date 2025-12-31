@@ -1,4 +1,86 @@
 /* Start General */
+
+/*regular*/
+@font-face {
+  font-family: "Quicksand";
+  src: url("/assets/fonts/static/Quicksand-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*bold*/
+@font-face {
+  font-family: "Quicksand";
+  font-weight: bold;
+  src: url("/assets/fonts/static/Quicksand-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*medium*/
+@font-face {
+  font-family: "Quicksand";
+  font-weight: 500;
+  src: url("/assets/fonts/static/Quicksand-Medium.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*semibold*/
+@font-face {
+  font-family: "Quicksand";
+  font-weight: 600;
+  src: url("/assets/fonts/static/Quicksand-SemiBold.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*regular*/
+@font-face {
+  font-family: "Tajawal";
+  src: url("/assets/fonts/Tajawal/Tajawal-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*bold*/
+@font-face {
+  font-family: "Tajawal";
+  font-weight: bold;
+  src: url("/assets/fonts/Tajawal/Tajawal-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*medium*/
+@font-face {
+  font-family: "Tajawal";
+  font-weight: 500;
+  src: url("/assets/fonts/Tajawal/Tajawal-Medium.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+/*semi bold*/
+@font-face {
+  font-family: "Tajawal";
+  font-weight: 600;
+  src: url("/assets/fonts/Tajawal/Tajawal-Medium.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: 'Quicksand', sans-serif;
+  ;
+}
+
+[dir=rtl] {
+  * {
+    font-family: 'Tajawal', sans-serif;
+  }
+}
+
 html * {
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
