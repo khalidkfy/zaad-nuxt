@@ -48,7 +48,7 @@ export const useWhish = () => {
       if (error?.data?.statusCode == 401) {
         toast.error({
           title: t("submit.error"),
-          message: t("cart.authErr"),
+          message: t("whish.authErr"),
           rtl: locale.value === "ar",
         });
         return;

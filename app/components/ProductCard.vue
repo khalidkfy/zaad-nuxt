@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { loggedIn } = useUserSession();
+
 const props = defineProps({
   product: Object as () => Product,
   showCateg: {
@@ -104,10 +106,16 @@ watch(removeWhishErr, (val) => {
         </div>
       </div>
       <div
+        v-if="loggedIn"
         ref="whishRef"
         class="whish"
         :class="{ fav: product?.favorite_item == true || styleFor === 'whish' }"
-        :title="$t('whish.add')"
+        :title="
+          product?.favorite_item == true || styleFor === 'whish'
+            ? $t('whish.remove')
+            : $t('whish.add')
+        "
+        data-bs-toggle="tooltip"
         @click.prevent="handleWhishSubmit(product)"
       >
         <svg
@@ -151,31 +159,26 @@ watch(removeWhishErr, (val) => {
     </div>
     <NuxtLink
       :style="{ color: textColor ? textColor : '' }"
-      v-if="showCateg"
-      href="/"
+      v-if="showCateg && styleFor === 'default'"
+      :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
       class="categ"
       >{{ product?.seller?.username }}</NuxtLink
     >
+    <NuxtLink
+      :style="{ color: textColor ? textColor : '' }"
+      v-if="showCateg && styleFor === 'store'"
+      :href="$localePath(`/products/${product?.category?.id}`)"
+      class="categ"
+      >{{ product?.category?.title }}</NuxtLink
+    >
 
-    <NuxtLink href="/" class="product-info">
+    <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="product-info">
       <div
         :style="{ color: textColor ? textColor : '' }"
         :title="product?.title"
         class="name"
       >
-        {{ product?.title }} {{ product?.title }}
-      </div>
-      <div v-if="styleFor === 'default'" class="price">
-        <div>
-          <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
-            product?.regular_price
-          }}</span>
-          <span :style="{ color: textColor ? textColor : '' }" class="currency"
-            >ر.ع</span
-          >
-        </div>
-        <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
-                    product?.regular_price }}</span> -->
+        {{ product?.title }}
       </div>
       <div v-if="styleFor === 'whish'" class="price">
         <div>
@@ -186,6 +189,18 @@ watch(removeWhishErr, (val) => {
             >ر.ع</span
           >
         </div>
+      </div>
+      <div v-else class="price">
+        <div>
+          <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
+            product?.regular_price
+          }}</span>
+          <span :style="{ color: textColor ? textColor : '' }" class="currency"
+            >ر.ع</span
+          >
+        </div>
+        <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
+                    product?.regular_price }}</span> -->
       </div>
     </NuxtLink>
   </div>

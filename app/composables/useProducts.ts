@@ -51,7 +51,7 @@ export const useProducts = () => {
       });
 
 
-       hasMore.value = res?.next_page_url.length > 0;
+      hasMore.value = res?.next_page_url.length > 0;
 
       if (options?.append) {
         productsRes.value.resources.push(...res.resources);
@@ -67,11 +67,43 @@ export const useProducts = () => {
     }
   }
 
+
+
+  const productDetails = ref(null);
+  const getProductDetailsLoading = ref(false);
+  const getProductDetails = async (id: any) => {
+    try {
+      getProductDetailsLoading.value = true
+
+      const res = await $fetch("/api/products/details", {
+        headers: {
+          Lang: locale.value,
+        },
+        query: {
+          item_id:id
+        }
+      });
+
+      console.log(res, "resresresres");
+
+      productDetails.value = res?.resource
+      
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getProductDetailsLoading.value = false
+
+    }
+  }
   return {
     getProducts,
     productsRes,
     getProductsLoading,
     currentPage,
-    hasMore
+    hasMore,
+    productDetails,
+    getProductDetailsLoading,
+    getProductDetails,
   };
 };

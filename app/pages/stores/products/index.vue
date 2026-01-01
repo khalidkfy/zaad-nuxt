@@ -35,7 +35,7 @@ console.log(productsStores.value, "productsStores");
               <h4>{{ categ?.localeTitle }}</h4>
               <div class="stores">
                 <NuxtLink
-                  href="#"
+                  :href="$localePath(`/stores/products/${store.id}`)"
                   v-for="(store, i) in categ?.stores"
                   class="store"
                 >
@@ -143,6 +143,7 @@ console.log(productsStores.value, "productsStores");
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 10px;
         transition: var(--trans);
         &:hover {
           color: var(--main-color);

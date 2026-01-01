@@ -36,15 +36,16 @@ const loadMore = async () => {
   });
 };
 
-const handleWhishRemove = ({item, value}) => {
+const handleWhishRemove = ({ item, value }) => {
   console.log(item, "itemitemitem");
-  
-  const product = productsRes.value.resources.find((p: any) => p.id === item.id);
+
+  const product = productsRes.value.resources.find(
+    (p: any) => p.id === item.id
+  );
   if (product) {
     product.favorite_item = value;
   }
 };
-
 </script>
 <template>
   <section class="mt-4">
@@ -52,12 +53,18 @@ const handleWhishRemove = ({item, value}) => {
       <div class="breadcrumbs">
         <NuxtLink :href="$localePath('index')">{{ $t("links.home") }}</NuxtLink>
         <div>/</div>
-        <NuxtLink
-          active-class="active"
-          :href="$localePath(`/products/${category_id}`)"
-        >
+        <NuxtLink active-class="active" :href="$localePath(`/products`)">
           {{ $t("links.products") }}
         </NuxtLink>
+        <template v-if="category_id && activeCategory">
+          <div>/</div>
+          <NuxtLink
+            active-class="active"
+            :href="$localePath(`/products/${category_id}`)"
+          >
+            {{ activeCategory?.name }}
+          </NuxtLink></template
+        >
       </div>
     </div>
   </section>

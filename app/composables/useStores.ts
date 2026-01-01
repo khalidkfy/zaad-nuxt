@@ -1,5 +1,7 @@
 export const useStores = () => {
-
+    //  TODO:: SERVICE STORE COMPOSABLE | PRODUCT STORE COMPOSABLE
+    // products
+    const { locale } = useI18n();
 
     const productsStores = ref([]);
 
@@ -33,8 +35,43 @@ export const useStores = () => {
 
         }
     }
-    const servicesStores = ref([]);
 
+    const productsStoreItems = ref([]);
+    const getProductsStoreItemsLoading = ref(false);
+    const hasMore = ref(false);
+    const currentPage = ref(1)
+
+    const getProductsStoreItems = async (store_id: any, append: boolean = false) => {
+        getProductsStoreItemsLoading.value = true;
+        try {
+
+            const res = await $fetch("/api/stores/products/items", {
+                headers: {
+                    Lang: locale.value,
+                },
+                query: {
+                    store_id,
+                    per_page: 100,
+                    page: currentPage.value ?? 1
+                }
+            });
+            if (append) {
+                productsStoreItems.value.items.push(...res.items);
+            } else {
+                productsStoreItems.value = res;
+            }
+            hasMore.value = res?.next_page_url.length > 0;
+
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            getProductsStoreItemsLoading.value = false;
+
+        }
+    }
+    // services
+    const servicesStores = ref([]);
     const getServicesStores = async () => {
         const { locale } = useI18n();
 
@@ -51,7 +88,7 @@ export const useStores = () => {
 
             console.log(res);
             servicesStores.value = res?.data
-        
+
 
         } catch (error) {
             console.log(error);
@@ -66,6 +103,11 @@ export const useStores = () => {
         getProductsStores,
         productsStores,
         getServicesStores,
-        servicesStores
+        servicesStores,
+        productsStoreItems,
+        getProductsStoreItems,
+        getProductsStoreItemsLoading,
+        hasMore,
+        currentPage
     }
 };

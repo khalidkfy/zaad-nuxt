@@ -116,6 +116,7 @@ export const useCart = () => {
         message: `${t("cart.removeSuccess")} - ${item.title}`,
         rtl: locale.value === "ar",
       });
+      await getCartCount();
       await getCartItems();
 
     } catch (error) {
