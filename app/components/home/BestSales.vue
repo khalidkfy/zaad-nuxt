@@ -10,7 +10,7 @@ const products = bestSales.value?.data;
         <div class="container">
             <div class="section-header">
                 <h3>{{ bestSales?.title || $t("general.besstSales") }}</h3>
-                <NuxtLink href="/">{{ $t("general.showMore") }}</NuxtLink>
+                <NuxtLink :href="$localePath('/products')">{{ $t("general.showMore") }}</NuxtLink>
             </div>
             <div class="content mt-2" aria-label="Products Best sales">
                 <BaseProductsCarousel :items="products" :showControls="true" carouselId="best-sales-carousel" />

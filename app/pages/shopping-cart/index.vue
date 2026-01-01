@@ -96,9 +96,12 @@ const getTotalCart = () => {
                 </div>
                 <div class="content">
                   <div>
-                    <div class="info">
+                    <NuxtLink
+                      :href="$localePath(`/products/item/${product?.item_id}`)"
+                      class="info"
+                    >
                       <div>{{ product?.title }}</div>
-                    </div>
+                    </NuxtLink>
 
                     <div class="d-flex align-items-center gap-4">
                       <div class="qty">
@@ -371,7 +374,11 @@ const getTotalCart = () => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
+            color: #000;
+            transition: var(--trans);
+            &:hover {
+              text-decoration: underline;
+            }
             div {
               font-size: 18px;
             }
