@@ -61,7 +61,7 @@ const subQty = () => {
   qty.value -= 1;
 };
 
-const activeTab = ref("rates");
+const activeTab = ref("desc");
 const changeTab = (tab: string) => {
   activeTab.value = tab;
 };
