@@ -20,9 +20,11 @@ export const useCart = () => {
 
   const addToCartLoading = ref(false);
   const addToCartErr = ref(false);
+  const addSuccess = ref(false);
   const addToCart = async (itemId: any, quantity: any = 1) => {
     addToCartErr.value = false;
     addToCartLoading.value = true;
+    addSuccess.value = false;
     try {
       const data = await $fetch("/api/cart/add", {
         method: 'POST',
@@ -41,7 +43,7 @@ export const useCart = () => {
           message: `${t("cart.addSuccess")} - ${data?.data.title}`,
           rtl: locale.value === "ar",
         });
-
+        addSuccess.value = true;
         await getCartCount();
       }
 
@@ -97,9 +99,11 @@ export const useCart = () => {
 
   const deleteCartLoading = ref(false);
   const deleteCartErr = ref(false);
+  const deleteSuccess = ref(false);
   const deleteFromCart = async (item: any) => {
     deleteCartErr.value = false;
     deleteCartLoading.value = true;
+    deleteSuccess.value = false
     try {
       const data = await $fetch("/api/cart/delete", {
         method: 'delete',
@@ -113,9 +117,10 @@ export const useCart = () => {
 
       toast.success({
         title: t("submit.success"),
-        message: `${t("cart.removeSuccess")} - ${item.title}`,
+        message: `${t("cart.removeSuccess")}${item?.title ? ` - ${item?.title}` : ''}`,
         rtl: locale.value === "ar",
       });
+      deleteSuccess.value = true
       await getCartCount();
       await getCartItems();
 
@@ -141,6 +146,8 @@ export const useCart = () => {
     cartItems,
     deleteFromCart,
     deleteCartLoading,
-    deleteCartErr
+    deleteCartErr,
+    deleteSuccess,
+    addSuccess
   };
 };

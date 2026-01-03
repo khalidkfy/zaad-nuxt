@@ -172,7 +172,10 @@ watch(removeWhishErr, (val) => {
       >{{ product?.category?.title }}</NuxtLink
     >
 
-    <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="product-info">
+    <NuxtLink
+      :href="$localePath(`/products/item/${product?.id}`)"
+      class="product-info"
+    >
       <div
         :style="{ color: textColor ? textColor : '' }"
         :title="product?.title"

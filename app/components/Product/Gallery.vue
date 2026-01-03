@@ -46,16 +46,16 @@ const handleWhishSubmit = async (product) => {
 };
 
 const isFav = ref(props?.product?.favorite_item);
-console.log(isFav.value, "isFavisFavisFav");
 
+const isModalOpen = ref(false);
 const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
   useWhish();
 </script>
 
 <template>
-  <div class="product-gallery">
+  <div :class="{ single: !product?.images.length }" class="product-gallery">
     <!-- Thumbnails (START) -->
-    <div class="thumbnails">
+    <div v-if="product?.images.length" class="thumbnails">
       <button
         v-for="(img, index) in images"
         :key="img.src"
@@ -76,44 +76,97 @@ const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
 
     <!-- Main image -->
     <figure class="main-image">
-      <div
-        v-if="loggedIn"
-        ref="whishRef"
-        class="whish"
-        :class="{ fav: isFav }"
-        :title="
-          product?.favorite_item == true ? $t('whish.remove') : $t('whish.add')
-        "
-        data-bs-toggle="tooltip"
-        @click.prevent="handleWhishSubmit(product)"
-      >
-        <svg
-          v-if="!addToWhishLoading && !removeWhishLoading"
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 15 15"
-          fill="none"
+      <div class="actions">
+        <div
+          v-if="loggedIn"
+          ref="whishRef"
+          class="whish"
+          :class="{ fav: isFav }"
+          :title="
+            product?.favorite_item == true
+              ? $t('whish.remove')
+              : $t('whish.add')
+          "
+          data-bs-toggle="tooltip"
+          @click.prevent="handleWhishSubmit(product)"
         >
-          <g clip-path="url(#clip0_176_1029)">
-            <path
-              d="M11.7008 7.5432L7.20077 12L2.70077 7.5432C2.40395 7.25437 2.17015 6.90721 2.0141 6.52358C1.85804 6.13996 1.7831 5.72817 1.79401 5.31416C1.80491 4.90015 1.90142 4.49288 2.07746 4.118C2.2535 3.74312 2.50525 3.40875 2.81686 3.13595C3.12847 2.86315 3.49319 2.65782 3.88805 2.53289C4.28292 2.40797 4.69937 2.36615 5.11119 2.41008C5.523 2.45401 5.92127 2.58274 6.28089 2.78815C6.64052 2.99356 6.95372 3.2712 7.20077 3.6036C7.44889 3.27362 7.76245 2.99839 8.12183 2.79517C8.4812 2.59194 8.87866 2.46507 9.28933 2.42251C9.69999 2.37996 10.115 2.42262 10.5084 2.54784C10.9018 2.67305 11.2652 2.87813 11.5757 3.15022C11.8862 3.42231 12.1372 3.75557 12.313 4.12914C12.4888 4.5027 12.5856 4.90853 12.5974 5.32123C12.6091 5.73392 12.5355 6.1446 12.3812 6.52755C12.227 6.91051 11.9953 7.2575 11.7008 7.5468"
-              stroke="#4A4A4A"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_176_1029">
-              <rect width="14.4" height="14.4" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-        <div v-else>
-          <span class="spinner-border text-dark spinner-border-sm ms-2"></span>
+          <svg
+            v-if="!addToWhishLoading && !removeWhishLoading"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 15 15"
+            fill="none"
+          >
+            <g clip-path="url(#clip0_176_1029)">
+              <path
+                d="M11.7008 7.5432L7.20077 12L2.70077 7.5432C2.40395 7.25437 2.17015 6.90721 2.0141 6.52358C1.85804 6.13996 1.7831 5.72817 1.79401 5.31416C1.80491 4.90015 1.90142 4.49288 2.07746 4.118C2.2535 3.74312 2.50525 3.40875 2.81686 3.13595C3.12847 2.86315 3.49319 2.65782 3.88805 2.53289C4.28292 2.40797 4.69937 2.36615 5.11119 2.41008C5.523 2.45401 5.92127 2.58274 6.28089 2.78815C6.64052 2.99356 6.95372 3.2712 7.20077 3.6036C7.44889 3.27362 7.76245 2.99839 8.12183 2.79517C8.4812 2.59194 8.87866 2.46507 9.28933 2.42251C9.69999 2.37996 10.115 2.42262 10.5084 2.54784C10.9018 2.67305 11.2652 2.87813 11.5757 3.15022C11.8862 3.42231 12.1372 3.75557 12.313 4.12914C12.4888 4.5027 12.5856 4.90853 12.5974 5.32123C12.6091 5.73392 12.5355 6.1446 12.3812 6.52755C12.227 6.91051 11.9953 7.2575 11.7008 7.5468"
+                stroke="#4A4A4A"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_176_1029">
+                <rect width="14.4" height="14.4" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+          <div v-else>
+            <span
+              class="spinner-border text-dark spinner-border-sm ms-2"
+            ></span>
+          </div>
         </div>
+
+        <button class="zoom-btn" @click="isModalOpen = true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+          >
+            <g clip-path="url(#clip0_117_971)">
+              <path
+                d="M12 3H15V6"
+                stroke="#4A4A4A"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10.5 7.5L15 3"
+                stroke="#4A4A4A"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M6 15H3V12"
+                stroke="#4A4A4A"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 15L7.5 10.5"
+                stroke="#4A4A4A"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_117_971">
+                <rect width="18" height="18" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
       </div>
+
       <Transition name="fade" mode="out-in">
         <NuxtImg
           :key="activeImage.src"
@@ -129,49 +182,71 @@ const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
       </Transition>
 
       <!-- Arrows -->
-      <button
-        class="arrow prev"
-        @click="prev"
-        :disabled="activeIndex === 0"
-        aria-label="prev image"
-      >
-        ‹
-      </button>
+      <template v-if="product?.images.length">
+        <button
+          class="arrow prev"
+          @click="prev"
+          :disabled="activeIndex === 0"
+          aria-label="prev image"
+        >
+          ‹
+        </button>
 
-      <button
-        class="arrow next"
-        @click="next"
-        :disabled="activeIndex === images.length - 1"
-        aria-label="next image"
-      >
-        ›
-      </button>
+        <button
+          class="arrow next"
+          @click="next"
+          :disabled="activeIndex === images.length - 1"
+          aria-label="next image"
+        >
+          ›
+        </button>
+      </template>
     </figure>
+    <ProductImageModal
+      v-if="isModalOpen"
+      :open="isModalOpen"
+      :images="images"
+      :startIndex="activeIndex"
+      @close="isModalOpen = false"
+    />  
   </div>
 </template>
 
 <style scoped lang="scss">
-.whish {
+.actions {
   position: absolute;
   top: 5px;
   inset-inline-start: 5px;
-  background-color: #fff;
-  cursor: pointer;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  &.fav {
-    svg {
-      fill: red !important;
-      path {
-        stroke: red;
+  gap: 8px;
+  .zoom-btn {
+    background-color: #fff;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    outline: none;
+    border-color: transparent;
+  }
+  .whish {
+    background-color: #fff;
+    cursor: pointer;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.fav {
+      svg {
+        fill: red !important;
+        path {
+          stroke: red;
+        }
       }
     }
   }
 }
+
 /* ===== Desktop layout ===== */
 .product-gallery {
   display: grid;
@@ -179,7 +254,9 @@ const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
   gap: 1rem;
   align-items: start;
 }
-
+.product-gallery.single {
+  grid-template-columns: 1fr;
+}
 /* Thumbnails column */
 .thumbnails {
   display: flex;
@@ -205,10 +282,11 @@ const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
 
 /* Main image box */
 .main-image {
-  position: relative; /* REQUIRED for arrows */
+  position: relative;
   background: #f6f6f6;
   padding: 1rem;
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
   border-radius: 12px;

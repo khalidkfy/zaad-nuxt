@@ -15,6 +15,7 @@
     "ar": "Arabic"
   },
   "general": {
+    "buyNow": "Buy now",
     "img": "Image",
     "by": "By",
     "viewImg": "View image",
@@ -40,7 +41,11 @@
     "filter": "Filter",
     "curr_value": "{value} R.O",
     "confirm": "Confirm",
-    "update":"Update"
+    "update":"Update",
+    "remaining":"Remaining",
+    "termsWarn":"You must be sure that you read",
+    "rates":"Ratings and reviews",
+    "desc":"Description"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -104,7 +109,8 @@
     "coupon": "Purchase coupon",
     "couponP": "Do you have a shipping coupon? You will get a purchase discount.",
     "couponCode": "coupon code",
-    "enterCoupon": "Enter the code"
+    "enterCoupon": "Enter the code",
+    "remove":"Remove from cart"
   },
   "categs": {
     "allCategs": "All Categories",
