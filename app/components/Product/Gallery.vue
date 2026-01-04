@@ -284,6 +284,7 @@ const { addToWhishLoading, addToWhish, removeWhishLoading, removeFromWhish } =
 .main-image {
   position: relative;
   background: #f6f6f6;
+  overflow: hidden;
   padding: 1rem;
   display: flex;
   height: 100%;
