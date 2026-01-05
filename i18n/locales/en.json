@@ -45,7 +45,8 @@
     "remaining":"Remaining",
     "termsWarn":"You must be sure that you read",
     "rates":"Ratings and reviews",
-    "desc":"Description"
+    "desc":"Description",
+    "delete":"Delete"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -53,6 +54,7 @@
     "returnPolicy": "Return Policy",
     "contactUs": "Contact us",
     "aboutUs": "About us",
+    "privacy": "Privacy",
     "blog": "Blog",
     "home": "Home",
     "faq": "FAQ",
@@ -98,6 +100,8 @@
     "button": "Search"
   },
   "cart": {
+    "itemsCount": "{count} item in your shopping cart",
+    "noItems": "No items in your shopping cart",
     "title": "Shopping Cart",
     "add": "Add to cart",
     "authErr": "Please log in to add items to your cart",
@@ -221,6 +225,7 @@
   },
   "whish": {
     "title": "Whish List",
+    "noItems": "No items in your whish list",
     "add": "Add to whishlist",
     "remove": "Remove from whishlist",
     "addSuccess":"Item is now in your whish list",

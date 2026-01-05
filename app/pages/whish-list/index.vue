@@ -31,7 +31,8 @@ await getItems();
   <section class="mt-4">
     <div class="container">
       <div v-if="!getItemsLoading" class="row">
-        <div
+        <template v-if="whishItems.length">
+          <div
           class="col-sm-3 col-6 mb-4"
           v-for="(product, i) in whishItems"
           :key="i"
@@ -42,6 +43,15 @@ await getItems();
             :product="convertToProduct(product)"
           />
         </div>
+        </template>
+         <template v-else>
+          <div class="text-center">
+            <span class="d-block"> {{ $t("whish.noItems") }}</span>
+            <NuxtLink class="btn-zaad d-inline-block mt-3 w-30" :href="$localePath('/products')">{{
+              $t("general.keepShopping")
+            }}</NuxtLink>
+          </div>
+        </template>
       </div>
       <div v-else class="loader-container">
         <div class="content-loader"></div>

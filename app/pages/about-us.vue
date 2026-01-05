@@ -137,58 +137,6 @@ await getAboutPage();
   </section>
   <LazyHomeFeatures />
   <LazyHomePromotionsSection />
-  <div class="accordion faqs mt-5" id="accordionFaqs">
-    <div class="accordion-item">
-      <h3 class="accordion-header" id="flush-headingOne-1">
-        <button
-          class="accordion-button collapsed fw-bold"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#flush-collapseOne-accordionFaqs"
-          aria-expanded="false"
-          aria-controls="flush-collapseOne-accordionFaqs"
-        >
-          عنوان السؤال
-        </button>
-      </h3>
-      <div
-        id="flush-collapseOne-accordionFaqs"
-        data-bs-parent="#accordionFaqs"
-        class="accordion-collapse collapse"
-        aria-labelledby="flush-headingOne-1"
-      >
-        <div class="accordion-body muted-color">
-          اكتشف كل ما تحتاج معرفته في مكان واحد، مع إجابات واضحة وشاملة تجعل
-          تجربتك أسهل وأكثر ثقة.
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header" id="flush-headingOne-2">
-        <button
-          class="accordion-button collapsed fw-bold"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#flush-collapseOne-accordionFaqs2"
-          aria-expanded="false"
-          aria-controls="flush-collapseOne-accordionFaqs"
-        >
-          عنوان السؤال
-        </button>
-      </h3>
-      <div
-        id="flush-collapseOne-accordionFaqs2"
-        data-bs-parent="#accordionFaqs"
-        class="accordion-collapse collapse"
-        aria-labelledby="flush-headingOne-2"
-      >
-        <div class="accordion-body muted-color">
-          اكتشف كل ما تحتاج معرفته في مكان واحد، مع إجابات واضحة وشاملة تجعل
-          تجربتك أسهل وأكثر ثقة.
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 <style scoped lang="scss">
 .about-us-banner {

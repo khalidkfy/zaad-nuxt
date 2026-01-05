@@ -10,7 +10,7 @@ export const useWhish = () => {
           Lang: locale.value,
         },
       });
-      if (data?.data?.favorites_count) favCount.value = data?.data?.favorites_count
+      if (data?.data?.favorites_count != null) favCount.value = data?.data?.favorites_count
     } catch (error) {
       console.log(error);
     } finally {

@@ -18,7 +18,6 @@ definePageMeta({
   </div>
   <div class="content mt-3">
     <form>
-      <hr />
       <h3>{{ $t("links.phoneSettings") }}</h3>
       <div class="row mt-3">
         <div class="col-md-6">
@@ -147,13 +146,14 @@ definePageMeta({
           </div>
         </div>
       </div>
-      <hr />
     </form>
   </div>
 </template>
 <style scoped lang="scss">
 h1.section-title {
   font-size: 18px;
+  color: #000;
+  font-weight: 700;
 }
 h3 {
   font-size: 16px;

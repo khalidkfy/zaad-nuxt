@@ -82,10 +82,7 @@ export const useCart = () => {
       });
       console.log(data?.data, "data?.datadata?.data");
 
-      if (data?.data?.cart?.length) {
-        cartItems.value = data?.data?.cart;
-      }
-      console.log(data, "datadatadata");
+     cartItems.value = data?.data?.cart;
 
 
     } catch (error) {
