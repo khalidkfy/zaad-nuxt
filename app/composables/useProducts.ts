@@ -35,19 +35,24 @@ export const useProducts = () => {
 
   const hasMore = ref(false);
   const getProducts = async (options: {
-    categId: any, append?: boolean
+    categId: any, append?: boolean, search: string
   }) => {
     try {
       getProductsLoading.value = true
 
+      const reqQuery = {
+        category_id: options.categId || null,
+        page: currentPage.value ?? 1,
+      }
+
+      if (options?.search?.length) {
+        reqQuery.search = options.search
+      }
       const res = await $fetch("/api/products/list", {
         headers: {
           Lang: locale.value,
         },
-        query: {
-          category_id: options.categId || null,
-          page: currentPage.value ?? 1
-        }
+        query: reqQuery
       });
 
 
@@ -80,14 +85,14 @@ export const useProducts = () => {
           Lang: locale.value,
         },
         query: {
-          item_id:id
+          item_id: id
         }
       });
 
       console.log(res, "resresresres");
 
       productDetails.value = res?.resource
-      
+
 
     } catch (error) {
       console.log(error);

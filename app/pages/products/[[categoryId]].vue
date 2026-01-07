@@ -19,7 +19,7 @@ useSeo({
 
 const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =
   useProducts();
-await getProducts({ categId: category_id.value });
+await getProducts({ categId: category_id.value, append: false, search: "" });
 
 const products = computed(() => productsRes.value.resources);
 
@@ -33,6 +33,7 @@ const loadMore = async () => {
   await getProducts({
     categId: category_id.value,
     append: true,
+    search: "",
   });
 };
 
@@ -45,6 +46,15 @@ const handleWhishRemove = ({ item, value }) => {
   if (product) {
     product.favorite_item = value;
   }
+};
+
+const filterItems = async (search: string) => {
+  console.log(search);
+  await getProducts({
+    categId: category_id.value,
+    append: false,
+    search: search,
+  });
 };
 </script>
 <template>
@@ -72,27 +82,51 @@ const handleWhishRemove = ({ item, value }) => {
     <div class="container">
       <div class="row">
         <div class="col-md-3 mb-4">
-          <ProductsCategsFilter :activeCateg="category_id" />
+          <ProductsCategsFilter
+            @filter="filterItems"
+            :activeCateg="category_id"
+          />
         </div>
         <div class="col-md-9">
-          <div class="row">
-            <div
-              class="col-sm-3 col-6 mb-4"
-              v-for="(product, i) in products"
-              :key="i"
-            >
-              <ProductCard @removed="handleWhishRemove" :product="product" />
+          <div class="items-container">
+            <div v-if="getProductsLoading" class="overlay-loader">
+              <span class="indicator-progress f-normal fs-20">
+                {{ t("general.wait") }}
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
             </div>
-          </div>
-          <div class="text-center mt-4" v-if="hasMore">
-            <button
-              class="btn-zaad"
-              :disabled="getProductsLoading"
-              @click="loadMore"
-            >
-              <span v-if="getProductsLoading">{{ $t("general.wait") }}</span>
-              <span v-else>{{ $t("general.showMore") }}</span>
-            </button>
+            <div class="row">
+              <template v-if="products?.length">
+                <div
+                  class="col-sm-3 col-6 mb-4"
+                  v-for="(product, i) in products"
+                  :key="i"
+                >
+                  <ProductCard
+                    @removed="handleWhishRemove"
+                    :product="product"
+                  />
+                </div>
+              </template>
+              <template v-else>
+                <div class="no-items">
+                 <div> {{ $t("items.noData") }}</div>
+                  <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad">{{ $t("links.productsStores") }}</NuxtLink>
+                </div>
+              </template>
+            </div>
+            <div class="text-center mt-4" v-if="hasMore">
+              <button
+                class="btn-zaad"
+                :disabled="getProductsLoading"
+                @click="loadMore"
+              >
+                <span v-if="getProductsLoading">{{ $t("general.wait") }}</span>
+                <span v-else>{{ $t("general.showMore") }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +134,33 @@ const handleWhishRemove = ({ item, value }) => {
   </section>
 </template>
 <style scoped lang="scss">
+  .no-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    position: sticky;
+    top: 100px;
+  }
+.items-container {
+  position: relative;
+  .overlay-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background-color: #fff;
+    opacity: 0.9;
+    text-align: center;
+    > span {
+      margin-top: 40px;
+      display: inline-block;
+      position: sticky;
+      top: 50%;
+    }
+  }
+}
 .breadcrumbs {
   display: flex;
 

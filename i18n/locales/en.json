@@ -15,6 +15,7 @@
     "ar": "Arabic"
   },
   "general": {
+    "search": "What are you looking at?",
     "buyNow": "Buy now",
     "img": "Image",
     "by": "By",
@@ -261,5 +262,8 @@
     "products":{
       "title":""
     }
+  },
+  "items":{
+    "noData": "There is no products right now, try again later or change filters"
   }
 }
