@@ -70,7 +70,8 @@
     "emailSettings":"Email settings",
     "passwordSettings":"Password settings",
     "productsStores":"Products stores",
-    "servicesStores":"Services stores"
+    "servicesStores":"Services stores",
+    "logout":"Sign out"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -173,7 +174,9 @@
     "clickHere": "Click here",
     "loginBtn": "Log in",
     "noAccount": "Dont have account",
-    "signed-in": "You are successfully signed in!"
+    "signed-in": "You are successfully signed in!",
+    "loged-out":"Signed Out!",
+    "loged-out-desc":"Sign in to enjoy shopping expierance"
   },
   "validations": {
     "422": "Make sure to fill in all fields.",

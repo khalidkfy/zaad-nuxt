@@ -31,6 +31,7 @@ await getCartCount();
             text-align: center;
             border-radius: 33px;
             padding: 0 8px;
+            width: 30px;
         }
     }
 }

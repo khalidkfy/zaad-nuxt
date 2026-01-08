@@ -102,7 +102,7 @@ watch(removeWhishErr, (val) => {
           :alt="$t('cart.add')"
         />
         <div v-else>
-          <span class="spinner-border text-white spinner-border-sm ms-2"></span>
+          <span class="spinner-border text-white spinner-border-sm"></span>
         </div>
       </div>
       <div
@@ -142,7 +142,7 @@ watch(removeWhishErr, (val) => {
           </defs>
         </svg>
         <div v-else>
-          <span class="spinner-border text-dark spinner-border-sm ms-2"></span>
+          <span class="spinner-border text-dark spinner-border-sm"></span>
         </div>
       </div>
       <div v-if="product?.discount" class="discount-label">
