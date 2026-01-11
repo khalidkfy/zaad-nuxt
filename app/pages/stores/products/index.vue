@@ -39,7 +39,7 @@ console.log(productsStores.value, "productsStores");
                   v-for="(store, i) in categ?.stores"
                   class="store"
                 >
-                  <NuxtImg 
+                  <NuxtImg
                     width="50"
                     height="50"
                     :title="store?.name"
@@ -56,13 +56,15 @@ console.log(productsStores.value, "productsStores");
           <div class="summery-links">
             <p class="title">{{ $t("categs.allCategs") }}</p>
             <div class="categs">
-              <div v-for="(categ, i) in productsStores" :key="i">
-                <NuxtLink
-                  :href="$localePath(`/stores/products#${categ.localeTitle}`)"
-                >
-                  <span>{{ categ?.localeTitle }}</span>
-                </NuxtLink>
-              </div>
+              <ul>
+                <li v-for="(categ, i) in productsStores" :key="i">
+                  <NuxtLink
+                    :href="$localePath(`/stores/products#${categ.localeTitle}`)"
+                  >
+                    <span>{{ categ?.localeTitle }}</span>
+                  </NuxtLink>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -96,7 +98,7 @@ console.log(productsStores.value, "productsStores");
   }
 }
 .summery-links {
-  background-color: #f9f9f9;
+  background-color: #fff;
   padding: 12px;
   border-radius: 10px;
   position: sticky;
@@ -109,6 +111,12 @@ console.log(productsStores.value, "productsStores");
     display: flex;
     flex-direction: column;
     gap: 10px;
+    ul {
+      list-style: circle;
+    }
+    li::marker {
+      content: unset;
+    }
     a {
       color: #4a4a4a;
       font-size: 14px;

@@ -162,7 +162,7 @@ watch(removeWhishErr, (val) => {
       v-if="showCateg && styleFor === 'default'"
       :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
       class="categ"
-      >{{ product?.seller?.username }}</NuxtLink
+      >{{ product?.seller?.storeName }}</NuxtLink
     >
     <NuxtLink
       :style="{ color: textColor ? textColor : '' }"

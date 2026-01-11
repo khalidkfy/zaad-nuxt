@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   const body: any = [];
   // Call the API endpoint with the updated body
-//  return page1Data;
+ return page1Data;
   const apiService = new HttpService(event);
   try {
     // Try online API first

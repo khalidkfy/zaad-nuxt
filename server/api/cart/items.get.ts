@@ -25,6 +25,9 @@ export default defineEventHandler(async (event) => {
 
   const apiServie = new HttpService(event);
 
+  console.log(body, "bodybodybodybodybody"); 
+  
+
   try {
     const data = apiServie
       .get({

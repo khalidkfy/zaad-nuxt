@@ -1,13 +1,72 @@
 <script setup lang="ts">
 const search = ref("");
+const { productsCategs: categs } = useCategs();
 
-const activeSearch = computed(()=>{
-  return search.value.length > 0 ? 'active': ''
-})
+const router = useRouter();
+
+const activeCateg = ref(null);
+const handleSearch = () => {
+  if (activeCateg.value) {
+    router.push(`/products/${activeCateg.value?.id}?search=${search.value}`);
+    return;
+  }
+
+  router.push(`/products?search=${search.value}`);
+};
 </script>
 <template>
   <div class="search-container">
-    <form action="#">
+    <form @submit.prevent="handleSearch">
+      <div class="dropdown active-categ">
+        <button
+          class="dropdown-toggle"
+          title="Actions"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ activeCateg ? activeCateg?.name : $t("categs.allCategs") }}
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <div
+              @click="activeCateg = null"
+              class="categ"
+              :class="{ active: activeCateg === null }"
+            >
+              <NuxtImg
+                :src="
+                  activeCateg === null
+                    ? '/assets/images/check.svg'
+                    : '/assets/images/nocheck.svg'
+                "
+                width="18"
+                height="18"
+                alt="check"
+              />{{ $t("categs.allCategs") }}
+            </div>
+          </li>
+          <li v-for="(categ, i) in categs">
+            <div
+              @click="activeCateg = categ"
+              class="categ"
+              :class="{ active: activeCateg?.id == categ?.id }"
+            >
+              <NuxtImg
+                :src="
+                  activeCateg?.id == categ?.id
+                    ? '/assets/images/check.svg'
+                    : '/assets/images/nocheck.svg'
+                "
+                width="18"
+                height="18"
+                alt="check"
+              />
+              {{ categ?.name }}
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <input
         id="main-search"
         name="main-search"
@@ -17,29 +76,9 @@ const activeSearch = computed(()=>{
       />
       <button class="btn-zaad" type="submit">{{ $t("search.button") }}</button>
     </form>
-    <transition   name="fade-slide" mode="out-in">
-    
-      <div v-if="search.length > 0" class="search-dropdown" :key="search">
-        <span class="spinner-border text-dark spinner-border-sm"></span>
-      </div>
-    </transition>
   </div>
 </template>
 <style scoped lang="scss">
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.3s ease;
-}
-
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
 .search-container {
   font-size: 12px;
   border-radius: 8px;
@@ -51,6 +90,47 @@ const activeSearch = computed(()=>{
   padding-inline-start: 8px;
   margin: 0 40px;
   position: relative;
+  .active-categ {
+    button {
+      border: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 12px;
+      padding: 8px 17px;
+      color: var(--main-color);
+      background-color: transparent;
+    }
+    .dropdown-toggle {
+     &:focus {
+       outline: none !important;
+     }
+    }
+    .dropdown-menu {
+      max-height: 430px;
+      width: 300px;
+      overflow-y: auto;
+      flex-direction: column;
+      padding: 15px;
+      z-index: 555555555;
+    }
+    .categ {
+      display: inline-block;
+      margin-bottom: 7px;
+      cursor: pointer;
+      color: #4a4a4a;
+      &.active {
+        color: var(--main-color);
+        font-weight: 500;
+      }
+      &:hover {
+        color: var(--main-color);
+      }
+      img {
+        margin-inline-end: 3px;
+      }
+    }
+  }
   @media (max-width: 1400px) {
     min-width: 300px;
   }
@@ -61,20 +141,7 @@ const activeSearch = computed(()=>{
   @media (max-width: 992px) {
     margin: 0;
   }
-  .search-dropdown {
-    position: absolute;
-    padding: 12px;
-    text-align: center;
-    border-radius: 8px;
-    background-color: #fff;
-    width: 100%;
-    bottom: -48px;
-    inset-inline-end: 50%;
-    transform: translateX(-50%);
-    z-index: 19912;
-    box-shadow: 0px 1px 9px 0 #00000040;
-    transition: var(--trans);
-  }
+
   form {
     display: flex;
     align-items: center;

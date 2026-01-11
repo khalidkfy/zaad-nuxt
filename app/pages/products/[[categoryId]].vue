@@ -19,7 +19,10 @@ useSeo({
 
 const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =
   useProducts();
-await getProducts({ categId: category_id.value, append: false, search: "" });
+
+const query = route.query;
+
+await getProducts({ categId: category_id.value, append: false, search: query?.search ?? '' });
 
 const products = computed(() => productsRes.value.resources);
 
@@ -33,7 +36,7 @@ const loadMore = async () => {
   await getProducts({
     categId: category_id.value,
     append: true,
-    search: "",
+    search: query?.search || pageSearch.value || '',
   });
 };
 
@@ -48,8 +51,10 @@ const handleWhishRemove = ({ item, value }) => {
   }
 };
 
+const pageSearch = ref('')
 const filterItems = async (search: string) => {
   console.log(search);
+  pageSearch.value = search;
   await getProducts({
     categId: category_id.value,
     append: false,

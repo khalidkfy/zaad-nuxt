@@ -19,6 +19,8 @@ export default defineEventHandler(async (event) => {
 
   const body: any = [];
   // Call the API endpoint with the updated body
+  return categsData
+
 
   const apiServie = new HttpService(event);
 
@@ -40,6 +42,5 @@ export default defineEventHandler(async (event) => {
   } catch (err) {
     console.warn("API offline → loading local fallback JSON", err);
 
-    // return categsData
   }
 });
