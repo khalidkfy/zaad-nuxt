@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
   const body: any = [];
   // Call the API endpoint with the updated body
-  return categsData
+  // return categsData
 
 
   const apiServie = new HttpService(event);
