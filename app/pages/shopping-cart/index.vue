@@ -99,7 +99,7 @@ const getTotalCart = () => {
                     <NuxtImg
                       width="100"
                       height="100"
-                      src="/assets/images/laptop.svg"
+                     :src="product?.image"
                       :alt="product?.title"
                     />
                   </div>
