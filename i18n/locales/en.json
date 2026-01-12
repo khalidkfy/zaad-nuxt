@@ -116,7 +116,9 @@
     "couponP": "Do you have a shipping coupon? You will get a purchase discount.",
     "couponCode": "coupon code",
     "enterCoupon": "Enter the code",
-    "remove":"Remove from cart"
+    "remove":"Remove from cart",
+    "total":"Total",
+    "buyAll":"Buy all"
   },
   "categs": {
     "allCategs": "All Categories",

@@ -99,7 +99,7 @@ const getTotalCart = () => {
                     <NuxtImg
                       width="100"
                       height="100"
-                      :src="product?.image"
+                      src="/assets/images/laptop.svg"
                       :alt="product?.title"
                     />
                   </div>
@@ -198,9 +198,7 @@ const getTotalCart = () => {
                         <div class="price">
                           {{
                             $t("general.curr_value", {
-                              value: Number(
-                                product?.quantity * product?.price
-                              ).toFixed(2),
+                              value: Number(product?.price).toFixed(2),
                             })
                           }}
                         </div>
@@ -215,68 +213,86 @@ const getTotalCart = () => {
                         <span>{{ $t("general.price") }}</span>
                         {{
                           $t("general.curr_value", {
-                            value: Number(product?.price).toFixed(2),
+                            value: Number(
+                              product?.quantity * product?.price
+                            ).toFixed(2),
                           })
                         }}
                       </div>
-                      <button
-                        @click.prevent="deleteFromCart(product)"
-                        class="delete-product"
-                        aria-label="delete product"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
+                      <div>
+                        <button class="btn-zaad me-4">
+                          {{ $t("general.buyNow") }}
+                        </button>
+                        <button
+                          @click.prevent="deleteFromCart(product)"
+                          class="delete-product"
                         >
-                          <g clip-path="url(#clip0_176_858)">
-                            <path
-                              d="M3.33398 5.83331H16.6673"
-                              stroke="#FF0000"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M8.33398 9.16669V14.1667"
-                              stroke="#FF0000"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M11.666 9.16669V14.1667"
-                              stroke="#FF0000"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M4.16602 5.83331L4.99935 15.8333C4.99935 16.2753 5.17494 16.6993 5.4875 17.0118C5.80006 17.3244 6.22399 17.5 6.66602 17.5H13.3327C13.7747 17.5 14.1986 17.3244 14.5112 17.0118C14.8238 16.6993 14.9993 16.2753 14.9993 15.8333L15.8327 5.83331"
-                              stroke="#FF0000"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M7.5 5.83333V3.33333C7.5 3.11232 7.5878 2.90036 7.74408 2.74408C7.90036 2.5878 8.11232 2.5 8.33333 2.5H11.6667C11.8877 2.5 12.0996 2.5878 12.2559 2.74408C12.4122 2.90036 12.5 3.11232 12.5 3.33333V5.83333"
-                              stroke="#FF0000"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_176_858">
-                              <rect width="20" height="20" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                          >
+                            <g clip-path="url(#clip0_176_858)">
+                              <path
+                                d="M3.33398 5.83331H16.6673"
+                                stroke="#FF0000"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M8.33398 9.16669V14.1667"
+                                stroke="#FF0000"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M11.666 9.16669V14.1667"
+                                stroke="#FF0000"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M4.16602 5.83331L4.99935 15.8333C4.99935 16.2753 5.17494 16.6993 5.4875 17.0118C5.80006 17.3244 6.22399 17.5 6.66602 17.5H13.3327C13.7747 17.5 14.1986 17.3244 14.5112 17.0118C14.8238 16.6993 14.9993 16.2753 14.9993 15.8333L15.8327 5.83331"
+                                stroke="#FF0000"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M7.5 5.83333V3.33333C7.5 3.11232 7.5878 2.90036 7.74408 2.74408C7.90036 2.5878 8.11232 2.5 8.33333 2.5H11.6667C11.8877 2.5 12.0996 2.5878 12.2559 2.74408C12.4122 2.90036 12.5 3.11232 12.5 3.33333V5.83333"
+                                stroke="#FF0000"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_176_858">
+                                <rect width="20" height="20" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <div class="total-seller-price">
+                  <span>{{ $t("cart.total") }}</span>
+                  <div>
+                    {{
+                      $t("general.curr_value", {
+                        value: getSellerTotal(cartItem),
+                      })
+                    }}
+                  </div>
+                  <button v-if="cartItem?.items.length > 1" class="btn-zaad">{{ $t("cart.buyAll") }}</button>
                 </div>
               </div>
             </div>
@@ -315,9 +331,11 @@ const getTotalCart = () => {
         <template v-else>
           <div class="text-center">
             <span class="d-block"> {{ $t("cart.noItems") }}</span>
-            <NuxtLink class="btn-zaad d-inline-block mt-3 w-30" :href="$localePath('/products')">{{
-              $t("general.keepShopping")
-            }}</NuxtLink>
+            <NuxtLink
+              class="btn-zaad d-inline-block mt-3 w-30"
+              :href="$localePath('/products')"
+              >{{ $t("general.keepShopping") }}</NuxtLink
+            >
           </div>
         </template>
       </div>
@@ -328,6 +346,35 @@ const getTotalCart = () => {
   </section>
 </template>
 <style lang="scss" scoped>
+.total-seller-price {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  button {
+    background-color: #fff;
+    color: var(--main-color);
+    transition: var(--trans);
+    border: 1px solid transparent;
+
+    &:hover {
+      // color: #fff;
+      border: 1px solid var(--main-color);
+    }
+  }
+  span {
+    &:first-child {
+      color: #4a4a4a;
+      font-size: 18px;
+    }
+  }
+  div {
+    color: #000;
+    font-size: 20px;
+    // font-weight: bold;
+  }
+}
 .loader-container {
   margin: 50px;
   display: flex;
@@ -354,6 +401,7 @@ const getTotalCart = () => {
       padding: 15px;
       border-radius: 12px;
       margin-bottom: 20px;
+      background-color: #f9f9f9;
       h2 {
         font-size: 16px;
       }
@@ -363,7 +411,7 @@ const getTotalCart = () => {
         gap: 25px;
         .img {
           padding: 20px;
-          background-color: #f9f9f9;
+          background-color: #fff;
           border-radius: 16px;
           img {
             max-width: 100%;
