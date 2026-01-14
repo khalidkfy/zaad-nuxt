@@ -53,6 +53,8 @@ const galleryImages = computed(() => {
 const qty = ref(productDetails?.value?.cart_count);
 const isCartItem = ref(productDetails?.value?.cart_item);
 const addQty = () => {
+  console.log(productDetails?.value);
+
   if (qty.value == productDetails?.value?.quantity) return;
   qty.value += 1;
 };
@@ -64,6 +66,20 @@ const subQty = () => {
 const activeTab = ref("rates");
 const changeTab = (tab: string) => {
   activeTab.value = tab;
+};
+const router = useRouter();
+const checkout = async () => {
+  let data = {
+    items: [
+      {
+        item_id: productDetails?.value?.id,
+        quantity: productDetails?.value?.quantity,
+      },
+    ],
+    seller: productDetails?.value?.seller,
+  };
+  localStorage.setItem("checkoutData", JSON.stringify(data));
+  router.push("/products/checkout");
 };
 </script>
 <template>
@@ -251,11 +267,16 @@ const changeTab = (tab: string) => {
                 </div>
               </div>
               <div class="mt-4 btns">
-                <button :disabled="!isCartItem" :title="isCartItem ? $t('general.buyNow') : $t('cart.add')" class="btn-zaad">
+                <button
+                  @click="checkout"
+                  :disabled="!isCartItem"
+                  :title="isCartItem ? $t('general.buyNow') : $t('cart.add')"
+                  class="btn-zaad"
+                >
                   {{ $t("general.buyNow") }}
                 </button>
                 <button
-                  :disabled="addToCartLoading"
+                  :disabled="addToCartLoading || qty < 1"
                   @click.prevent="addToCart(productDetails?.id, qty)"
                   class="btn-cart"
                   v-if="!isCartItem"
@@ -762,7 +783,7 @@ const changeTab = (tab: string) => {
   justify-content: space-between;
   padding: 10px 16px;
   cursor: pointer;
-  &:hover{
+  &:hover {
     .arrow {
       border: 1px solid var(--main-color);
       transform: translateX(-5px);
@@ -1129,8 +1150,7 @@ hr {
             background-color: #bb2d3b;
             color: #fff;
           }
-          svg {
-          }
+     
         }
         &:hover {
           background-color: #cecece;
@@ -1139,6 +1159,10 @@ hr {
             width: 20px;
             height: 20px;
           }
+        }
+        &:disabled {
+          cursor: no-drop;
+          opacity: .8;
         }
         svg {
           margin-inline-end: 8px;

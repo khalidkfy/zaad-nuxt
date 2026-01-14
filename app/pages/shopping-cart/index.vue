@@ -45,6 +45,27 @@ const getTotalCart = () => {
   });
   return Number(total).toFixed(2);
 };
+
+const router = useRouter();
+const checkout = async (items: any, seller: any) => {
+  let data = {
+    items: items,
+    seller: seller,
+  };
+  localStorage.setItem("checkoutData", JSON.stringify(data));
+  router.push("/products/checkout");
+};
+
+const checkoutSellerAll = async (cartItem: any) => {
+  const mappedItems = cartItem?.items.map((item) => {
+    return {
+      item_id: item?.item_id,
+      quantity: item?.quantity,
+    };
+  });
+
+  await checkout(mappedItems, cartItem.seller);
+};
 </script>
 <template>
   <section class="mt-4">
@@ -93,13 +114,13 @@ const getTotalCart = () => {
                 <div
                   v-for="(product, i) in cartItem?.items"
                   :key="i"
-                  class="product-row mb-2"
+                  class="product-row"
                 >
                   <div class="img">
                     <NuxtImg
                       width="100"
                       height="100"
-                     :src="product?.image"
+                      :src="product?.image"
                       :alt="product?.title"
                     />
                   </div>
@@ -220,7 +241,20 @@ const getTotalCart = () => {
                         }}
                       </div>
                       <div>
-                        <button class="btn-zaad me-4">
+                        <button
+                          @click.prevent="
+                            checkout(
+                              [
+                                {
+                                  item_id: product?.item_id,
+                                  quantity: product?.quantity,
+                                },
+                              ],
+                              cartItem?.seller
+                            )
+                          "
+                          class="btn-zaad me-4"
+                        >
                           {{ $t("general.buyNow") }}
                         </button>
                         <button
@@ -292,7 +326,13 @@ const getTotalCart = () => {
                       })
                     }}
                   </div>
-                  <button v-if="cartItem?.items.length > 1" class="btn-zaad">{{ $t("cart.buyAll") }}</button>
+                  <button
+                    @click.prevent="checkoutSellerAll(cartItem)"
+                    v-if="cartItem?.items.length > 1"
+                    class="btn-zaad"
+                  >
+                    {{ $t("cart.buyAll") }}
+                  </button>
                 </div>
               </div>
             </div>
@@ -304,7 +344,11 @@ const getTotalCart = () => {
                 <div class="prices">
                   <div>
                     <span>{{ $t("cart.totalPrice") }}</span>
-                    <span>{{ getTotalCart() }}</span>
+                    <span>{{
+                      $t("general.curr_value", {
+                        value: getTotalCart(),
+                      })
+                    }}</span>
                   </div>
                 </div>
                 <button type="button" class="btn-zaad w-100 mt-4">
@@ -398,8 +442,8 @@ const getTotalCart = () => {
   }
   .cart-items {
     .seller-group {
-      padding: 15px;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 24px;
       margin-bottom: 20px;
       background-color: #f9f9f9;
       h2 {
@@ -409,6 +453,7 @@ const getTotalCart = () => {
         display: flex;
         align-items: center;
         gap: 25px;
+        margin-bottom: 20px;
         .img {
           padding: 20px;
           background-color: #fff;

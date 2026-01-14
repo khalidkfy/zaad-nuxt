@@ -23,9 +23,31 @@ export const useProfile = () => {
       getProfileLoading.value = false;
     }
   };
+
+
+  const getAddressesloading = ref(false);
+  const addresses = ref([]);
+  const getAddresses = async () => {
+    getAddressesloading.value = true;
+    try {
+      const res = await $fetch("/api/profile/addresses-list", {
+        headers: {
+          Lang: locale.value,
+        },
+      });
+      addresses.value = res?.resources;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getAddressesloading.value = false;
+    }
+  }
   return {
     getProfileRes,
     getProfileLoading,
-    profileData
+    profileData,
+    getAddresses,
+    getAddressesloading,
+    addresses
   };
 };

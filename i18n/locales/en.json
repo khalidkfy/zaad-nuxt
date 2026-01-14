@@ -270,5 +270,8 @@
   },
   "items":{
     "noData": "There is no products right now, try again later or change filters"
+  },
+  "checkout":{
+    "title":"Checkout"
   }
 }
