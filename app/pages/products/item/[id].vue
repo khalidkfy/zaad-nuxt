@@ -53,8 +53,7 @@ const galleryImages = computed(() => {
 const qty = ref(productDetails?.value?.cart_count);
 const isCartItem = ref(productDetails?.value?.cart_item);
 const addQty = () => {
-  console.log(productDetails?.value);
-
+ 
   if (qty.value == productDetails?.value?.quantity) return;
   qty.value += 1;
 };

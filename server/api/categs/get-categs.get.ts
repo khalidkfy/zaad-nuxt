@@ -32,9 +32,11 @@ export default defineEventHandler(async (event) => {
         // headers: headers,
       })
       .then((res) => {
+ 
         return res;
       })
       .catch((err) => {
+ 
         return err;
       });
 

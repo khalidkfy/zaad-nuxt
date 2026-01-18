@@ -7,8 +7,7 @@ useSeo({
 
 const { getProductsStores, productsStores } = useStores();
 await getProductsStores();
-console.log(productsStores.value, "productsStores");
-</script>
+ </script>
 <template>
   <section class="mt-4">
     <div class="container">

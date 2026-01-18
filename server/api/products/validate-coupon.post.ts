@@ -11,25 +11,17 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Retrieve user-agent from headers using getRequestHeaders
-  // const headers = getRequestHeaders(event);
 
-  // await requireAuth(event);
-
-  // const userAgent = headers["user-agent"] || null;
-
-  // const query = getQuery(event);
 
   const body = await readBody(event);
   // Call the API endpoint with the updated body
   
   const apiServie = new HttpService(event);
 
-   
   try {
     const data = apiServie
-      .delete({
-        url: `api/shopping-cart/items/${body.item_id}`,
+      .post({
+        url: `api/coupons/validate`,
         body: body,
         // headers: headers,
       })

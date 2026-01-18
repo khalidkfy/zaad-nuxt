@@ -36,8 +36,11 @@ export const useProfile = () => {
         },
       });
       addresses.value = res?.resources;
+
+      return res;
     } catch (error) {
       console.log(error);
+      return error;
     } finally {
       getAddressesloading.value = false;
     }

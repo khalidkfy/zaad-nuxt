@@ -9,8 +9,7 @@ const { getProfileRes, getProfileLoading, profileData } = useProfile();
 
 onMounted(async () => {
   await getProfileRes();
-  console.log(profileData.value);
-});
+ });
 </script>
 <template>
   <AppHeader layout="app" />

@@ -13,7 +13,7 @@ const activeCategory = productsCategs.value.find(
 
 useSeo({
   title: category_id.value
-    ? `${t("links.products")} - ${activeCategory?.name}`
+    ? `${t("links.products")} | ${activeCategory?.name}`
     : t("links.products"),
 });
 
@@ -41,8 +41,7 @@ const loadMore = async () => {
 };
 
 const handleWhishRemove = ({ item, value }) => {
-  console.log(item, "itemitemitem");
-
+ 
   const product = productsRes.value.resources.find(
     (p: any) => p.id === item.id
   );
@@ -53,8 +52,7 @@ const handleWhishRemove = ({ item, value }) => {
 
 const pageSearch = ref('')
 const filterItems = async (search: string) => {
-  console.log(search);
-  pageSearch.value = search;
+   pageSearch.value = search;
   await getProducts({
     categId: category_id.value,
     append: false,
@@ -62,7 +60,9 @@ const filterItems = async (search: string) => {
   });
 };
 </script>
+
 <template>
+  <!-- TODO:: h1 tag -->
   <section class="mt-4">
     <div class="container">
       <div class="breadcrumbs">
@@ -93,6 +93,7 @@ const filterItems = async (search: string) => {
           />
         </div>
         <div class="col-md-9">
+          <ProductsFilter :filters="productsRes?.filters"/>
           <div class="items-container">
             <div v-if="getProductsLoading" class="overlay-loader">
               <span class="indicator-progress f-normal fs-20">
@@ -150,6 +151,7 @@ const filterItems = async (search: string) => {
   }
 .items-container {
   position: relative;
+  margin-top: 15px;
   .overlay-loader {
     position: absolute;
     width: 100%;

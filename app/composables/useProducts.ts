@@ -75,7 +75,33 @@ export const useProducts = () => {
     }
   }
 
+  // Validate coupons
+  const validateCouponLoading = ref(false);
+  const validateCouponRes = ref(null);
+  const validateCoupon = async (coupon: string, requestItems: any) => {
+    try {
+      validateCouponLoading.value = true
+      validateCouponRes.value = null;
 
+      const res = await $fetch("/api/products/validate-coupon", {
+        method: "POST",
+        body: {
+          code: coupon,
+          items: requestItems
+        },
+        headers: {
+          Lang: locale.value,
+        },
+      });
+
+      validateCouponRes.value = res;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      validateCouponLoading.value = false
+
+    }
+  }
 
   const productDetails = ref(null);
   const getProductDetailsLoading = ref(false);
@@ -92,8 +118,7 @@ export const useProducts = () => {
         }
       });
 
-      console.log(res, "resresresres");
-
+ 
       productDetails.value = res?.resource
 
 
@@ -113,5 +138,8 @@ export const useProducts = () => {
     productDetails,
     getProductDetailsLoading,
     getProductDetails,
+    validateCoupon,
+    validateCouponRes,
+    validateCouponLoading
   };
 };

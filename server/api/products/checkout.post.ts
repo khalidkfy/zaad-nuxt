@@ -26,13 +26,11 @@ export default defineEventHandler(async (event) => {
         // headers: headers,
       })
       .then((res) => {
-        console.log("res => ", res);
-        
+         
         return res;
       })
       .catch((err) => {
-        console.log("err => ", err);
-        return err;
+         return err;
       });
 
     return data;

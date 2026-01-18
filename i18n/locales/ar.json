@@ -19,6 +19,7 @@
     "buyNow": "شراء الان",
     "img": "صورة",
     "by": "بواسطة",
+    "product": "المنتج",
     "viewImg": "عرض الصورة",
     "ok": "موافق",
     "price": "السعر",
@@ -47,7 +48,9 @@
     "termsWarn": "يجب ان تتاكد انك قرات",
     "rates": "التقيمات والاراء",
     "desc": "الوصف ",
-    "delete": "حذف"
+    "delete": "حذف",
+    "qty": "الكمية",
+    "apply": "تطبيق"
   },
   "links": {
     "privacyPolicy": "سياسة الخصوصية",
@@ -116,8 +119,8 @@
     "couponCode": "كود الكوبون",
     "enterCoupon": "ادخل الكود",
     "remove": "ازالة من السلة",
-    "total":"المجموع",
-    "buyAll":"شراء الكل"
+    "total": "المجموع",
+    "buyAll": "شراء الكل"
   },
   "categs": {
     "allCategs": "جميع الأقسام",
@@ -266,7 +269,18 @@
   "items": {
     "noData": "لا يوجد منتجات حاليا, حاول لاحقا او غير الفلتر"
   },
-   "checkout":{
-    "title":"الشراء"
+  "checkout": {
+    "title": "الشراء",
+    "shippingService": "شركة الشحن",
+    "shippingPrice": "سعر الشحن",
+    "chooseShipping": " اختر شركة الشحن",
+    "shippingAddress": "عنوان الشحن",
+    "paymentMethod": "طريقة الدفع او السداد",
+    "invoice": "فاتورة الشراء",
+    "availableItems": "العناصر المتاحة للشراء",
+    "totolShippingPrice": "مجموع سعر الشحن",
+    "totalSum": "اجمالي السعر",
+    "discountValue": "قيمة الخصم",
+    "netPrice": "السعر الصافي"
   }
 }

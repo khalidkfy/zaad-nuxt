@@ -18,6 +18,7 @@
     "search": "What are you looking at?",
     "buyNow": "Buy now",
     "img": "Image",
+    "product": "Product",
     "by": "By",
     "viewImg": "View image",
     "ok": "Ok",
@@ -42,12 +43,14 @@
     "filter": "Filter",
     "curr_value": "{value} R.O",
     "confirm": "Confirm",
-    "update":"Update",
-    "remaining":"Remaining",
-    "termsWarn":"You must be sure that you read",
-    "rates":"Ratings and reviews",
-    "desc":"Description",
-    "delete":"Delete"
+    "update": "Update",
+    "remaining": "Remaining",
+    "termsWarn": "You must be sure that you read",
+    "rates": "Ratings and reviews",
+    "desc": "Description",
+    "delete": "Delete",
+    "qty":"Quantity",
+    "apply":"Apply"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -67,11 +70,11 @@
     "orders": "Orders",
     "products": "Products",
     "phoneSettings": "Mobile settings",
-    "emailSettings":"Email settings",
-    "passwordSettings":"Password settings",
-    "productsStores":"Products stores",
-    "servicesStores":"Services stores",
-    "logout":"Sign out"
+    "emailSettings": "Email settings",
+    "passwordSettings": "Password settings",
+    "productsStores": "Products stores",
+    "servicesStores": "Services stores",
+    "logout": "Sign out"
   },
   "register": {
     "asSeller": "register as a seller",
@@ -91,7 +94,6 @@
     "btn": "Create Account",
     "Account": "Have Account?",
     "registerd": "Account Created ! You can sign in , redirecting .."
-
   },
   "navbar": {
     "deliverOrReceive": "Deliver or receive?",
@@ -116,9 +118,9 @@
     "couponP": "Do you have a shipping coupon? You will get a purchase discount.",
     "couponCode": "coupon code",
     "enterCoupon": "Enter the code",
-    "remove":"Remove from cart",
-    "total":"Total",
-    "buyAll":"Buy all"
+    "remove": "Remove from cart",
+    "total": "Total",
+    "buyAll": "Buy all"
   },
   "categs": {
     "allCategs": "All Categories",
@@ -177,8 +179,8 @@
     "loginBtn": "Log in",
     "noAccount": "Dont have account",
     "signed-in": "You are successfully signed in!",
-    "loged-out":"Signed Out!",
-    "loged-out-desc":"Sign in to enjoy shopping expierance"
+    "loged-out": "Signed Out!",
+    "loged-out-desc": "Sign in to enjoy shopping expierance"
   },
   "validations": {
     "422": "Make sure to fill in all fields.",
@@ -234,10 +236,10 @@
     "noItems": "No items in your whish list",
     "add": "Add to whishlist",
     "remove": "Remove from whishlist",
-    "addSuccess":"Item is now in your whish list",
-    "addErr":"Item already in whish list",
-    "removeSuccess":"Item removed from your whish list",
-    "authErr":"Please log in to add items to your whish list"
+    "addSuccess": "Item is now in your whish list",
+    "addErr": "Item already in whish list",
+    "removeSuccess": "Item removed from your whish list",
+    "authErr": "Please log in to add items to your whish list"
   },
   "faq": {
     "search": "What are you looking at?"
@@ -263,15 +265,25 @@
     "error": "Error!",
     "errorP": "There was an error processing your request. Please try again."
   },
-  "stores":{
-    "products":{
-      "title":""
+  "stores": {
+    "products": {
+      "title": ""
     }
   },
-  "items":{
+  "items": {
     "noData": "There is no products right now, try again later or change filters"
   },
-  "checkout":{
-    "title":"Checkout"
+  "checkout": {
+    "title": "Checkout",
+    "shippingService":"Shipping service",
+    "shippingPrice":"Shipping price",
+    "chooseShipping":"Choose shipping service",
+    "shippingAddress":"Shipping address",
+    "paymentMethod":"Payment method",
+    "invoice":"Checkout invoice",
+    "availableItems":"Available items for purchase",
+    "totolShippingPrice":"Total shipping price",
+    "discountValue":"Discount value",
+    "netPrice":"Net price"
   }
 }

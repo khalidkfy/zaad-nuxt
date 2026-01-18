@@ -31,8 +31,7 @@ useSeo({
     twitter_desc:getMeta('twitter:description'),
     twitter_image:getMeta('twitter:image'),
 })
-console.log(getMeta('keywords'), "getMeta('keywords')");
-
+ 
 </script>
 <template>
     <section class="mt-5 blog">

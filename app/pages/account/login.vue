@@ -80,8 +80,7 @@ const handleLogin = async () => {
     try {
       await fetch();
       await router.push(localePath("/"));
-      console.log("navigation success");
-    } catch (e) {
+     } catch (e) {
       console.error("navigation failed", e);
     }
   } catch (err) {
@@ -93,8 +92,7 @@ const handleLogin = async () => {
 const config = useRuntimeConfig();
 
 onMounted(() => {
-  console.log("TEST_KEYTEST_KEYTEST_KEYTEST_KEY =>", config.public.TEST_KEY);
-});
+ });
 </script>
 <template>
   <section class="auth-section p-5">

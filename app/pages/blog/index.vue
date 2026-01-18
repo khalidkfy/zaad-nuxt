@@ -10,8 +10,7 @@ const { blogList, getBlogList, viewMore, currentBlogPage, lastBlogPage } = useBl
 
 await getBlogList();
 
-console.log(blogList.value);
-
+ 
 
 </script>
 <template>

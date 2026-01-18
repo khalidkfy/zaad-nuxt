@@ -25,8 +25,7 @@ const products = computed(() => {
 });
 
 const handleWhishRemove = ({ item, value }) => {
-  console.log(item, "itemitemitem");
-
+ 
   const product = products.value.find((p: any) => p.id === item.id);
   if (product) {
     product.favorite_item = value;

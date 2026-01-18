@@ -80,8 +80,7 @@ export const useCart = () => {
           Lang: locale.value,
         },
       });
-      console.log(data?.data, "data?.datadata?.data");
-
+ 
      cartItems.value = data?.data?.cart;
 
 

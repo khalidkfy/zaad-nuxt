@@ -81,8 +81,7 @@ const submitSuccess = ref(false);
 const viewPassword = ref(false);
 
 const handleResponseErr = (errs) => {
-  console.log(errs, "errs");
-
+ 
   if (errs?.email) {
     errors.email = errs.email;
   }
@@ -128,8 +127,7 @@ const handleRegister = async () => {
       submitSuccess.value = true;
     }
   } catch (err) {
-    console.log(err?.data?.data);
-
+ 
     if (err?.data?.data?.errors) {
       handleResponseErr(err?.data?.data?.errors);
     }

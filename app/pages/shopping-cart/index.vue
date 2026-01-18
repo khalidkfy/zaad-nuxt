@@ -23,8 +23,7 @@ const subQty = (product: any) => {
 };
 onMounted(async () => {
   await getCartItems();
-  console.log(cartItems.value);
-});
+ });
 
 const getSellerTotal = (seller: { total: any; items: any }) => {
   let total = 0;
@@ -351,11 +350,11 @@ const checkoutSellerAll = async (cartItem: any) => {
                     }}</span>
                   </div>
                 </div>
-                <button type="button" class="btn-zaad w-100 mt-4">
+                <!-- <button type="button" class="btn-zaad w-100 mt-4">
                   {{ $t("cart.confirm") }}
-                </button>
+                </button> -->
               </div>
-              <div class="discount">
+              <!-- <div class="discount">
                 <div class="title">{{ $t("cart.coupon") }}</div>
                 <p>{{ $t("cart.couponP") }}</p>
                 <div class="form-group">
@@ -368,7 +367,7 @@ const checkoutSellerAll = async (cartItem: any) => {
                   />
                 </div>
                 <button class="mt-4 w-100">{{ $t("general.confirm") }}</button>
-              </div>
+              </div> -->
             </div>
           </div>
         </template>
@@ -383,8 +382,10 @@ const checkoutSellerAll = async (cartItem: any) => {
           </div>
         </template>
       </div>
-      <div v-else class="loader-container">
-        <div class="content-loader"></div>
+      <div v-else class="row">
+        <div class="col text-center py-5 my-5">
+          {{ $t("general.wait") }}
+        </div>
       </div>
     </div>
   </section>

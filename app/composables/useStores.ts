@@ -19,8 +19,7 @@ export const useStores = () => {
                 }
             });
 
-            console.log(res);
-            productsStores.value = res?.data
+             productsStores.value = res?.data
             // hasMore.value = res?.next_page_url.length > 0;
 
             // if (options?.append) {
@@ -86,8 +85,7 @@ export const useStores = () => {
                 }
             });
 
-            console.log(res);
-            servicesStores.value = res?.data
+             servicesStores.value = res?.data
 
 
         } catch (error) {
