@@ -5,6 +5,8 @@ const props = defineProps({
   },
 });
 
+const { t } = useI18n();
+
 const useFilters = computed(() => {
   const filters = props.filters;
 
@@ -37,17 +39,21 @@ const filterOptionsType = (filter: any) => {
 const getFilterLabel = (filter: any) => {
   const filterType = filterOptionsType(filter);
   if (filterType === "dropdown") {
-    return filter.selectedOption ? filter?.selectedOption.title : filter?.title;
+    return filter.selectedOption
+      ? filter?.selectedOption.title
+      : t("general.all");
   }
 
   if (filterType === "range") {
     return filter?.title;
   }
   if (filterType === "checklist") {
-    return filter.selectedOption ? filter?.selectedOption.slug : filter?.title;
+    return filter.selectedOption
+      ? filter?.selectedOption.slug
+      : t("general.all");
   }
 
-  return filter?.title;
+  return t("general.all");
 };
 </script>
 <template>
@@ -65,25 +71,69 @@ const getFilterLabel = (filter: any) => {
             aria-expanded="false"
           >
             <template v-if="filterOptionsType(filter) === 'color-picker'">
-              <div class="d-flex gap-1 align-items-center">
-                <span>
-                  {{
-                    filter.selectedOption
-                      ? filter.selectedOption?.title
-                      : filter?.title
-                  }}</span
-                >
+              <span class="d-flex gap-1 align-items-center">
+                {{ filter?.title }}
+                <span v-if="filter.selectedOption" class="value">{{
+                  filter.selectedOption?.title
+                }}</span>
+
                 <span
                   v-if="filter.selectedOption"
                   :style="{
                     backgroundColor: `#${filter.selectedOption.value}`,
                   }"
-                  class="color"
+                  class="color value"
                 ></span>
-              </div>
+                <span v-else class="value">{{ $t("general.all") }}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="6"
+                  viewBox="0 0 10 6"
+                  fill="none"
+                >
+                  <path
+                    d="M5 5L9 1"
+                    stroke="#444C4E"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M5 5L1 1"
+                    stroke="#444C4E"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
             </template>
             <template v-else>
-              {{ getFilterLabel(filter) }}
+              {{ filter?.title }}
+              <span class="value">{{ getFilterLabel(filter) }}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+              >
+                <path
+                  d="M5 5L9 1"
+                  stroke="#444C4E"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 5L1 1"
+                  stroke="#444C4E"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </template>
           </button>
           <ul class="dropdown-menu">
@@ -162,14 +212,16 @@ const getFilterLabel = (filter: any) => {
           </ul>
         </div>
       </div>
-    </template>
+    </template> 
   </div>
+  <!-- TODO::FILTERS COMPLETE HANDLE TYPE -->
 </template>
 <style scoped lang="scss">
 .products-filter {
   display: flex;
   justify-content: flex-start;
   gap: 20px;
+  flex-wrap: wrap;
   .color {
     width: 15px;
     height: 15px;
@@ -197,15 +249,20 @@ const getFilterLabel = (filter: any) => {
     }
   }
   .filter {
-    background-color: #e1e1e1;
-    color: #4a4a4a;
+    background-color: #f9f9f9;
+    color: #b5b5b5;
     padding: 8px;
+    font-weight: 500;
     border-radius: 8px;
     min-width: 70px;
+    font-size: 14px;
     text-align: center;
-    &.selected {
-      background-color: var(--main-color);
-      color: #fff;
+
+    .value {
+      color: #444c4e;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 7px;
     }
   }
 }

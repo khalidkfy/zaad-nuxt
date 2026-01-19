@@ -6,8 +6,8 @@ definePageMeta({
   middleware: "authenticated",
   breadcrumbs: [
     {
-      name: "links.accountAdresses",
-      url: "/account/profile/adresses",
+      name: "links.accountaddresses",
+      url: "/account/profile/addresses",
     },
   ],
 });
@@ -50,7 +50,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
-    <h1 class="section-title">{{ $t("links.accountAdresses") }}</h1>
+    <h1 class="section-title">{{ $t("links.accountaddresses") }}</h1>
     <template v-if="!getProfileLoading">
       <button @click.prevent="showModal()" class="btn action">
         {{ $t("general.addAddress") }}

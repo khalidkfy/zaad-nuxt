@@ -50,7 +50,8 @@
     "desc": "الوصف ",
     "delete": "حذف",
     "qty": "الكمية",
-    "apply": "تطبيق"
+    "apply": "تطبيق",
+    "all": "الكل"
   },
   "links": {
     "privacyPolicy": "سياسة الخصوصية",
@@ -64,7 +65,7 @@
     "faq": "الاسئلة الشائعة",
     "accountInfo": "الملف الشخصي",
     "accountsecurity": "اعدادات الامان",
-    "accountAdresses": "العناوين",
+    "accountaddresses": "العناوين",
     "bank-transfers": "حوالاتي البنكية",
     "disputes": "النزاعات",
     "orders": "طلبات",
@@ -104,6 +105,7 @@
     "button": "بحث"
   },
   "cart": {
+    "edit":"تعديل السلة",
     "itemsCount": "{count} منتج في سلة المشتريات",
     "title": "سلة المشتريات",
     "noItems": "لا يوجد منتجات في سلة المشتريات",
@@ -281,6 +283,10 @@
     "totolShippingPrice": "مجموع سعر الشحن",
     "totalSum": "اجمالي السعر",
     "discountValue": "قيمة الخصم",
-    "netPrice": "السعر الصافي"
+    "netPrice": "السعر الصافي",
+    "completeCheckout":"اتمام الشراء",
+    "orderSuccess":"تم تقديم طلبك بنجاح!",
+    "selectShippingForAllItems":"يرجى اختيار طريقة شحن لجميع العناصر.",
+    "itemHasNoShippingOptions":"لا يمكن شحن هذا المنتج للعنوان المختار"
   }
 }

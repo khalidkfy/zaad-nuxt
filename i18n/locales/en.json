@@ -50,7 +50,8 @@
     "desc": "Description",
     "delete": "Delete",
     "qty":"Quantity",
-    "apply":"Apply"
+    "apply":"Apply",
+    "all":"all"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -64,7 +65,7 @@
     "faq": "FAQ",
     "accountInfo": "Account information",
     "accountsecurity": "Security settings",
-    "accountAdresses": "Addresses",
+    "accountaddresses": "Addresses",
     "bank-transfers": "Bank transfers",
     "disputes": "Disputes",
     "orders": "Orders",
@@ -104,6 +105,7 @@
     "button": "Search"
   },
   "cart": {
+    "edit":"Edit cart",
     "itemsCount": "{count} item in your shopping cart",
     "noItems": "No items in your shopping cart",
     "title": "Shopping Cart",
@@ -284,6 +286,10 @@
     "availableItems":"Available items for purchase",
     "totolShippingPrice":"Total shipping price",
     "discountValue":"Discount value",
-    "netPrice":"Net price"
+    "netPrice":"Net price",
+    "completeCheckout":"Complete checkout",
+    "orderSuccess":"Your order has been placed successfully!",
+    "selectShippingForAllItems":"Please select a shipping method for all items.",
+    "itemHasNoShippingOptions":"This item cannot be shipped to the selected address"
   }
 }

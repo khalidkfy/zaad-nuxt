@@ -249,7 +249,7 @@ onMounted(async () => {
                   <NuxtLink
                     active-class="active"
                     class="btn"
-                    :href="$localePath('/account/profile/adresses')"
+                    :href="$localePath('/account/profile/addresses')"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +280,7 @@ onMounted(async () => {
                         </clipPath>
                       </defs>
                     </svg>
-                    {{ $t("links.accountAdresses") }}
+                    {{ $t("links.accountaddresses") }}
                   </NuxtLink>
                   <NuxtLink
                     active-class="active"

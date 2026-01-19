@@ -9,18 +9,40 @@ const pageLoading = computed(() => {
   return getAddressesloading.value || getCheckoutLoading.value;
 });
 
+const router = useRouter();
+
+const checkoutData = ref(null);
+const loadCheckoutData = () => {
+  const data = localStorage.getItem("checkoutData");
+
+  if (!data) {
+    router.push("/shopping-cart"); // redirect if null
+    return null;
+  }
+
+  try {
+    checkoutData.value = JSON.parse(data);
+    return checkoutData.value;
+  } catch (err) {
+    console.error("Invalid checkout data in localStorage", err);
+    router.push("/shopping-cart"); // redirect if JSON invalid
+    return null;
+  }
+};
 const coupon = ref("");
 const getCheckoutLoading = ref(true);
-
+// TODO:: email_sms_verification and able to checkout
 const checkoutItems = ref([]);
+
+const itemRefs = ref<Record<number, HTMLElement | null>>({});
+
 const getCheckout = async () => {
   try {
     getCheckoutLoading.value = true;
-    const data = localStorage.getItem("checkoutData");
+    const paresdData = checkoutData.value || loadCheckoutData();
+    if (!paresdData) return;
 
-    const paresdData = JSON.parse(data);
-
-    const checkoutData = await $fetch("/api/products/checkout", {
+    const checkoutDataReq = await $fetch("/api/products/checkout", {
       method: "POST",
       headers: {
         Lang: locale.value,
@@ -32,7 +54,9 @@ const getCheckout = async () => {
       },
     });
 
-    checkoutItems.value = checkoutData?.resources;
+    checkoutItems.value = Array.isArray(checkoutDataReq?.resources)
+      ? checkoutDataReq.resources
+      : Object.values(checkoutDataReq?.resources || {});
   } catch (err) {
   } finally {
     getCheckoutLoading.value = false;
@@ -50,10 +74,10 @@ const subQty = (product: any) => {
 };
 
 const paymentMethods = ref([]);
+const selectedPaymentMethod = ref(null);
 const getSellerPaymentMethods = async () => {
-  const data = localStorage.getItem("checkoutData");
-
-  const paresdData = JSON.parse(data);
+  const paresdData = checkoutData.value || loadCheckoutData();
+  if (!paresdData) return;
 
   const sellerPaymentMethods = await $fetch(
     "/api/products/seller-payment-methods",
@@ -64,9 +88,11 @@ const getSellerPaymentMethods = async () => {
       query: {
         seller_id: paresdData?.seller?.id,
       },
-    }
+    },
   );
   paymentMethods.value = sellerPaymentMethods?.resources;
+
+  selectedPaymentMethod.value = paymentMethods.value[0] || null;
 };
 
 const getTotolShippingPrice = computed(() => {
@@ -127,16 +153,110 @@ const requestItems = computed(() => {
     items.push({
       item_id: product?.item?.id,
       quantity: product?.item?.quantity,
+      service_id: product?.selectedShipping
+        ? product?.selectedShipping?.id
+        : null,
     });
   }
   return items;
 });
+
+const createOrderLoading = ref(false);
+
+const toast = useToast();
+
+const handleSuccessCreateOrder = async (res: any) => {
+  await localStorage.removeItem("checkoutData");
+  toast.success({
+    title: t("submit.success"),
+    message: `${t("checkout.orderSuccess")}`,
+    rtl: locale.value === "ar",
+  });
+
+  if (res?.payment_request && res?.payment_request?.returnurl) {
+    window.location.href = res?.payment_request?.returnurl;
+  } else {
+    router.push(`/account/profile/orders`);
+  }
+};
+const hasUnselectedShipping = computed(() => {
+  return checkoutItems.value.some((item) => !item?.selectedShipping);
+});
+
+const checkItemsShippingService = () => {
+  toast.error({
+    title: t("submit.error"),
+    message: t("checkout.selectShippingForAllItems"),
+    rtl: locale.value === "ar",
+  });
+
+  // Scroll to first invalid item
+  const firstInvalidIndex = checkoutItems.value.findIndex(
+    (item) => !item.selectedShipping,
+  );
+
+  if (firstInvalidIndex !== -1) {
+    const el = itemRefs.value[firstInvalidIndex];
+    el?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    // trigger animation
+    el?.classList.add("shake");
+    setTimeout(() => el?.classList.remove("shake"), 600);
+  }
+
+  return;
+};
+const createOrder = async () => {
+  if (hasUnselectedShipping.value) {
+    await checkItemsShippingService();
+    return;
+  }
+  createOrderLoading.value = true;
+  try {
+    const paresdData = checkoutData.value || loadCheckoutData();
+    if (!paresdData) return;
+
+    const res = await $fetch("/api/orders/create", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        seller_id: paresdData?.seller?.id,
+        address_id: selectedAddress.value?.id,
+        payment_method_id: selectedPaymentMethod.value?.id,
+        coupon: "",
+        items: requestItems.value,
+      },
+    });
+
+    if (res && res.status == true) {
+      await handleSuccessCreateOrder(res);
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    createOrderLoading.value = false;
+  }
+};
+
 onMounted(async () => {
   await getAddresses().then((data) => {
     selectedAddress.value = addresses.value[0];
   });
   await getSellerPaymentMethods();
   await getCheckout();
+});
+
+const cantCreateOrder = computed(() => {
+  return (
+    !selectedAddress.value ||
+    !selectedPaymentMethod.value ||
+    createOrderLoading.value
+  );
 });
 </script>
 <template>
@@ -176,7 +296,15 @@ onMounted(async () => {
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, i) in checkoutItems" :key="i">
+                <tr
+                  v-for="(item, i) in checkoutItems"
+                  :key="i"
+                  :class="{
+                    'shipping-error': !item.selectedShipping,
+                    disabled: !item.ShippingServices.length,
+                  }"
+                  :ref="(el) => (itemRefs[i] = el)"
+                >
                   <td>
                     <NuxtImg
                       width="100"
@@ -196,7 +324,8 @@ onMounted(async () => {
                   <td>
                     <div class="dropdown shipping">
                       <button
-                        class="nav-link d-inline-block dropdown-toggle"
+                        v-if="item.ShippingServices.length"
+                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
@@ -205,6 +334,14 @@ onMounted(async () => {
                             ? item.selectedShipping.title
                             : $t("checkout.chooseShipping")
                         }}
+                      </button>
+                      <button
+                        v-else
+                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {{ $t("checkout.itemHasNoShippingOptions") }}
                       </button>
                       <ul class="dropdown-menu">
                         <li
@@ -222,13 +359,15 @@ onMounted(async () => {
                     </div>
                   </td>
                   <td>
-                    {{
-                      item.selectedShipping
-                        ? $t("general.curr_value", {
-                            value: item.selectedShipping.price,
-                          })
-                        : "--"
-                    }}
+                    <span class="shipping-dropdown">
+                      {{
+                        item.selectedShipping
+                          ? $t("general.curr_value", {
+                              value: item.selectedShipping.price,
+                            })
+                          : "--"
+                      }}
+                    </span>
                   </td>
                   <td>
                     {{
@@ -324,7 +463,7 @@ onMounted(async () => {
                       {{
                         $t("general.curr_value", {
                           value: Number(
-                            item?.item?.quantity * item?.item?.regular_price
+                            item?.item?.quantity * item?.item?.regular_price,
                           ).toFixed(2),
                         })
                       }}</span
@@ -347,7 +486,8 @@ onMounted(async () => {
                       type="radio"
                       name="selectedAddress"
                       :id="`address-${i}`"
-                      :checked="selectedAddress?.id == address?.id"
+                      :value="address"
+                      v-model="selectedAddress"
                     />
                     {{
                       `${address?.address_line_1} - ${address?.address_line_2} - ${address?.address_line_3}`
@@ -374,7 +514,9 @@ onMounted(async () => {
                   <label :for="`method-${i}`">
                     <input
                       type="radio"
-                      name="selectedPaymentMethod"
+                      name="paymentMethod"
+                      :value="method"
+                      v-model="selectedPaymentMethod"
                       :id="`method-${i}`"
                     />
                     {{ `${method?.name}` }}</label
@@ -470,6 +612,65 @@ onMounted(async () => {
                   </div>
                 </template>
               </div>
+              <div class="footer">
+                <button
+                  @click.prevent="createOrder()"
+                  :disabled="cantCreateOrder"
+                  class="btn-zaad w-100"
+                >
+                  {{ $t("checkout.completeCheckout") }}
+                </button>
+
+                <NuxtLink
+                  :href="$localePath('/shopping-cart')"
+                  class="btn-cart btn-zaad w-100"
+                >
+                  <svg
+                    v-if="!addToCartLoading"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="19"
+                    height="19"
+                    viewBox="0 0 19 19"
+                    fill="none"
+                  >
+                    <path
+                      d="M15.3955 17.4792C16.0858 17.4792 16.6455 16.9195 16.6455 16.2292C16.6455 15.5389 16.0858 14.9792 15.3955 14.9792C14.7052 14.9792 14.1455 15.5389 14.1455 16.2292C14.1455 16.9195 14.7052 17.4792 15.3955 17.4792Z"
+                      fill="#4A4A4A"
+                      stroke="#4A4A4A"
+                      stroke-width="1.625"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M7.0625 17.4792C7.75283 17.4792 8.3125 16.9195 8.3125 16.2292C8.3125 15.5389 7.75283 14.9792 7.0625 14.9792C6.37214 14.9792 5.8125 15.5389 5.8125 16.2292C5.8125 16.9195 6.37214 17.4792 7.0625 17.4792Z"
+                      fill="#4A4A4A"
+                      stroke="#4A4A4A"
+                      stroke-width="1.625"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M3.3125 2.47917H17.4792L15.8125 11.6458H4.97917L3.3125 2.47917ZM3.3125 2.47917C3.17361 1.92361 2.47917 0.8125 0.8125 0.8125"
+                      stroke="#4A4A4A"
+                      stroke-width="1.625"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15.8118 11.6459H4.97852H3.50416C2.01723 11.6459 1.22852 12.2969 1.22852 13.3125C1.22852 14.3282 2.01723 14.9792 3.50416 14.9792H15.3952"
+                      stroke="#4A4A4A"
+                      stroke-width="1.625"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span
+                    v-else
+                    class="spinner-border text-dark spinner-border-sm ms-2"
+                  ></span>
+                  {{ $t("cart.edit") }}
+                </NuxtLink>
+              </div>
             </div>
           </div>
         </div>
@@ -490,6 +691,33 @@ onMounted(async () => {
   </ClientOnly>
 </template>
 <style scoped lang="scss">
+.btn-cart {
+  background-color: #fff;
+  color: #4a4a4a;
+  transition: var(--trans);
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #cecece;
+  outline: none;
+  text-align: center;
+
+  &:hover {
+    background-color: #cecece;
+    color: #000;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  &:disabled {
+    cursor: no-drop;
+    opacity: 0.8;
+  }
+  svg {
+    margin-inline-end: 8px;
+    transition: var(--trans);
+  }
+}
 button.action {
   padding: 7px 30px;
   border-radius: 16px;
@@ -554,6 +782,11 @@ button.action {
         }
       }
     }
+  }
+  .footer {
+    padding: 15px;
+    display: flex;
+    gap: 5px;
   }
 }
 .invalid-msg {
@@ -692,5 +925,36 @@ button.action {
       }
     }
   }
+}
+.shipping-error {
+  .shipping-dropdown {
+    color: #dc3545;
+  }
+}
+tr.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
 }
 </style>
