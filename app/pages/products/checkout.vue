@@ -139,7 +139,7 @@ const couponDetails = computed(() => {
 
   return data;
 });
-
+// TODO REFRESH ITEMS WHEN CHANGE ADDRESS
 const addAddressModal = ref(null);
 const showAddressModal = async () => {
   await addAddressModal.value.showModal();
@@ -214,6 +214,7 @@ const createOrder = async () => {
     await checkItemsShippingService();
     return;
   }
+  if (cantCreateOrder.value) return;
   createOrderLoading.value = true;
   try {
     const paresdData = checkoutData.value || loadCheckoutData();
@@ -243,11 +244,29 @@ const createOrder = async () => {
   }
 };
 
+const all_verified = ref(false);
+const email_verified = ref(false);
+const mobile_verified = ref(false);
+const getEmailSmsFlags = async () => {
+  const paresdData = checkoutData.value || loadCheckoutData();
+  if (!paresdData) return;
+
+  const flags = await $fetch("/api/profile/email-sms-flags", {
+    headers: {
+      Lang: locale.value,
+    },
+  });
+
+  all_verified.value = flags?.data?.all_verified;
+  email_verified.value = flags?.data?.email_verified_at;
+  mobile_verified.value = flags?.data?.mobile_verified_at;
+};
 onMounted(async () => {
   await getAddresses().then((data) => {
     selectedAddress.value = addresses.value[0];
   });
   await getSellerPaymentMethods();
+  await getEmailSmsFlags();
   await getCheckout();
 });
 
@@ -255,8 +274,15 @@ const cantCreateOrder = computed(() => {
   return (
     !selectedAddress.value ||
     !selectedPaymentMethod.value ||
-    createOrderLoading.value
+    createOrderLoading.value ||
+    !all_verified.value
   );
+});
+watch(selectedAddress, async (newAddress, oldAddress) => {
+  if (!oldAddress) return;
+  if (newAddress?.id !== oldAddress?.id) {
+    await getCheckout();
+  }
 });
 </script>
 <template>
@@ -671,6 +697,20 @@ const cantCreateOrder = computed(() => {
                   {{ $t("cart.edit") }}
                 </NuxtLink>
               </div>
+              <div v-if="!all_verified" class="flags">
+                <div v-if="!email_verified" class="fw-">
+                  {{ $t("checkout.email_verified") }}
+                  <NuxtLink :href="$localePath('/account/profile')">{{
+                    $t("checkout.verify")
+                  }}</NuxtLink>
+                </div>
+                <div v-if="!mobile_verified" class="">
+                  {{ $t("checkout.mobile_verified") }}
+                  <NuxtLink :href="$localePath('/account/profile')">{{
+                    $t("checkout.verify")
+                  }}</NuxtLink>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -787,6 +827,9 @@ button.action {
     padding: 15px;
     display: flex;
     gap: 5px;
+  }
+  .flags {
+    padding: 15px;
   }
 }
 .invalid-msg {
@@ -914,6 +957,7 @@ button.action {
       margin-bottom: 10px;
       cursor: pointer;
       transition: var(--trans);
+      font-size: 14px;
       &.active {
         color: var(--main-color);
       }

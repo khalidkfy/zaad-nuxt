@@ -28,7 +28,7 @@ const visibleChildren = (service: any) => {
 };
 const sortedServices = computed(() => {
   return [...servicesCategs.value].sort(
-    (a, b) => b.childrens.length - a.childrens.length
+    (a, b) => b.childrens.length - a.childrens.length,
   );
 });
 </script>
@@ -36,32 +36,81 @@ const sortedServices = computed(() => {
   <div class="container position-relative">
     <div class="d-flex holder mt-3" area-label="App Categories">
       <div class="fixed-categs">
-        <button
-          @click.prevent="toggleMenu('shopBy')"
-          class="all-categs me-2"
-          href="/"
-        >
-          <NuxtImg
-            src="/assets/images/categs.svg"
-            width="24"
-            alt="all"
-            height="24"
-          />
-          <span class="ps-2">{{ $t("categs.shopBy") }}</span>
-        </button>
-        <button
-          @click.prevent="toggleMenu('services')"
-          class="services me-2"
-          href="/"
-        >
-          <NuxtImg
-            src="/assets/images/services.svg"
-            width="24"
-            alt="all"
-            height="24"
-          />
-          <span class="ps-2">{{ $t("categs.services") }}</span>
-        </button>
+        <div class="dropdown">
+          <button
+            class="dropdown-toggle all-categs me-2"
+            title="all categories"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <NuxtImg
+              src="/assets/images/categs.svg"
+              width="24"
+              alt="all"
+              height="24"
+            />
+            <span class="ps-2">{{ $t("categs.shopBy") }}</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="categs">
+              <NuxtLink
+                class=""
+                v-for="categ in categs"
+                :key="categ.id"
+                :href="$localePath(`/products/${categ.id}`)"
+              >
+                {{ categ.name }}</NuxtLink
+              >
+            </div>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button
+            class="dropdown-toggle services me-2"
+            title="services"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <NuxtImg
+              src="/assets/images/services.svg"
+              width="24"
+              alt="all"
+              height="24"
+            />
+            <span class="ps-2">{{ $t("categs.services") }}</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="services-categ">
+              <div v-for="service in sortedServices" :key="service.id">
+                <h2>{{ service.name }}</h2>
+
+                <div class="service-links">
+                  <NuxtLink
+                    v-for="serviceItem in visibleChildren(service)"
+                    :key="serviceItem.id"
+                    class="service-link"
+                    :href="$localePath('index')"
+                  >
+                    {{ serviceItem.name }}
+                  </NuxtLink>
+                </div>
+
+                <!-- Show more button -->
+                <button
+                  v-if="service.childrens.length > maxItems"
+                  class="show-more"
+                  @click.prevent="toggleShowMore(service.id)"
+                >
+                  {{
+                    expandedServices.has(service.id)
+                      ? $t("general.showLess")
+                      : $t("general.showMore")
+                  }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <Marquee
         :overlay="false"
@@ -79,49 +128,11 @@ const sortedServices = computed(() => {
         >
       </Marquee>
     </div>
-    <div v-show="shopByMenuShown" class="mega-menu">
-      <div class="categs">
-        <NuxtLink
-          class=""
-          v-for="categ in categs"
-          :key="categ.id"
-          :href="$localePath(`/products/${categ.id}`)"
-        >
-          {{ categ.name }}</NuxtLink
-        >
-      </div>
-    </div>
-    <div v-show="servicesMenuShown" class="mega-menu">
-      <div class="services-categ">
-        <div v-for="service in sortedServices" :key="service.id">
-          <h2>{{ service.name }}</h2>
-
-          <div class="service-links">
-            <NuxtLink
-              v-for="serviceItem in visibleChildren(service)"
-              :key="serviceItem.id"
-              class="service-link"
-              :href="$localePath('index')"
-            >
-              {{ serviceItem.name }}
-            </NuxtLink>
-          </div>
-
-          <!-- Show more button -->
-          <button
-            v-if="service.childrens.length > maxItems"
-            class="show-more"
-            @click="toggleShowMore(service.id)"
-          >
-            {{ expandedServices.has(service.id) ? $t("general.showLess") : $t("general.showMore") }}
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <style scoped lang="scss">
 .holder {
+  position: relative;
   @media (max-width: 992px) {
     flex-wrap: wrap;
   }
@@ -175,8 +186,10 @@ const sortedServices = computed(() => {
     color: #4a4a4a;
   }
 }
-
-.mega-menu {
+.dropdown {
+  position: unset !important;
+}
+.dropdown-menu {
   position: absolute;
   width: 100%;
   background-color: #f9f9f9;

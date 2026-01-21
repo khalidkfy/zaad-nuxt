@@ -8,7 +8,7 @@ const category_id = computed(() => {
 });
 // definePageMeta({});
 const activeCategory = productsCategs.value.find(
-  (item: any) => item.id == category_id.value
+  (item: any) => item.id == category_id.value,
 );
 
 useSeo({
@@ -22,7 +22,11 @@ const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =
 
 const query = route.query;
 
-await getProducts({ categId: category_id.value, append: false, search: query?.search ?? '' });
+await getProducts({
+  categId: category_id.value,
+  append: false,
+  search: query?.search ?? "",
+});
 
 const products = computed(() => productsRes.value.resources);
 
@@ -36,23 +40,22 @@ const loadMore = async () => {
   await getProducts({
     categId: category_id.value,
     append: true,
-    search: query?.search || pageSearch.value || '',
+    search: query?.search || pageSearch.value || "",
   });
 };
 
 const handleWhishRemove = ({ item, value }) => {
- 
   const product = productsRes.value.resources.find(
-    (p: any) => p.id === item.id
+    (p: any) => p.id === item.id,
   );
   if (product) {
     product.favorite_item = value;
   }
 };
 
-const pageSearch = ref('')
+const pageSearch = ref("");
 const filterItems = async (search: string) => {
-   pageSearch.value = search;
+  pageSearch.value = search;
   await getProducts({
     categId: category_id.value,
     append: false,
@@ -93,7 +96,7 @@ const filterItems = async (search: string) => {
           />
         </div>
         <div class="col-md-9">
-          <ProductsFilter :filters="productsRes?.filters"/>
+          <ProductsFilter :filters="productsRes?.filters" />
           <div class="items-container">
             <div v-if="getProductsLoading" class="overlay-loader">
               <span class="indicator-progress f-normal fs-20">
@@ -118,8 +121,12 @@ const filterItems = async (search: string) => {
               </template>
               <template v-else>
                 <div class="no-items">
-                 <div> {{ $t("items.noData") }}</div>
-                  <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad">{{ $t("links.productsStores") }}</NuxtLink>
+                  <div>{{ $t("items.noData") }}</div>
+                  <NuxtLink
+                    :href="$localePath('/stores/products')"
+                    class="btn-zaad"
+                    >{{ $t("links.productsStores") }}</NuxtLink
+                  >
                 </div>
               </template>
             </div>
@@ -140,15 +147,15 @@ const filterItems = async (search: string) => {
   </section>
 </template>
 <style scoped lang="scss">
-  .no-items {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    align-items: center;
-    position: sticky;
-    top: 100px;
-  }
+.no-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  position: sticky;
+  top: 100px;
+}
 .items-container {
   position: relative;
   margin-top: 15px;

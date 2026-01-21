@@ -49,9 +49,9 @@
     "rates": "Ratings and reviews",
     "desc": "Description",
     "delete": "Delete",
-    "qty":"Quantity",
-    "apply":"Apply",
-    "all":"all"
+    "qty": "Quantity",
+    "apply": "Apply",
+    "all": "all"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -105,7 +105,7 @@
     "button": "Search"
   },
   "cart": {
-    "edit":"Edit cart",
+    "edit": "Edit cart",
     "itemsCount": "{count} item in your shopping cart",
     "noItems": "No items in your shopping cart",
     "title": "Shopping Cart",
@@ -148,7 +148,8 @@
     }
   },
   "footer": {
-    "downloadApp": "Download app"
+    "downloadApp": "Download app",
+    "followUs": "Follow us on social media"
   },
   "contact": {
     "form": {
@@ -259,7 +260,8 @@
     "female": "Female",
     "postcode": "Postcode",
     "city": "City",
-    "streetAddress": "Street Address"
+    "streetAddress": "Street Address",
+    "noOrders": "No Order yet"
   },
   "submit": {
     "success": "Success!.",
@@ -277,19 +279,40 @@
   },
   "checkout": {
     "title": "Checkout",
-    "shippingService":"Shipping service",
-    "shippingPrice":"Shipping price",
-    "chooseShipping":"Choose shipping service",
-    "shippingAddress":"Shipping address",
-    "paymentMethod":"Payment method",
-    "invoice":"Checkout invoice",
-    "availableItems":"Available items for purchase",
-    "totolShippingPrice":"Total shipping price",
-    "discountValue":"Discount value",
-    "netPrice":"Net price",
-    "completeCheckout":"Complete checkout",
-    "orderSuccess":"Your order has been placed successfully!",
-    "selectShippingForAllItems":"Please select a shipping method for all items.",
-    "itemHasNoShippingOptions":"This item cannot be shipped to the selected address"
+    "shippingService": "Shipping service",
+    "shippingPrice": "Shipping price",
+    "chooseShipping": "Choose shipping service",
+    "shippingAddress": "Shipping address",
+    "paymentMethod": "Payment method",
+    "invoice": "Checkout invoice",
+    "availableItems": "Available items for purchase",
+    "totolShippingPrice": "Total shipping price",
+    "discountValue": "Discount value",
+    "netPrice": "Net price",
+    "completeCheckout": "Complete checkout",
+    "orderSuccess": "Your order has been placed successfully!",
+    "selectShippingForAllItems": "Please select a shipping method for all items.",
+    "itemHasNoShippingOptions": "This item cannot be shipped to the selected address",
+    "email_verified": "Please verify you email",
+    "mobile_verified": "Please verify you mobile",
+    "verify": "verify"
+  },
+  "status": {
+    "waiting_payment": "Waiting payment",
+    "payed": "Payed",
+    "shipping": "Shipping",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "canceled": "Canceled",
+    "unknown": "Unknown"
+  },
+  "order": {
+    "showItems": "Show items",
+    "items": "Order Items",
+    "thawaniPay": "Thawani Pay",
+    "orderNum": "Order number",
+    "date": "Date",
+    "status": "Status",
+    "store": "Store"
   }
 }

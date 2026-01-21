@@ -68,7 +68,7 @@
     "accountaddresses": "العناوين",
     "bank-transfers": "حوالاتي البنكية",
     "disputes": "النزاعات",
-    "orders": "طلبات",
+    "orders": "الطلبات",
     "products": "المنتجات",
     "phoneSettings": "اعدادات الهاتف",
     "emailSettings": "اعدادات البريد الالكتروني",
@@ -105,7 +105,7 @@
     "button": "بحث"
   },
   "cart": {
-    "edit":"تعديل السلة",
+    "edit": "تعديل السلة",
     "itemsCount": "{count} منتج في سلة المشتريات",
     "title": "سلة المشتريات",
     "noItems": "لا يوجد منتجات في سلة المشتريات",
@@ -148,7 +148,8 @@
     }
   },
   "footer": {
-    "downloadApp": "حمل التطبيق"
+    "downloadApp": "تحميل التطبيق",
+    "followUs": "تابعنا على السوشيل ميديا"
   },
   "contact": {
     "form": {
@@ -260,7 +261,8 @@
     "female": "أنثى",
     "postcode": " الرمز البريدي",
     "city": "المدينة",
-    "streetAddress": "عنوان الشارع"
+    "streetAddress": "عنوان الشارع",
+    "noOrders": "لا يوجد طلبات بعد"
   },
   "submit": {
     "success": "نجاح!.",
@@ -284,9 +286,30 @@
     "totalSum": "اجمالي السعر",
     "discountValue": "قيمة الخصم",
     "netPrice": "السعر الصافي",
-    "completeCheckout":"اتمام الشراء",
-    "orderSuccess":"تم تقديم طلبك بنجاح!",
-    "selectShippingForAllItems":"يرجى اختيار طريقة شحن لجميع العناصر.",
-    "itemHasNoShippingOptions":"لا يمكن شحن هذا المنتج للعنوان المختار"
+    "completeCheckout": "اتمام الشراء",
+    "orderSuccess": "تم تقديم طلبك بنجاح!",
+    "selectShippingForAllItems": "يرجى اختيار طريقة شحن لجميع العناصر.",
+    "itemHasNoShippingOptions": "لا يمكن شحن هذا المنتج للعنوان المختار",
+    "email_verified": "الرجاء تفعيل البريد الالكتروني",
+    "mobile_verified": "الرجاء تفعيل رقم الهاتف",
+    "verify": "تفعيل"
+  },
+  "status": {
+    "waiting_payment": "بانتظار الدفع",
+    "payed": "مدفوع",
+    "shipping": "قيد الشحن",
+    "shipped": "تم الشحن",
+    "delivered": "تم التوصيل",
+    "canceled": "ملغي",
+    "unknown": "غير معروف"
+  },
+  "order": {
+    "showItems": "عرض المنتجات",
+    "items": "منتجات الطلب",
+    "thawaniPay": "دفع بواسطة ثواني",
+    "orderNum": "رقم الطلب",
+    "date": "التاريخ",
+    "status": "الحالة",
+    "store": "المتجر"
   }
 }

@@ -2,6 +2,13 @@
 const { getCategs } = useCategs();
 
 await getCategs();
+
+const { locale } = useI18n();
+
+const { getConstants, getFooter } = useConstants();
+
+await getConstants();
+await getFooter();
 const route = useRoute();
 const breadcrumbs = route.meta.breadcrumbs;
 
@@ -9,7 +16,13 @@ const { getProfileRes, getProfileLoading, profileData } = useProfile();
 
 onMounted(async () => {
   await getProfileRes();
- });
+});
+
+const showSidebar = computed(() => {
+  return !route.path.startsWith(
+    `${locale.value == "ar" ? "" : "/en"}/account/profile/orders`,
+  );
+});
 </script>
 <template>
   <AppHeader layout="app" />
@@ -37,7 +50,7 @@ onMounted(async () => {
       <div class="container">
         <div class="content">
           <div class="row">
-            <div class="col-md-4">
+            <div v-if="showSidebar" class="col-md-4">
               <div class="user-info-card">
                 <template v-if="!getProfileLoading">
                   <div class="info text-center">
@@ -114,9 +127,15 @@ onMounted(async () => {
                 </template>
               </div>
             </div>
-            <div class="col-md-8">
+            <div :class="showSidebar ? 'col-md-8' : 'col-md-12'">
               <div class="d-flex flex-column justify-content-between h-100">
-                <div class="profile-links">
+                <div
+                  class="profile-links"
+                  :class="{
+                    'justify-content-start': !showSidebar,
+                    'gap-3': !showSidebar,
+                  }"
+                >
                   <NuxtLink
                     active-class="active"
                     class="btn"
