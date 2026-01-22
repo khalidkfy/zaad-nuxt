@@ -51,7 +51,8 @@
     "delete": "Delete",
     "qty": "Quantity",
     "apply": "Apply",
-    "all": "all"
+    "all": "all",
+    "videoLink":" Video Link"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -313,6 +314,9 @@
     "orderNum": "Order number",
     "date": "Date",
     "status": "Status",
-    "store": "Store"
+    "store": "Store",
+    "orderDispute": "Order Dispute",
+    "sendSeller":"Send Message to Seller",
+    "msg":"Your Message"
   }
 }

@@ -122,9 +122,63 @@ const showOrderItems = async (order: any) => {
 
   await orderItemsModal.value.showModal();
 };
+const toast = useToast();
 
+const payOrder = async (order: any) => {
+  try {
+    const res = await $fetch("/api/orders/pay", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        order_id: order.id,
+      },
+    });
+    if (res?.payment_request && res?.payment_request?.returnurl) {
+      window.location.href = res?.payment_request?.returnurl;
+    } else {
+      toast.error({
+        title: t("submit.error"),
+        message: t("submit.errorP"),
+        rtl: locale.value === "ar",
+      });
+    }
+    console.log(res, "Resres");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const orderDisputeModal = ref(null);
+const showOrderDispute = async (order: any) => {
+  selectedOrder.value = order;
+  await orderDisputeModal.value.showModal();
+};
+
+const problems = ref([]);
+const getProblems = async () => {
+  try {
+    const res = await $fetch("/api/orders/problems", {
+      headers: {
+        Lang: locale.value,
+      },
+      query: {},
+    });
+    problems.value = res?.data || [];
+  } catch (err) {
+  } finally {
+  }
+};
+
+const sendSellerModal = ref(null);
+const showSendSellerModal = async (order: any) => {
+  selectedOrder.value = order;
+  await sendSellerModal.value.showModal();
+};
 onMounted(async () => {
   await getOrders();
+  await getProblems();
   // TODO ORDERS PAGINATOR
 });
 </script>
@@ -142,12 +196,12 @@ onMounted(async () => {
               <td>{{ $t("order.date") }}</td>
               <td>{{ $t("order.status") }}</td>
               <td>{{ $t("order.store") }}</td>
-              <td>طريقة الدفع او السداد{{ $t("order.orderNum") }}</td>
-              <td>خصم خدمة توصيل{{ $t("order.orderNum") }}</td>
-              <td>خصم{{ $t("order.orderNum") }}</td>
-              <td>للدفع{{ $t("order.orderNum") }}</td>
-              <td>المجموع{{ $t("order.orderNum") }}</td>
-              <td>الخيارات{{ $t("order.orderNum") }}</td>
+              <td>طريقة الدفع او السداد</td>
+              <td>خصم خدمة توصيل</td>
+              <td>خصم</td>
+              <td>للدفع</td>
+              <td>المجموع</td>
+              <td>الخيارات</td>
             </tr>
           </thead>
           <tbody>
@@ -250,20 +304,64 @@ onMounted(async () => {
                       </button>
                     </li>
                     <li v-if="order?.payment_method_id == 2">
-                      <button @click.prevent="showOrderItems(order)">
+                      <button @click.prevent="payOrder(order)">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
                           height="16"
                           fill="currentColor"
-                          class="bi bi-credit-card-fill"
+                          class="bi bi-wallet"
                           viewBox="0 0 16 16"
                         >
                           <path
-                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1"
+                            d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a2 2 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"
                           />
                         </svg>
                         {{ $t("order.thawaniPay") }}
+                      </button>
+                    </li>
+                    <li>
+                      <button @click.prevent="showSendSellerModal(order)">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-chat-square-text"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                          />
+                          <path
+                            d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"
+                          />
+                        </svg>
+                        {{ $t("order.sendSeller") }}
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        @click.prevent="showOrderDispute(order)"
+                        class="dispute"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-bag-x"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708"
+                          />
+                          <path
+                            d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
+                          />
+                        </svg>
+                        {{ $t("order.orderDispute") }}
                       </button>
                     </li>
                   </ul>
@@ -359,6 +457,12 @@ onMounted(async () => {
     </div>
   </template>
   <ModalOrderItems :order="selectedOrder" ref="orderItemsModal" />
+  <ModalOrderDispute
+    :problems="problems"
+    :order="selectedOrder"
+    ref="orderDisputeModal"
+  />
+  <ModalSendMessageToSeller :order="selectedOrder" ref="sendSellerModal" />
 </template>
 <style scoped lang="scss">
 .no-items {
@@ -384,6 +488,12 @@ onMounted(async () => {
         color: var(--main-color);
         svg {
           fill: var(--main-color);
+        }
+      }
+      &.dispute {
+        color: #ef4444;
+        svg {
+          fill: #ef4444;
         }
       }
     }

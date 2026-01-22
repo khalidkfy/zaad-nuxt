@@ -172,14 +172,14 @@ const getMenuLink = (item: any) => {
                   </NuxtLink>
                   <!-- TODO Facebook icon -->
                 </div>
-                <div v-if="constants?.resources?.contacts?.phone" class="d-flex gap-2 mt-4">
+                <div v-if="constants?.resources?.contacts?.hotline" class="d-flex gap-2 mt-4">
                   <NuxtImg
                     width="20"
                     height="20"
                     src="/assets/images/telephone.svg"
                     alt="telephone"
                   />
-                  <span class="follow">{{ constants?.resources?.contacts?.phone }}</span>
+                  <span class="follow">{{ constants?.resources?.contacts?.hotline }}</span>
                 </div>
                 <div v-if="constants?.resources?.contacts?.email" class="d-flex gap-2 mt-4">
                   <NuxtImg
