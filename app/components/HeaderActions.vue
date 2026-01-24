@@ -103,11 +103,14 @@ const switchLocale = (newLocale: any) => {
           </div>
         </div>
         <div class="registration">
-          <NuxtLink :to="$localePath('/account/register?as=seller')">{{
+          <NuxtLink to="https://sellers.zaad.om/">{{
             $t("register.asSeller")
           }}</NuxtLink>
-          <NuxtLink :to="$localePath('/account/register?as=shipping')">{{
-            $t("register.asShipping")
+          <NuxtLink to="https://sell.zaad.om/">{{
+            $t("login.asSeller")
+          }}</NuxtLink>
+          <NuxtLink to="https://api.zaad.om/carrier">{{
+            $t("login.asShipping")
           }}</NuxtLink>
         </div>
       </div>
@@ -146,7 +149,7 @@ const switchLocale = (newLocale: any) => {
   font-size: 12px;
 }
 
-.header-actions .registration a:first-child {
+.header-actions .registration a:not(:last-child) {
   margin-inline-end: 15px;
 }
 

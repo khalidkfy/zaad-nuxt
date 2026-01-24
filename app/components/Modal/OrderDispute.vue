@@ -200,8 +200,7 @@ const submitForm = async () => {
       },
     });
 
-    console.log(res);
-
+ 
     emit("success", props?.order);
     hideModal();
     toast.success({

@@ -11,15 +11,15 @@
                 <div class="col-lg-4 mb-3">
                     <div class="shipping-register">
                         <NuxtImg width="50" src="/assets/images/van.svg" alt="fast shipping" />
-                        <p>تسجيل شركة شحن</p>
-                        <NuxtLink href="/">تسجيل</NuxtLink>
+                        <p>{{$t("register.asShipping")}}</p>
+                        <NuxtLink href="https://api.zaad.om/carrier">{{$t("register.register")}}</NuxtLink>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="shipping-register seller">
                         <NuxtImg width="50" src="/assets/images/user-gear.svg" alt="fast shipping" />
-                        <p>تسجيل كبائع</p>
-                        <NuxtLink href="/">تسجيل</NuxtLink>
+                        <p>{{ $t("register.asSeller")}}</p>
+                        <NuxtLink href="https://sellers.zaad.om/">{{$t("register.register")}}</NuxtLink>
                     </div>
                 </div>
             </div>

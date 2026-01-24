@@ -3,8 +3,7 @@ const { footerData, constants } = useConstants();
 
 const getMenuLink = (item: any) => {
   let itemUrl = item?.url;
-  console.log(constants.value);
-
+ 
   switch (itemUrl) {
     case "pages/201":
       return "/terms-and-conditions";

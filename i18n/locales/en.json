@@ -79,6 +79,7 @@
     "logout": "Sign out"
   },
   "register": {
+    "register":"Register",
     "asSeller": "register as a seller",
     "asShipping": "register Shipping company",
     "h1": "Register/Create Account",
@@ -173,6 +174,8 @@
   },
   "login": {
     "h1": "Register/Login",
+    "asSeller": "Login as a seller",
+    "asShipping": "Login as a shipping company",
     "emailPhone": "Email or phone",
     "emailPhonePlace": "Enter your email or phone",
     "password": "Password",

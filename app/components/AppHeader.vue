@@ -72,7 +72,7 @@ const { user, loggedIn } = useUserSession();
             class="collapse navbar-collapse justify-content-between"
             id="navbarMain"
           >
-            <div class="location">
+            <div v-if="loggedIn && user?.addresses.length" class="location">
               <NuxtImg
                 class="me-2"
                 width="24"
@@ -80,17 +80,19 @@ const { user, loggedIn } = useUserSession();
                 alt="location"
                 src="/assets/images/location.svg"
               />
-              <a href="#deliver">
+              <NuxtLink :href="$localePath('/account/profile/addresses')">
                 <div class="d-flex">
                   <span>{{ $t("navbar.deliverOrReceive") }}</span>
                   <span
-                    title="مصر-مدينتي-مجموعة الابراج الخامسة والستين واي نص عشان نجرب الطول والنقط"
+                    :title="`${user?.addresses[0]?.address_line_1} - ${user?.addresses[0]?.address_line_2} - ${user?.addresses[0]?.address_line_3}`"
                     class="truncate"
-                    >مصر-مدينتي-مجموعة الابراج الخامسة والستين واي نص عشان نجرب
-                    الطول والنقط</span
                   >
+                    {{
+                      `${user?.addresses[0]?.address_line_1} - ${user?.addresses[0]?.address_line_2} - ${user?.addresses[0]?.address_line_3}`
+                    }}
+                  </span>
                 </div>
-              </a>
+              </NuxtLink>
             </div>
 
             <!-- Search Component -->

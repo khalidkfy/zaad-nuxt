@@ -118,8 +118,7 @@ const orderItemsModal = ref(null);
 const selectedOrder = ref(null);
 const showOrderItems = async (order: any) => {
   selectedOrder.value = order;
-  console.log(order);
-
+ 
   await orderItemsModal.value.showModal();
 };
 const toast = useToast();
@@ -144,8 +143,7 @@ const payOrder = async (order: any) => {
         rtl: locale.value === "ar",
       });
     }
-    console.log(res, "Resres");
-  } catch (err) {
+   } catch (err) {
     console.error(err);
   }
 };

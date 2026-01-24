@@ -18,8 +18,7 @@ const useFilters = computed(() => {
 });
 
 onMounted(() => {
-  console.log(props.filters);
-});
+ });
 
 const showFilter = (filter: any) => {
   const filterType = filter?.type;

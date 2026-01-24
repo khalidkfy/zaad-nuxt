@@ -36,9 +36,14 @@ const checkoutItems = ref([]);
 
 const itemRefs = ref<Record<number, HTMLElement | null>>({});
 
-const getCheckout = async () => {
+const newAddressLoading = ref(false);
+const getCheckout = async (loadingType = null) => {
   try {
-    getCheckoutLoading.value = true;
+    if (loadingType == "newAddress") {
+      newAddressLoading.value = true;
+    } else {
+      getCheckoutLoading.value = true;
+    }
     const paresdData = checkoutData.value || loadCheckoutData();
     if (!paresdData) return;
 
@@ -60,6 +65,7 @@ const getCheckout = async () => {
   } catch (err) {
   } finally {
     getCheckoutLoading.value = false;
+    newAddressLoading.value = false;
   }
 };
 
@@ -278,10 +284,11 @@ const cantCreateOrder = computed(() => {
     !all_verified.value
   );
 });
+
 watch(selectedAddress, async (newAddress, oldAddress) => {
   if (!oldAddress) return;
   if (newAddress?.id !== oldAddress?.id) {
-    await getCheckout();
+    await getCheckout("newAddress");
   }
 });
 </script>
@@ -308,7 +315,10 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
     <div class="container">
       <template v-if="!pageLoading">
         <div class="products">
-          <div class="">
+          <div class="table-responsive table-wrapper">
+            <div v-if="newAddressLoading" class="table-loader">
+              <span class="spinner-border main-color spinner-border-lg"></span>
+            </div>
             <table>
               <thead>
                 <tr>
@@ -925,27 +935,41 @@ button.action {
   }
 }
 .products {
-  table {
-    width: 100%;
-    background-color: #f9f9f9;
-    border-radius: 24px;
-    color: #000;
-    thead {
-      th {
-        padding: 15px;
-        text-align: center;
+  .table-wrapper {
+    position: relative;
+    .table-loader {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: #f9f9f9;
+      opacity: 0.7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    table {
+      width: 100%;
+      background-color: #f9f9f9;
+      border-radius: 24px;
+      color: #000;
+      thead {
+        th {
+          padding: 15px;
+          text-align: center;
+        }
       }
-    }
-    td {
-      text-align: center;
-      padding: 15px;
-    }
-    a {
-      color: #4a4a4a;
-      transition: var(--trans);
-      color: var(--main-color);
-      &:hover {
-        opacity: 0.6;
+      td {
+        text-align: center;
+        padding: 15px;
+      }
+      a {
+        color: #4a4a4a;
+        transition: var(--trans);
+        color: var(--main-color);
+        &:hover {
+          opacity: 0.6;
+        }
       }
     }
   }

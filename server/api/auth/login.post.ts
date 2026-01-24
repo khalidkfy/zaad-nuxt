@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
   const apiServie = new HttpService(event);
 
   try {
+    const userData = {};
     const data = apiServie
       .post({
         url: "api/auth/login",
@@ -25,6 +26,19 @@ export default defineEventHandler(async (event) => {
         // headers: headers,
       })
       .then(async (res) => {
+        const config = useRuntimeConfig();
+        const api_prefix = config.apiBase;
+
+        const profileData = await $fetch(`${api_prefix}/api/profile`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: res?.access_token ? `Bearer ${res?.access_token}` : "",
+          },
+        });
+        const addresses = profileData?.resource?.addresses || [];
+        // TODO HANDLE MAIN ADDRESS API
+
         await setUserSession(event, {
           user: {
             email: res?.user.email,
@@ -32,14 +46,14 @@ export default defineEventHandler(async (event) => {
             mobile: res?.user.mobile,
             mobile_verified_at: res?.user.mobile_verified_at,
             name: res?.user.name,
+            addresses: addresses
           },
           access_token: res?.access_token,
         });
-
         return res;
       })
       .catch((err) => {
-         
+
         return err;
       });
 

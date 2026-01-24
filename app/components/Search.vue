@@ -88,7 +88,7 @@ const handleSearch = () => {
   padding-bottom: 3px;
   padding-inline-end: 3px;
   padding-inline-start: 8px;
-  margin: 0 40px;
+  margin: 0 auto;
   position: relative;
   .active-categ {
     button {

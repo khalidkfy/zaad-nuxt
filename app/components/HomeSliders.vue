@@ -49,8 +49,6 @@ onMounted(() => {
     .carousel-item {
         img {
             height: 400px;
-            // object-fit: contain;
-            border-radius: 12px;
         }
     }
 
