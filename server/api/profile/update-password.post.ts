@@ -22,16 +22,11 @@ export default defineEventHandler(async (event) => {
     try {
         const data = apiServie
             .post({
-                url: "api/profile",
+                url: "api/customer/password/update",
                 body: body,
                 // headers: headers,
             })
             .then(async (res) => {
-                await setUserSession(event, {
-                    user: {
-                        name: body.name
-                    }
-                })
                 return res;
             })
             .catch((err) => {

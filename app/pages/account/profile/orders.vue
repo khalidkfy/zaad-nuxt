@@ -118,7 +118,7 @@ const orderItemsModal = ref(null);
 const selectedOrder = ref(null);
 const showOrderItems = async (order: any) => {
   selectedOrder.value = order;
- 
+
   await orderItemsModal.value.showModal();
 };
 const toast = useToast();
@@ -143,7 +143,7 @@ const payOrder = async (order: any) => {
         rtl: locale.value === "ar",
       });
     }
-   } catch (err) {
+  } catch (err) {
     console.error(err);
   }
 };
@@ -174,6 +174,28 @@ const showSendSellerModal = async (order: any) => {
   selectedOrder.value = order;
   await sendSellerModal.value.showModal();
 };
+
+const showSellerBank = async (order: any) => {
+  selectedOrder.value = order;
+  const bankInfo = order.bank_account;
+
+  const SellerBankModal = new bootstrap.Modal(
+    document.getElementById("SellerBankModal"),
+    {},
+  );
+  SellerBankModal.show();
+};
+
+
+const showReciptModal = async (order: any) => {
+  selectedOrder.value = order;
+  const SellerReceiptModal = new bootstrap.Modal(
+    document.getElementById("SellerReceiptModal"),
+    {},
+  );
+  SellerReceiptModal.show();
+};
+
 onMounted(async () => {
   await getOrders();
   await getProblems();
@@ -316,6 +338,40 @@ onMounted(async () => {
                           />
                         </svg>
                         {{ $t("order.thawaniPay") }}
+                      </button>
+                    </li>
+                    <li v-if="order?.payment_method_id == 3">
+                      <button @click.prevent="showSellerBank(order)">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-bank"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z"
+                          />
+                        </svg>
+                        {{ $t("order.sellerBank") }}
+                      </button>
+                    </li>
+                    <li v-if="order?.payment_method_id == 3">
+                      <button @click.prevent="showReciptModal(order)">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-wallet"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a2 2 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"
+                          />
+                        </svg>
+                        {{ $t("order.receipt") }}
                       </button>
                     </li>
                     <li>
@@ -461,6 +517,68 @@ onMounted(async () => {
     ref="orderDisputeModal"
   />
   <ModalSendMessageToSeller :order="selectedOrder" ref="sendSellerModal" />
+
+  <!-- Seller Bank Account Modal -->
+  <div
+    class="modal SellerBankModal modal-lg"
+    id="SellerBankModal"
+    role="dialog"
+    tabindex="-1"
+    aria-labelledby="SellerBankModal"
+    aria-hidden="true"
+    ref="modalRef"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+            {{ $t("order.bankAccountFor") }}
+            <span class="main-color">{{ selectedOrder?.seller?.name }}</span>
+          </div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ol>
+            <li>اسم صاحب الحساب: {{ selectedOrder?.bank_account?.name }}</li>
+            <li>رقم الحساب: {{ selectedOrder?.bank_account?.account_no }}</li>
+            <li>اسم البنك: {{ selectedOrder?.bank_account?.bank_name }}</li>
+            <li>اسم الفرع: {{ selectedOrder?.bank_account?.branch }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seller Receipt Modal -->
+  <div
+    class="modal SellerReceiptModal modal-lg"
+    id="SellerReceiptModal"
+    role="dialog"
+    tabindex="-1"
+    aria-labelledby="SellerReceiptModal"
+    aria-hidden="true"
+    ref="modalRef"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">شيسشسيشسي</div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">شسبشسب</div>
+      </div>
+    </div>
+  </div>
 </template>
 <style scoped lang="scss">
 .no-items {

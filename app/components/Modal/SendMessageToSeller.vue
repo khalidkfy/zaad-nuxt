@@ -251,7 +251,7 @@ onBeforeUnmount(() => {
                   role="status"
                   aria-hidden="true"
                 ></span>
-                {{ $t("general.sending") }}
+                {{ $t("general.wait") }}
               </template>
               <template v-else>
                 {{ $t("general.send") }}

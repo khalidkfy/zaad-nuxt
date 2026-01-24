@@ -320,6 +320,9 @@
     "store": "Store",
     "orderDispute": "Order Dispute",
     "sendSeller":"Send Message to Seller",
-    "msg":"Your Message"
+    "msg":"Your Message",
+    "sellerBank":"Seller Bank Account",
+    "bankAccountFor":"Bank account for",
+    "receipt":"Add a photo of the payment receipt"
   }
 }

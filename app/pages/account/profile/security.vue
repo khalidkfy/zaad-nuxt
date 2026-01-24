@@ -11,6 +11,142 @@ definePageMeta({
     },
   ],
 });
+
+const getAnyError = (errors: any) => {
+  const first = Object.values(errors ?? {})[0];
+
+  if (Array.isArray(first)) return first[0];
+  if (typeof first === "string") return first;
+
+  return null;
+};
+
+const { clear: logout } = useUserSession();
+const router = useRouter();
+
+const callLogout = async () => {
+  await logout();
+  toast.warning({
+    title: t("login.loged-out"),
+    message: `${t("login.loged-out-desc")}`,
+    rtl: locale.value === "ar",
+  });
+  router.push("/");
+};
+
+const toast = useToast();
+// email update
+const email = ref("");
+const emailPassword = ref("");
+const updateEmailLoading = ref(false);
+const invalidEmailUpdate = ref("");
+const updateEmail = async () => {
+  invalidEmailUpdate.value = "";
+  if (!email.value || !emailPassword.value) {
+    invalidEmailUpdate.value = t("validations.422");
+    toast.error({
+      title: t("submit.error"),
+      message: t("validations.422"),
+      rtl: locale.value === "ar",
+    });
+    return;
+  }
+  try {
+    updateEmailLoading.value = true;
+    const res = await $fetch("/api/profile/update-email", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        email: email.value,
+        password: emailPassword.value,
+      },
+    });
+
+    if (res?.status != 200) {
+      const errMsg = getAnyError(res?.errors);
+      toast.error({
+        title: t("submit.error"),
+        message: errMsg,
+        rtl: locale.value === "ar",
+      });
+      invalidEmailUpdate.value = errMsg;
+    } else {
+      await callLogout();
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    updateEmailLoading.value = false;
+  }
+};
+
+// password update
+const password = ref("");
+const newPassword = ref("");
+const newPasswordConfirm = ref("");
+const updatePasswordLoading = ref(false);
+const invalidPasswordUpdate = ref("");
+const updatePassword = async () => {
+  invalidPasswordUpdate.value = "";
+  if (!password.value || !newPassword.value || !newPasswordConfirm.value) {
+    invalidPasswordUpdate.value = t("validations.422");
+    toast.error({
+      title: t("submit.error"),
+      message: t("validations.422"),
+      rtl: locale.value === "ar",
+    });
+    return;
+  }
+  try {
+    updatePasswordLoading.value = true;
+    const res = await $fetch("/api/profile/update-password", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        password: password.value,
+        new_password: newPassword.value,
+        new_password_confirmation: newPasswordConfirm.value,
+      },
+    });
+
+    if (res?.status != 200) {
+      const errMsg = getAnyError(res?.errors);
+      toast.error({
+        title: t("submit.error"),
+        message: errMsg,
+        rtl: locale.value === "ar",
+      });
+      invalidPasswordUpdate.value = errMsg;
+    } else {
+      await callLogout();
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    updatePasswordLoading.value = false;
+  }
+};
+
+const getSecurityQuestions = async () => {
+  try {
+    const res = await $fetch("/api/profile/security_questions", {
+      method: "GET",
+      headers: {
+        Lang: locale.value,
+      },
+    });
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+};
+onMounted(async () => {
+  await getSecurityQuestions();
+});
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
@@ -74,7 +210,7 @@ definePageMeta({
       </div>
       <hr />
     </form>
-    <form>
+    <form @submit.prevent="updateEmail">
       <h3>{{ $t("links.emailSettings") }}</h3>
       <div class="row mt-3">
         <div class="col-md-6">
@@ -83,6 +219,8 @@ definePageMeta({
             <input
               type="email"
               class="form-control"
+              v-model="email"
+              name="email"
               :placeholder="$t('register.emailPlace')"
             />
           </div>
@@ -92,19 +230,25 @@ definePageMeta({
             <div class="input-group mb-3">
               <input
                 type="password"
+                v-model="emailPassword"
                 class="form-control"
                 :placeholder="$t('register.passwordPlace')"
               />
             </div>
           </div>
           <div class="mb-3">
-            <button class="btn-zaad">{{ $t("general.update") }}</button>
+            <button :disabled="updateEmailLoading" class="btn-zaad">
+              {{ $t("general.update") }}
+            </button>
           </div>
         </div>
       </div>
+      <div class="err" v-if="invalidEmailUpdate.length">
+        {{ invalidEmailUpdate }}
+      </div>
       <hr />
     </form>
-    <form>
+    <form @submit.prevent="updatePassword">
       <h3>{{ $t("links.passwordSettings") }}</h3>
       <div class="row mt-3">
         <div class="col-md-6">
@@ -113,6 +257,8 @@ definePageMeta({
 
             <div class="input-group mb-3">
               <input
+                name="password"
+                v-model="password"
                 type="password"
                 class="form-control"
                 :placeholder="$t('register.passwordPlace')"
@@ -124,6 +270,8 @@ definePageMeta({
 
             <div class="input-group mb-3">
               <input
+                name="newPassword"
+                v-model="newPassword"
                 type="password"
                 class="form-control"
                 :placeholder="$t('register.passwordPlace')"
@@ -135,6 +283,8 @@ definePageMeta({
 
             <div class="input-group mb-3">
               <input
+                name="newPasswordConfirm"
+                v-model="newPasswordConfirm"
                 type="password"
                 class="form-control"
                 :placeholder="$t('register.passwordPlace')"
@@ -142,9 +292,14 @@ definePageMeta({
             </div>
           </div>
           <div class="mb-3">
-            <button class="btn-zaad">{{ $t("general.update") }}</button>
+            <button :disabled="updatePasswordLoading" class="btn-zaad">
+              {{ $t("general.update") }}
+            </button>
           </div>
         </div>
+      </div>
+      <div class="err" v-if="invalidPasswordUpdate.length">
+        {{ invalidPasswordUpdate }}
       </div>
     </form>
   </div>
@@ -182,5 +337,8 @@ input {
   &.invalid {
     border-color: #dc3545;
   }
+}
+.err {
+  color: #dc3545;
 }
 </style>
