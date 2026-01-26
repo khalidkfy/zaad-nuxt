@@ -34,14 +34,15 @@ const sortedServices = computed(() => {
           class="all-categs me-2"
           title="all categories"
           :class="{ active: isMegaMenuOpen && activeTab === 'shopBy' }"
-          @mouseenter="
+          @mouseenter.prevent="
             isMegaMenuOpen = true;
             activeTab = 'shopBy';
           "
-          @click="
+          @click.prevent="
             isMegaMenuOpen = !isMegaMenuOpen;
             activeTab = 'shopBy';
           "
+        
         >
           <NuxtImg
             src="/assets/images/categs.svg"
@@ -57,11 +58,11 @@ const sortedServices = computed(() => {
           class="services me-2"
           title="services"
           :class="{ active: isMegaMenuOpen && activeTab === 'services' }"
-          @mouseenter="
+          @mouseenter.prevent="
             isMegaMenuOpen = true;
             activeTab = 'services';
           "
-          @click="
+          @click.prevent="
             isMegaMenuOpen = !isMegaMenuOpen;
             activeTab = 'services';
           "
@@ -194,11 +195,12 @@ const sortedServices = computed(() => {
 .fixed-categs {
   display: flex;
   position: relative;
-  z-index: 1000; 
+  z-index: 1000;
 
   @media (max-width: 992px) {
-    margin-bottom: 12px;
+    margin: 25px 0;
     width: 100%;
+    justify-content: center;
   }
 
   button {

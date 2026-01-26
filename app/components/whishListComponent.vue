@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const { getFavCount, favCount } = useWhish();
-
+const props = defineProps({
+  showText:{
+    type: Boolean,
+    default: true,
+  }
+})
 await getFavCount();
 </script>
 <template>
@@ -18,7 +23,7 @@ await getFavCount();
     />
     <div class="whish">
       <span class="whish-badge">{{ favCount }}</span>
-      <span>{{ $t("whish.title") }}</span>
+      <span v-if="showText">{{ $t("whish.title") }}</span>
     </div>
   </NuxtLink>
 </template>

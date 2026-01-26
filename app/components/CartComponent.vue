@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const { cartCount, getCartCount } = useCart()
-
+const props = defineProps({
+  showText:{
+    type: Boolean,
+    default: true,
+  }
+})
 await getCartCount();
 </script>
 <template>
@@ -8,7 +13,7 @@ await getCartCount();
         <NuxtImg class="me-2" width="28" height="28" alt="location" src="/assets/images/cart.svg" />
         <div class="cart">
             <span class="cart-badge">{{ cartCount }}</span>
-            <span>{{ $t("cart.title") }}</span>
+            <span v-if="showText">{{ $t("cart.title") }}</span>
         </div>
     </NuxtLink>
 </template>

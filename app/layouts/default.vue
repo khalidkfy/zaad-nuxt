@@ -1,28 +1,29 @@
 <script setup lang="ts">
-const {  getCategs } = useCategs();
-const {  getConstants, getFooter } = useConstants();
+const { getCategs } = useCategs();
+const { getConstants, getFooter } = useConstants();
 
 await getCategs();
-await getConstants()
-await getFooter()
+await getConstants();
+await getFooter();
+const { user, loggedIn, clear: logout } = useUserSession();
+const { userAddresses, getProfileRes } = useProfile();
 
-
+onMounted(() => {
+  if (loggedIn.value && !userAddresses.value.length) {
+    getProfileRes();
+  }
+});
 </script>
 <template>
+  <AppHeader />
 
-     <AppHeader />
+  <main>
+    <LazyAppCategories />
 
+    <LazyWhatsApp />
+    <slot />
+  </main>
 
-
-     <main>
-
-          <LazyAppCategories />
-
-          <LazyWhatsApp />
-          <slot />
-     </main>
-
-
-     <AppFooter />
+  <AppFooter />
 </template>
 <style lang="scss" scoped></style>

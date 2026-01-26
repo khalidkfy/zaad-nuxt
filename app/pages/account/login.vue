@@ -208,6 +208,9 @@ section.auth-section {
   justify-content: center;
   margin: auto;
   width: 40%;
+  @media (max-width:992px) {
+    width: 100%;
+  }
 
   img {
     text-align: center;

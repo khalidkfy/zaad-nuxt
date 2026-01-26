@@ -8,7 +8,7 @@ const { siteFacts: feats } = usePages();
         <div class="features">
             <div class="container">
                 <div class="row">
-                    <div v-for="feat in feats" :key="feat" class="col-md-3">
+                    <div v-for="feat in feats" :key="feat" class="col-md-3 mb-3 text-center">
                         <div class="feature">
                             <!-- <div class="icon">
                             <NuxtImg width="24" height="24" :alt="feat.title" :src="feat.img" />
