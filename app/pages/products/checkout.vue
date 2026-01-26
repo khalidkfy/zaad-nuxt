@@ -737,7 +737,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
   </section>
 
   <ClientOnly>
-    <AddAddressModal ref="addAddressModal" />
+    <AddAddressModal ref="addAddressModal" @newAddress="getAddresses"/>
   </ClientOnly>
 </template>
 <style scoped lang="scss">

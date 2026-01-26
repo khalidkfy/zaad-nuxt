@@ -45,7 +45,7 @@ const { getCountriesRes, getCountriesLoading, countryRes } = useCountry();
 
 const handleSubmit = async () => {};
 onMounted(async () => {
-  await getCountriesRes();
+  // await getCountriesRes();
 });
 </script>
 <template>

@@ -194,7 +194,7 @@ const sortedServices = computed(() => {
 .fixed-categs {
   display: flex;
   position: relative;
-  z-index: 10000; /* Keep buttons above mega menu */
+  z-index: 1000; 
 
   @media (max-width: 992px) {
     margin-bottom: 12px;

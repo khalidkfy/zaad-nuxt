@@ -52,7 +52,7 @@
     "qty": "Quantity",
     "apply": "Apply",
     "all": "all",
-    "videoLink":" Video Link"
+    "videoLink": " Video Link"
   },
   "links": {
     "privacyPolicy": "Privacy Policy",
@@ -79,7 +79,7 @@
     "logout": "Sign out"
   },
   "register": {
-    "register":"Register",
+    "register": "Register",
     "asSeller": "register as a seller",
     "asShipping": "register Shipping company",
     "h1": "Register/Create Account",
@@ -254,7 +254,6 @@
   "profile": {
     "personalInfo": "Personal information",
     "name": "Name",
-    "country": "Country",
     "gender": "Gender",
     "registerDate": "Registration date",
     "lang": "Default language",
@@ -263,9 +262,16 @@
     "male": "Male",
     "female": "Female",
     "postcode": "Postcode",
-    "city": "City",
     "streetAddress": "Street Address",
-    "noOrders": "No Order yet"
+    "noOrders": "No Order yet",
+    "address_line1": "Address 1",
+    "address_line2": "Address 2",
+    "street": "street",
+    "country": "country",
+    "selectCountry": "Select Country",
+    "city": "City",
+    "selectCity": "Select City",
+    "postal_code": "Postal Code"
   },
   "submit": {
     "success": "Success!.",
@@ -319,10 +325,10 @@
     "status": "Status",
     "store": "Store",
     "orderDispute": "Order Dispute",
-    "sendSeller":"Send Message to Seller",
-    "msg":"Your Message",
-    "sellerBank":"Seller Bank Account",
-    "bankAccountFor":"Bank account for",
-    "receipt":"Add a photo of the payment receipt"
+    "sendSeller": "Send Message to Seller",
+    "msg": "Your Message",
+    "sellerBank": "Seller Bank Account",
+    "bankAccountFor": "Bank account for",
+    "receipt": "Add a photo of the payment receipt"
   }
 }

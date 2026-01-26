@@ -255,7 +255,6 @@
   "profile": {
     "personalInfo": "المعلومات الشخصية",
     "name": "الاسم",
-    "country": "الدولة",
     "gender": "الجنس",
     "registerDate": "تاريخ التسجيل",
     "lang": "اللغة الافتراضية",
@@ -264,9 +263,16 @@
     "male": "ذكر",
     "female": "أنثى",
     "postcode": " الرمز البريدي",
-    "city": "المدينة",
     "streetAddress": "عنوان الشارع",
-    "noOrders": "لا يوجد طلبات بعد"
+    "noOrders": "لا يوجد طلبات بعد",
+    "address_line1": "العنوان الأول",
+    "address_line2": "العنوان الثاني",
+    "street": "الشارع/المسلك",
+    "country": "الدولة",
+    "selectCountry": "اختر الدولة",
+    "city": "الولاية/المدينة",
+    "selectCity": "اختر المدينة",
+    "postal_code": "الرمز البريدي"
   },
   "submit": {
     "success": "نجاح!.",
@@ -318,8 +324,8 @@
     "orderDispute": "طلب نزاع",
     "sendSeller": "ارسل رسالة للتاجر",
     "msg": "رسالة",
-    "sellerBank":" حساب البائع البنكي",
-    "bankAccountFor":"الحساب البنكي الخاص بـ",
-    "receipt":"إضافة صورة إيصال الدفع"
+    "sellerBank": " حساب البائع البنكي",
+    "bankAccountFor": "الحساب البنكي الخاص بـ",
+    "receipt": "إضافة صورة إيصال الدفع"
   }
 }

@@ -2,17 +2,10 @@ import { getRequestHeaders } from "h3"; // Import getRequestHeaders from h3
 import { HttpService } from "@@/server/services/http-service";
 
 export default defineEventHandler(async (event) => {
-  const { user } = await requireUserSession(event);
 
-  if (!user) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: "Unauthorized",
-    });
-  }
 
   // Retrieve user-agent from headers using getRequestHeaders
-  // const headers = getRequestHeaders(event);z
+  // const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
@@ -28,16 +21,15 @@ export default defineEventHandler(async (event) => {
   try {
     const data = apiServie
       .get({
-        url: `api/profile`,
+        url: `api/countries-admin/${body.country_id}/cities`,
         body: body,
         // headers: headers,
       })
       .then((res) => {
-         
+        
         return res;
       })
       .catch((err) => {
- 
         return err;
       });
 

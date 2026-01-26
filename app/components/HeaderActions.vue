@@ -130,6 +130,8 @@ const switchLocale = (newLocale: any) => {
 .header-actions .actions {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .header-actions button {
