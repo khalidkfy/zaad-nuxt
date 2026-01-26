@@ -33,7 +33,8 @@ export const useSeo = (meta: SeoMeta) => {
 
   const config = useRuntimeConfig();
   // const baseUrl = "zaad.com";
-  const baseUrl = config.public.baseUrl ?? "zaad.com";
+  
+  const baseUrl = config.public.baseUrl ?? `https://new.zaad.om`;
 
   const baseGraph = [
     {
