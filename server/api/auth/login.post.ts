@@ -36,9 +36,9 @@ export default defineEventHandler(async (event) => {
             Authorization: res?.access_token ? `Bearer ${res?.access_token}` : "",
           },
         });
-        console.log(profileData," profileDataprofileDataprofileDataprofileData");
+        // console.log(profileData," profileDataprofileDataprofileDataprofileData");
         
-        const addresses = profileData?.resource?.addresses || [];
+        // const addresses = profileData?.resource?.addresses || [];
         // TODO HANDLE MAIN ADDRESS API
 
         await setUserSession(event, {
@@ -48,12 +48,11 @@ export default defineEventHandler(async (event) => {
             mobile: res?.user.mobile,
             mobile_verified_at: res?.user.mobile_verified_at,
             name: res?.user.name,
-            addresses: addresses
+            // addresses: addresses
           },
           access_token: res?.access_token,
         });
-        console.log(res);
-        return res;
+         return res;
           
       })
       .catch((err) => {

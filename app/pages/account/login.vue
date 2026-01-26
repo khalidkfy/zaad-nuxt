@@ -5,6 +5,8 @@ definePageMeta({
   layout: "auth",
 });
 
+const { getProfileRes } = useProfile();
+
 const { t } = useI18n();
 const router = useRouter();
 const localePath = useLocalePath();
@@ -81,6 +83,8 @@ const handleLogin = async () => {
     }
     try {
       await fetch();
+
+      await getProfileRes()
       
       await router.push(localePath("/"));
      } catch (e) {

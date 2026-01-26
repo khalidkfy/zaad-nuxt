@@ -17,6 +17,8 @@ export const useProfile = () => {
           Lang: locale.value,
         },
       });
+
+      userAddresses.value = profileRes.value?.resource?.addresses || [];
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,12 +47,17 @@ export const useProfile = () => {
       getAddressesloading.value = false;
     }
   }
+
+
+  const userAddresses = useState("user-addresses", () => []);
+
   return {
     getProfileRes,
     getProfileLoading,
     profileData,
     getAddresses,
     getAddressesloading,
-    addresses
+    addresses,
+    userAddresses
   };
 };

@@ -12,6 +12,8 @@ const { clear: logout } = useUserSession();
 const router = useRouter();
 const toast = useToast();
 
+
+const {userAddresses} = useProfile();
 const callLogout = async () => {
   await logout();
   toast.warning({
@@ -208,7 +210,7 @@ const { user, loggedIn } = useUserSession();
             class="collapse navbar-collapse justify-content-between"
             id="navbarMain"
           >
-            <div v-if="loggedIn && user?.addresses?.length" class="location">
+            <div v-if="loggedIn && userAddresses?.length" class="location">
               <NuxtImg
                 class="me-2"
                 width="24"
@@ -220,11 +222,11 @@ const { user, loggedIn } = useUserSession();
                 <div class="d-flex">
                   <span>{{ $t("navbar.deliverOrReceive") }}</span>
                   <span
-                    :title="`${user?.addresses[0]?.address_line_1} - ${user?.addresses[0]?.address_line_2} - ${user?.addresses[0]?.address_line_3}`"
+                    :title="`${userAddresses[0]?.address_line_1} - ${userAddresses[0]?.address_line_2} - ${userAddresses[0]?.address_line_3}`"
                     class="truncate"
                   >
                     {{
-                      `${user?.addresses[0]?.address_line_1} - ${user?.addresses[0]?.address_line_2} - ${user?.addresses[0]?.address_line_3}`
+                      `${userAddresses[0]?.address_line_1} - ${userAddresses[0]?.address_line_2} - ${userAddresses[0]?.address_line_3}`
                     }}
                   </span>
                 </div>
