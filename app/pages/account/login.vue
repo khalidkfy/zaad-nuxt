@@ -81,6 +81,7 @@ const handleLogin = async () => {
     }
     try {
       await fetch();
+      
       await router.push(localePath("/"));
      } catch (e) {
       console.error("navigation failed", e);

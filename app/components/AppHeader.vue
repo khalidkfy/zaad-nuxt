@@ -208,7 +208,7 @@ const { user, loggedIn } = useUserSession();
             class="collapse navbar-collapse justify-content-between"
             id="navbarMain"
           >
-            <div v-if="loggedIn && user?.addresses.length" class="location">
+            <div v-if="loggedIn && user?.addresses?.length" class="location">
               <NuxtImg
                 class="me-2"
                 width="24"
