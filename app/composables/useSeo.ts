@@ -214,11 +214,11 @@ export const useSeo = (meta: SeoMeta) => {
       // canonical
       {
         rel: "canonical",
-        href: `${baseUrl}${locale.value == "en" ? "" : "/ar"}${path}`,
+        href: `${baseUrl}${locale.value == "en" ? "/en" : ""}${path}`,
       },
       // hreflangs
       { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${path}` },
-      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}` },
+      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}`},
       { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${path}` },
     ].filter(Boolean),
     script: [
