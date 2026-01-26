@@ -74,6 +74,8 @@ const handleLogin = async () => {
         password: values.password,
       },
     });
+    console.log(response, "response");
+    
     if (response.access_token) {
       submitSuccess.value = true;
     }
@@ -84,6 +86,7 @@ const handleLogin = async () => {
       console.error("navigation failed", e);
     }
   } catch (err) {
+    console.log(err, "err");
     submitErr.value = err?.data?.data?.message;
   } finally {
     formLoading.value = false;

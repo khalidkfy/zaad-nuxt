@@ -46,7 +46,7 @@ const getMenuLink = (item: any) => {
                 width="134"
                 height="113"
                 src="/assets/images/logo/zaad-logo.svg"
-                alt="Roya"
+                alt="Zaad"
                 class="footer-logo"
               />
             </NuxtLink>

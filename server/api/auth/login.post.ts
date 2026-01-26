@@ -51,8 +51,11 @@ export default defineEventHandler(async (event) => {
           access_token: res?.access_token,
         });
         return res;
+          console.log(res);
       })
       .catch((err) => {
+        console.log(err);
+        
 
         return err;
       });
