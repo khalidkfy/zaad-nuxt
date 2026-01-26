@@ -217,8 +217,8 @@ export const useSeo = (meta: SeoMeta) => {
         href: `${baseUrl}${locale.value == "en" ? "" : "/ar"}${path}`,
       },
       // hreflangs
-      { rel: "alternate", hreflang: "en", href: `${baseUrl}${path}` },
-      { rel: "alternate", hreflang: "ar", href: `${baseUrl}/ar${path}` },
+      { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${path}` },
+      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}` },
       { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${path}` },
     ].filter(Boolean),
     script: [
