@@ -91,7 +91,6 @@ watch(removeWhishErr, (val) => {
         class="cart"
         ref="cartRef"
         :title="$t('cart.add')"
-        data-bs-toggle="tooltip"
         @click.prevent="addToCart(product?.id)"
       >
         <NuxtImg
@@ -115,7 +114,6 @@ watch(removeWhishErr, (val) => {
             ? $t('whish.remove')
             : $t('whish.add')
         "
-        data-bs-toggle="tooltip"
         @click.prevent="handleWhishSubmit(product)"
       >
         <svg
@@ -311,6 +309,10 @@ watch(removeWhishErr, (val) => {
         transition: var(--trans);
       }
 
+      @media (max-width: 992px) {
+        width: 32px;
+        height: 32px;
+      }
       &:hover {
         svg {
           width: 17px;

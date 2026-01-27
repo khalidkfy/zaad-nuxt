@@ -28,10 +28,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3330033;
   transition: var(--trans);
 
   &:hover {
     box-shadow: 0px 1px 9px 0 #00000040;
+    transform: translateY(-2px);
+  }
+  @media (max-width:992px) {
+    bottom: 20%;
+    inset-inline-end: 8px;
   }
 }
 </style>

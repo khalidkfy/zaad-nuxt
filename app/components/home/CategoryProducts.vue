@@ -19,14 +19,14 @@ const getCategId = (categ) => {
         :style="{ 'flex-direction': flexDirection ? flexDirection : '' }"
         class="row mt-2"
       >
-        <div class="col-md-3">
+        <div class="col-md-3 d-none d-md-block">
           <NuxtImg
             class="img-fluid w-100 h-100"
             :alt="categoryProducts?.title"
             :src="categoryProducts?.items[0]?.src"
           />
         </div>
-        <div class="col-md-9">
+        <div class="col-12 col-md-9">
           <div class="section-header mt-2 mb-3">
             <h3>{{ categoryProducts?.title || $t("general.keepShopping") }}</h3>
             <NuxtLink :href="$localePath(`/products/${getCategId(categoryProducts)}`)">{{

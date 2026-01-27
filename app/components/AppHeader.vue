@@ -533,7 +533,7 @@ const { user, loggedIn, clear: logout } = useUserSession();
   display: none;
   background-color: #fff;
   padding: 10px;
-  z-index: 90000;
+  z-index: 999900;
   position: fixed;
   bottom: 0;
   right: 0;

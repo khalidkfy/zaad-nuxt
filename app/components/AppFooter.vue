@@ -3,7 +3,7 @@ const { footerData, constants } = useConstants();
 
 const getMenuLink = (item: any) => {
   let itemUrl = item?.url;
- 
+
   switch (itemUrl) {
     case "pages/201":
       return "/terms-and-conditions";
@@ -171,23 +171,33 @@ const getMenuLink = (item: any) => {
                   </NuxtLink>
                   <!-- TODO Facebook icon -->
                 </div>
-                <div v-if="constants?.resources?.contacts?.hotline" class="d-flex gap-2 mt-4">
+                <div
+                  v-if="constants?.resources?.contacts?.hotline"
+                  class="d-flex gap-2 mt-4"
+                >
                   <NuxtImg
                     width="20"
                     height="20"
                     src="/assets/images/telephone.svg"
                     alt="telephone"
                   />
-                  <span class="follow">{{ constants?.resources?.contacts?.hotline }}</span>
+                  <span class="follow">{{
+                    constants?.resources?.contacts?.hotline
+                  }}</span>
                 </div>
-                <div v-if="constants?.resources?.contacts?.email" class="d-flex gap-2 mt-4">
+                <div
+                  v-if="constants?.resources?.contacts?.email"
+                  class="d-flex gap-2 mt-4"
+                >
                   <NuxtImg
                     width="20"
                     height="20"
                     src="/assets/images/message.svg"
                     alt="email"
                   />
-                  <span class="follow">{{ constants?.resources?.contacts?.email }}</span>
+                  <span class="follow">{{
+                    constants?.resources?.contacts?.email
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -197,7 +207,7 @@ const getMenuLink = (item: any) => {
     </div>
     <div class="footer-bottom py-3 border-top">
       <div class="container">
-        <div class="d-flex justify-content-between align-items-center gap-3">
+        <div class="footer-bottom-content">
           <p class="m-0 text-center text-lg-start">
             جميع الحقوق محفوظة ل زاد عمان © {{ new Date().getFullYear() }}.
           </p>
@@ -214,6 +224,20 @@ const getMenuLink = (item: any) => {
   </footer>
 </template>
 <style lang="scss" scoped>
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  @media (max-width: 992px) {
+   flex-direction: column;
+  }
+}
+footer {
+  @media (max-width: 992px) {
+    margin-bottom: 70px;
+  }
+}
 .border-top {
   border-top: 1px solid #cccccc;
   overflow: hidden;
@@ -287,6 +311,7 @@ const getMenuLink = (item: any) => {
   .follow {
     color: #717171;
     font-weight: 500;
+    word-break: break-all;
   }
 
   .footer-bottom {

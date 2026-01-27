@@ -34,10 +34,7 @@ const sortedServices = computed(() => {
           class="all-categs me-2"
           title="all categories"
           :class="{ active: isMegaMenuOpen && activeTab === 'shopBy' }"
-          @mouseenter.prevent="
-            isMegaMenuOpen = true;
-            activeTab = 'shopBy';
-          "
+        
           @click.prevent="
             isMegaMenuOpen = !isMegaMenuOpen;
             activeTab = 'shopBy';
@@ -58,10 +55,7 @@ const sortedServices = computed(() => {
           class="services me-2"
           title="services"
           :class="{ active: isMegaMenuOpen && activeTab === 'services' }"
-          @mouseenter.prevent="
-            isMegaMenuOpen = true;
-            activeTab = 'services';
-          "
+         
           @click.prevent="
             isMegaMenuOpen = !isMegaMenuOpen;
             activeTab = 'services';

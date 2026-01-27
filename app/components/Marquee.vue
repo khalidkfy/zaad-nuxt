@@ -1,29 +1,35 @@
 <template>
-  <div 
+  <div
     class="marquee-container"
     :class="[
       orientation === 'vertical' ? 'marquee-vertical' : 'marquee-horizontal',
       overlay && 'marquee-overlay',
-      pauseOnHover && 'marquee-pause-hover'
+      pauseOnHover && 'marquee-pause-hover',
     ]"
     :style="{
       '--marquee-duration': `${duration}s`,
-      '--marquee-gap': gap
+      '--marquee-gap': gap,
     }"
   >
-    <div 
-      ref="marqueeContent" 
+    <div
+      ref="marqueeContent"
       class="marquee-content"
       :class="[
-        orientation === 'vertical' ? 'marquee-content-vertical' : 'marquee-content-horizontal',
-        reverse && 'marquee-reverse'
+        orientation === 'vertical'
+          ? 'marquee-content-vertical'
+          : 'marquee-content-horizontal',
+        reverse && 'marquee-reverse',
       ]"
     >
-      <div 
-        v-for="index in repeat" 
-        :key="index" 
+      <div
+        v-for="index in repeat"
+        :key="index"
         class="marquee-group"
-        :class="orientation === 'vertical' ? 'marquee-group-vertical' : 'marquee-group-horizontal'"
+        :class="
+          orientation === 'vertical'
+            ? 'marquee-group-vertical'
+            : 'marquee-group-horizontal'
+        "
         :aria-hidden="index > 1"
       >
         <slot />
@@ -33,32 +39,38 @@
 </template>
 
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  duration?: number
-  pauseOnHover?: boolean
-  reverse?: boolean
-  orientation?: 'horizontal' | 'vertical'
-  repeat?: number
-  overlay?: boolean
-  gap?: string
-}>(), {
-  duration: 20,
-  pauseOnHover: false,
-  reverse: false,
-  orientation: 'horizontal',
-  repeat: 2,
-  overlay: true,
-  gap: '1rem'
-})
+const props = withDefaults(
+  defineProps<{
+    duration?: number;
+    pauseOnHover?: boolean;
+    reverse?: boolean;
+    orientation?: "horizontal" | "vertical";
+    repeat?: number;
+    overlay?: boolean;
+    gap?: string;
+  }>(),
+  {
+    duration: 20,
+    pauseOnHover: false,
+    reverse: false,
+    orientation: "horizontal",
+    repeat: 2,
+    overlay: true,
+    gap: "1rem",
+  },
+);
 
-const marqueeContent = ref<HTMLElement | null>(null)
+const marqueeContent = ref<HTMLElement | null>(null);
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .marquee-container {
   position: relative;
   overflow: hidden;
   width: 100%;
+  @media (max-width: 992px) {
+    display: none;
+  }
 }
 
 .marquee-content {
@@ -73,6 +85,9 @@ const marqueeContent = ref<HTMLElement | null>(null)
 .marquee-horizontal {
   display: flex;
   flex-direction: row;
+  @media (max-width: 992px) {
+    display: none;
+  }
 }
 
 .marquee-content-horizontal {
@@ -128,7 +143,7 @@ const marqueeContent = ref<HTMLElement | null>(null)
 /* Overlay gradients */
 .marquee-overlay::before,
 .marquee-overlay::after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: 2;
   pointer-events: none;
