@@ -5,10 +5,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/scss/main.scss"],
   runtimeConfig: {
-    apiBase: process.env.API_URL, 
+    apiBase: process.env.API_URL,
     baseUrl: process.env.BASE_URL,
-    public:{
-      TEST_KEY:process.env.NUXT_PUBLIC_TEST_KEY
+    public: {
+      TEST_KEY: process.env.NUXT_PUBLIC_TEST_KEY
     }
   },
   modules: [
@@ -22,8 +22,8 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "nuxt-toast"
   ],
-  toast:{
- settings: {
+  toast: {
+    settings: {
       // Global iziToast settings applied to all toasts
       position: 'topRight',
     }
@@ -44,6 +44,7 @@ export default defineNuxtConfig({
   },
   vite: {
     build: {
+      cssCodeSplit: true,
       cssMinify: true, //Minify CSS output
     },
     css: {
