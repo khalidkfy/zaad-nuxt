@@ -142,7 +142,17 @@ export default defineNuxtConfig({
       ],
     },
   },
-  image:{
+  routeRules: {
+    // Cache fonts and build assets for 1 year
+    '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+    // Cache  manual assets and images
+    '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
+    '/images/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
+  },
+  image: {
     domains: ['s3.eu-central-1.amazonaws.com'],
+    ipx: {
+      maxAge: 31536000
+    }
   }
 });

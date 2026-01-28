@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
+const img = useImage(); // This enables the $img helper
 </script>
 <template>
   <!-- main sliders -->
@@ -20,18 +21,30 @@ import { Pagination } from "swiper/modules";
       >
         <swiper-slide v-for="(item, i) in carouselItems" :key="i">
           <NuxtLink href="/">
-            <!-- <NuxtImg class="d-block w-100" src="/assets/images/slide1.png" alt="First slide" /> -->
             <picture>
-              <source :srcset="item.mobile_image" media="(max-width: 768px)" />
+              <source
+                media="(max-width: 768px)"
+                :srcset="
+                  img(item.mobile_image, {
+                    format: 'webp',
+                    quality: 80,
+                    width: 768,
+                  })
+                "
+              />
 
+              <!-- Desktop Image -->
               <NuxtImg
-                :preload="true"
-                loading="eager"
-                fetchpriority="high"
-                class="d-block w-100"
                 :src="item.src"
                 :alt="item.title"
-                sizes="(max-width: 768px) 100vw, 1200px"
+                :preload="true"
+                fetchpriority="high"
+                loading="eager"
+                format="webp"
+                quality="80"
+                class="d-block w-100"
+                width="1200"
+                height="400"
               />
             </picture>
           </NuxtLink>
