@@ -25,7 +25,8 @@ import { Pagination } from "swiper/modules";
               <source :srcset="item.mobile_image" media="(max-width: 768px)" />
 
               <NuxtImg
-              loading="lazy"
+                loading="lazy"
+                fetchpriority="high"
                 class="d-block w-100"
                 :src="item.src"
                 :alt="item.title"
