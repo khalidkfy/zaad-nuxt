@@ -33,7 +33,7 @@ export const useSeo = (meta: SeoMeta) => {
 
   const config = useRuntimeConfig();
   // const baseUrl = "zaad.com";
-
+  
   const baseUrl = config.public.baseUrl ?? `https://new.zaad.om`;
 
   const baseGraph = [
@@ -169,8 +169,12 @@ export const useSeo = (meta: SeoMeta) => {
       meta.og_image
         ? { property: "og:image", content: meta.og_image }
         : "https://zaad.com/assets/images/logos/logo.png",
-      { property: "og:image:width", content: 1200 },
-      { property: "og:image:height", content: 630 },
+      meta.og_image
+        ? { property: "og:image:width", content: meta.og_image_width }
+        : { property: "og:image:width", content: 1200 },
+      meta.og_image
+        ? { property: "og:image:height", content: meta.og_image_height }
+        : { property: "og:image:height", content: 630 },
       { property: "og:type", content: meta.og_type || "website" },
 
       // NEED TO HANDLE PER PAGE og:url
@@ -214,7 +218,7 @@ export const useSeo = (meta: SeoMeta) => {
       },
       // hreflangs
       { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${path}` },
-      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}` },
+      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}`},
       { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${path}` },
     ].filter(Boolean),
     script: [

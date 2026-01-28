@@ -58,7 +58,7 @@ const addQty = () => {
   qty.value += 1;
 };
 const subQty = () => {
-  if (qty.value == 1) return;
+  if (qty.value <= 1) return;
   qty.value -= 1;
 };
 

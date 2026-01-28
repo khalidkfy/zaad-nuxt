@@ -208,7 +208,7 @@ onMounted(async () => {
   </div>
   <template v-if="!getOrdersLoading">
     <template v-if="ordersList.length">
-      <div class="table-responsive">
+      <div class="">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -567,7 +567,7 @@ onMounted(async () => {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <div class="modal-title">شيسشسيشسي</div>
+          <div class="modal-title">{{$t("order.receipt")}}</div>
           <button
             type="button"
             class="btn-close"
