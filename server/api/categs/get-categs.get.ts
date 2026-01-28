@@ -5,7 +5,7 @@ import categsData from "~~/server/data/categs.json";
 
 export default defineEventHandler(async (event) => {
   // Retrieve user-agent from headers using getRequestHeaders
-  // const headers = getRequestHeaders(event);
+  const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       .get({
         url: "website-api/categories",
         body: body,
-        // headers: headers,
+        headers: headers,
       })
       .then((res) => {
  
