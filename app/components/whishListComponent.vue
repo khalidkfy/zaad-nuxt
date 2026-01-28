@@ -14,7 +14,8 @@ await getFavCount();
     :href="$localePath('whish-list')"
     class="whish-header"
   >
-    <NuxtImg
+    <img
+    loading="lazy"
       class="me-2"
       width="28"
       height="28"

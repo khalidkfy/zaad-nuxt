@@ -292,7 +292,8 @@ definePageMeta({
               <ul class="dropdown-menu">
                 <li>
                   <button>
-                    <NuxtImg
+                    <img
+                    loading="lazy"
                       width="20"
                       height="20"
                       src="/assets/images/delete.svg"

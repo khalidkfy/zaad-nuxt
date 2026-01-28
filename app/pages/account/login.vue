@@ -106,7 +106,7 @@ onMounted(() => {
   <section class="auth-section p-5">
     <div class="container">
       <div class="text-center">
-        <NuxtImg
+        <img
           width="132"
           height="32"
           src="/assets/images/logo/zaad-logo.svg"

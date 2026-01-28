@@ -117,6 +117,7 @@ const checkoutSellerAll = async (cartItem: any) => {
                 >
                   <div class="img">
                     <NuxtImg
+                    loading="lazy"
                       width="100"
                       height="100"
                       :src="product?.image"

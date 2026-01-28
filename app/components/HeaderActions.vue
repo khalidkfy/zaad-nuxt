@@ -25,7 +25,8 @@ const switchLocale = (newLocale: any) => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <NuxtImg
+              <img
+              loading="lazy"
                 v-if="locale === 'ar'"
                 class="me-1"
                 width="21"
@@ -33,7 +34,8 @@ const switchLocale = (newLocale: any) => {
                 src="/assets/images/flags/oman.svg"
                 alt="oman arabic"
               />
-              <NuxtImg
+              <img
+              loading="lazy"
                 v-if="locale === 'en'"
                 class="me-1"
                 width="21"
@@ -50,7 +52,8 @@ const switchLocale = (newLocale: any) => {
                   href="#ar"
                   class="dropdown-item text-sec-color"
                 >
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     aria-hidden="true"
                     class="me-1"
                     width="21"
@@ -67,7 +70,8 @@ const switchLocale = (newLocale: any) => {
                   href="#en"
                   class="dropdown-item text-sec-color"
                 >
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     aria-hidden="true"
                     class="me-1"
                     width="21"

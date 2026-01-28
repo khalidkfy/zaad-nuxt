@@ -132,6 +132,7 @@ definePageMeta({
         <div class="col-md-5">
           <div class="d-flex h-100 w-100">
             <NuxtImg
+            
               class="img-fluid me-auto"
               width="180"
               loading="lazy"
@@ -158,7 +159,8 @@ definePageMeta({
               </div>
               <div class="icon">
                 <a href="#">
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -176,7 +178,8 @@ definePageMeta({
               </div>
               <div class="icon">
                 <a href="#">
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -194,7 +197,8 @@ definePageMeta({
               </div>
               <div class="icon">
                 <a href="#">
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -212,7 +216,9 @@ definePageMeta({
               </div>
               <div class="icon">
                 <a href="#">
-                  <NuxtImg
+                  <img
+
+                  loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"

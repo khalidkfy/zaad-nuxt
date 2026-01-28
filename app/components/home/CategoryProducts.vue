@@ -21,6 +21,7 @@ const getCategId = (categ) => {
       >
         <div class="col-md-3 d-none d-md-block">
           <NuxtImg
+            loading="lazy"
             class="img-fluid w-100 h-100"
             :alt="categoryProducts?.title"
             :src="categoryProducts?.items[0]?.src"
@@ -29,9 +30,10 @@ const getCategId = (categ) => {
         <div class="col-12 col-md-9">
           <div class="section-header mt-2 mb-3">
             <h3>{{ categoryProducts?.title || $t("general.keepShopping") }}</h3>
-            <NuxtLink :href="$localePath(`/products/${getCategId(categoryProducts)}`)">{{
-              categoryProducts?.action_title
-            }}</NuxtLink>
+            <NuxtLink
+              :href="$localePath(`/products/${getCategId(categoryProducts)}`)"
+              >{{ categoryProducts?.action_title }}</NuxtLink
+            >
           </div>
           <div aria-label="Section Products " class="d-flex overflow-hidden">
             <BaseProductsCarousel

@@ -11,7 +11,7 @@ const items = promotionsSection.value?.items;
                     <picture>
                         <source :srcset="item.mobile_image" media="(max-width: 768px)" />
 
-                        <NuxtImg class="d-block w-100" :src="item.src" :alt="item.title"
+                        <NuxtImg loading="lazy" class="d-block w-100" :src="item.src" :alt="item.title"
                             sizes="(max-width: 768px) 100vw, 1200px" />
                     </picture>
                 </div>

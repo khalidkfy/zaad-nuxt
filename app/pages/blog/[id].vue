@@ -39,11 +39,11 @@ useSeo({
             <h1>{{ blog?.data?.title }}</h1>
             <div class="img">
                 <div class="layer"></div>
-                <NuxtImg width="100" height="100" v-if="blog?.data?.image" :alt="blog?.data?.title"
+                <NuxtImg loading="lazy" width="100" height="100" v-if="blog?.data?.image" :alt="blog?.data?.title"
                     :title="blog?.data?.title" :src="blog?.data?.image" />
             </div>
             <div class="time">
-                <NuxtImg src="/assets/images/time.svg" alt="time" width="18" height="18" />
+                <img loading="lazy" src="/assets/images/time.svg" alt="time" width="18" height="18" />
                 <span> {{ blog?.data?.created_at }}</span>
             </div>
 

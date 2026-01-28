@@ -7,7 +7,7 @@ useSeo({
 
 const { getServicesStores, servicesStores } = useStores();
 await getServicesStores();
- </script>
+</script>
 <template>
   <section class="mt-4">
     <div class="container">
@@ -39,6 +39,7 @@ await getServicesStores();
                   class="store"
                 >
                   <NuxtImg
+                    loading="lazy"
                     width="50"
                     height="50"
                     :title="store?.name"

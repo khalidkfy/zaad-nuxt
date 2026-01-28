@@ -38,6 +38,7 @@ import { Navigation } from "swiper/modules";
           >
             <NuxtLink :href="$localePath(`/stores/products/${item?.id}`)">
               <NuxtImg
+                loading="lazy"
                 width="100"
                 height="100"
                 :src="item.logo"

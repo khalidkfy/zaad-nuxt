@@ -94,6 +94,7 @@ watch(removeWhishErr, (val) => {
         @click.prevent="addToCart(product?.id)"
       >
         <NuxtImg
+          loading="lazy"
           v-if="!addToCartLoading"
           width="19"
           height="19"
@@ -149,6 +150,7 @@ watch(removeWhishErr, (val) => {
       <!-- <div v-if="product?.customOffer" class="custom-offer">{{ product?.customOffer }}</div> -->
       <NuxtImg
         class="product"
+        loading="lazy"
         width="185"
         :src="product?.logo || product?.src || product?.image"
         :alt="product?.title"

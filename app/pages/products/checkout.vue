@@ -343,6 +343,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                 >
                   <td>
                     <NuxtImg
+                    loading="lazy"
                       width="100"
                       height="100"
                       :alt="item?.item?.title"

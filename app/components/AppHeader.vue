@@ -45,7 +45,7 @@ const { user, loggedIn, clear: logout } = useUserSession();
       >
         <div class="container position-relative">
           <NuxtLink :to="$localePath('index')">
-            <NuxtImg
+            <img
               alt="Zaad Logo"
               class="navbar-brand"
               width="132"
@@ -71,7 +71,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
               :href="$localePath('/account/login')"
               class="no-auth ms-4"
             >
-              <NuxtImg
+              <img
+                loading="lazy"
                 class="me-2"
                 width="28"
                 height="28"
@@ -91,7 +92,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <NuxtImg
+                <img
+                  loading="lazy"
                   class="me-2"
                   width="28"
                   height="28"
@@ -110,7 +112,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
                     class="drop-link logout"
                     @click.prevent="callLogout"
                   >
-                    <NuxtImg
+                    <img
+                      loading="lazy"
                       width="20"
                       height="20"
                       src="/assets/images/log-out.svg"
@@ -128,7 +131,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
             id="navbarMain"
           >
             <div v-if="loggedIn && userAddresses?.length" class="location">
-              <NuxtImg
+              <img
+                loading="lazy"
                 class="me-2"
                 width="24"
                 height="24"
@@ -161,7 +165,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
               :href="$localePath('/account/login')"
               class="no-auth ms-4"
             >
-              <NuxtImg
+              <img
+                loading="lazy"
                 class="me-2"
                 width="28"
                 height="28"
@@ -181,7 +186,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <NuxtImg
+                <img
+                  loading="lazy"
                   class="me-2"
                   width="28"
                   height="28"
@@ -281,7 +287,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
                     class="drop-link logout"
                     @click.prevent="callLogout"
                   >
-                    <NuxtImg
+                    <img
+                      loading="lazy"
                       width="20"
                       height="20"
                       src="/assets/images/log-out.svg"
@@ -318,7 +325,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
     >
       <div class="offcanvas-header">
         <div class="offcanvas-title" id="offcanvasAppLabel">
-          <NuxtImg
+          <img
+            loading="lazy"
             width="112"
             height="40"
             src="/assets/images/logo/zaad-logo.svg"
@@ -344,11 +352,12 @@ const { user, loggedIn, clear: logout } = useUserSession();
           :href="$localePath('/account/login')"
           class="no-auth mt-5"
         >
-          <NuxtImg
+          <img
             class="me-2"
             width="28"
             height="28"
             alt="location"
+            loading="lazy"
             src="/assets/images/user.svg"
           />
           <div class="d-flex">
@@ -364,7 +373,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <NuxtImg
+            <img
+              loading="lazy"
               class="me-2"
               width="28"
               height="28"
@@ -464,7 +474,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
                 class="drop-link logout"
                 @click.prevent="callLogout"
               >
-                <NuxtImg
+                <img
+                  loading="lazy"
                   width="20"
                   height="20"
                   src="/assets/images/log-out.svg"
@@ -490,7 +501,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
     <div v-if="loggedIn" class="bottom-menu">
       <div class="d-flex align-items-center">
         <NuxtLink :href="$localePath('/account/profile')">
-          <NuxtImg
+          <img
+            loading="lazy"
             class="me-2"
             width="28"
             height="28"
@@ -507,7 +519,8 @@ const { user, loggedIn, clear: logout } = useUserSession();
       <!-- </ClientOnly> -->
 
       <div v-if="userAddresses?.length" class="location">
-        <NuxtImg
+        <img
+          loading="lazy"
           class="me-2"
           width="28"
           height="28"

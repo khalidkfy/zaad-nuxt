@@ -6,7 +6,7 @@
     class="float-contact"
     aria-label="WhatsApp contact"
   >
-    <NuxtImg
+    <img
       width="24"
       height="24"
       src="/assets/images/whatsapp.svg"

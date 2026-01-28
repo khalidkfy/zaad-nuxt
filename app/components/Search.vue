@@ -33,7 +33,8 @@ const handleSearch = () => {
               class="categ"
               :class="{ active: activeCateg === null }"
             >
-              <NuxtImg
+              <img
+              loading="lazy"
                 :src="
                   activeCateg === null
                     ? '/assets/images/check.svg'
@@ -51,7 +52,8 @@ const handleSearch = () => {
               class="categ"
               :class="{ active: activeCateg?.id == categ?.id }"
             >
-              <NuxtImg
+              <img
+              loading="lazy"
                 :src="
                   activeCateg?.id == categ?.id
                     ? '/assets/images/check.svg'

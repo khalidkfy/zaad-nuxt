@@ -760,7 +760,8 @@ const checkout = async () => {
               </div>
             </div>
             <div class="arrow">
-              <NuxtImg
+              <img
+              loading="lazy"
                 src="/assets/images/arrow.svg"
                 alt="arrow"
                 width="16"

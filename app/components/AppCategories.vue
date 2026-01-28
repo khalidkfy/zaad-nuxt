@@ -41,7 +41,7 @@ const sortedServices = computed(() => {
           "
         
         >
-          <NuxtImg
+          <img
             src="/assets/images/categs.svg"
             width="24"
             alt="all"
@@ -61,7 +61,7 @@ const sortedServices = computed(() => {
             activeTab = 'services';
           "
         >
-          <NuxtImg
+          <img
             src="/assets/images/services.svg"
             width="24"
             alt="all"

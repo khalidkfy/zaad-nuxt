@@ -25,7 +25,7 @@ const filterItems = () => {
         />
         <div class="input-group-text">
           <button type="submit" aria-label="search">
-            <NuxtImg width="16" height="16" src="/assets/images/search.svg" />
+            <img loading="lazy" width="16" height="16" src="/assets/images/search.svg" />
           </button>
         </div>
       </div>
@@ -37,7 +37,7 @@ const filterItems = () => {
           :class="{ active: activeCateg == categ.id }"
           :href="$localePath(`/products/${categ.id}`)"
         >
-          <NuxtImg
+          <img
             :src="
               activeCateg == categ.id
                 ? '/assets/images/check.svg'

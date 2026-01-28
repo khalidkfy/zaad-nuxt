@@ -54,7 +54,8 @@ const showSidebar = computed(() => {
               <div class="user-info-card">
                 <template v-if="!getProfileLoading">
                   <div class="info text-center">
-                    <NuxtImg
+                    <img
+                      loading="lazy"
                       width="117"
                       height="117"
                       :src="
@@ -67,7 +68,8 @@ const showSidebar = computed(() => {
                   </div>
                   <div class="contact">
                     <div>
-                      <NuxtImg
+                      <img
+                        loading="lazy"
                         width="20"
                         height="20"
                         src="/assets/images/phone.svg"
@@ -76,7 +78,8 @@ const showSidebar = computed(() => {
                       <span dir="ltr">+{{ profileData?.mobile }}</span>
                     </div>
                     <div>
-                      <NuxtImg
+                      <img
+                        loading="lazy"
                         width="20"
                         height="20"
                         src="/assets/images/message.svg"
@@ -91,7 +94,8 @@ const showSidebar = computed(() => {
                     v-for="(address, i) in profileData?.address"
                     :key="i"
                   >
-                    <NuxtImg
+                    <img
+                      loading="lazy"
                       width="20"
                       height="20"
                       src="/assets/images/loca.svg"

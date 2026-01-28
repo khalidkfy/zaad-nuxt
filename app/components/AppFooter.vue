@@ -42,12 +42,13 @@ const getMenuLink = (item: any) => {
         <div class="row justify-content-between gy-4">
           <div class="col-md-2">
             <NuxtLink href="/">
-              <NuxtImg
+              <img
                 width="134"
                 height="113"
                 src="/assets/images/logo/zaad-logo.svg"
                 alt="Zaad"
                 class="footer-logo"
+                loading="lazy"
               />
             </NuxtLink>
           </div>
@@ -72,11 +73,12 @@ const getMenuLink = (item: any) => {
                 <div class="row">
                   <div class="col-md-6">
                     <NuxtLink href="/" class="download">
-                      <NuxtImg
+                      <img
                         width="20"
                         height="20"
                         src="/assets/images/google-play-store.svg"
                         alt="Google Play"
+                        loading="lazy"
                       />
                       <div class="d-flex flex-column ms-2">
                         <span>{{ $t("footer.downloadApp") }}</span>
@@ -86,11 +88,12 @@ const getMenuLink = (item: any) => {
                   </div>
                   <div class="col-md-6">
                     <NuxtLink href="/" class="download">
-                      <NuxtImg
+                      <img
                         width="20"
                         height="20"
                         src="/assets/images/apple.svg"
                         alt="App Store"
+                        loading="lazy"
                       />
                       <div class="d-flex flex-column ms-2">
                         <span>{{ $t("footer.downloadApp") }}</span>
@@ -106,6 +109,7 @@ const getMenuLink = (item: any) => {
                       height="112"
                       src="/assets/images/qr.png"
                       alt="Google Play"
+                      loading="lazy"
                     />
                   </div>
                   <div class="col-md-6">
@@ -114,6 +118,7 @@ const getMenuLink = (item: any) => {
                       height="112"
                       src="/assets/images/qr.png"
                       alt="Google Play"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -126,11 +131,12 @@ const getMenuLink = (item: any) => {
                     :href="constants?.resources?.social.youtube"
                     class="social"
                   >
-                    <NuxtImg
+                    <img
                       width="24"
                       height="24"
                       src="/assets/images/youtube.svg"
                       alt="youtube"
+                      loading="lazy"
                     />
                   </NuxtLink>
                   <NuxtLink
@@ -138,11 +144,12 @@ const getMenuLink = (item: any) => {
                     :href="constants?.resources?.social.linkedin"
                     class="social"
                   >
-                    <NuxtImg
+                    <img
                       width="24"
                       height="24"
                       src="/assets/images/in.svg"
                       alt="linkedin"
+                      loading="lazy"
                     />
                   </NuxtLink>
                   <NuxtLink
@@ -150,11 +157,12 @@ const getMenuLink = (item: any) => {
                     :href="constants?.resources?.social.instagram"
                     class="social"
                   >
-                    <NuxtImg
+                    <img
                       width="24"
                       height="24"
                       src="/assets/images/insta.svg"
                       alt="instagram"
+                      loading="lazy"
                     />
                   </NuxtLink>
                   <NuxtLink
@@ -162,11 +170,12 @@ const getMenuLink = (item: any) => {
                     :href="constants?.resources?.social.twitter"
                     class="social"
                   >
-                    <NuxtImg
+                    <img
                       width="24"
                       height="24"
                       src="/assets/images/x.svg"
                       alt="x twitter"
+                      loading="lazy"
                     />
                   </NuxtLink>
                   <!-- TODO Facebook icon -->
@@ -175,8 +184,9 @@ const getMenuLink = (item: any) => {
                   v-if="constants?.resources?.contacts?.hotline"
                   class="d-flex gap-2 mt-4"
                 >
-                  <NuxtImg
+                  <img
                     width="20"
+                    loading="lazy"
                     height="20"
                     src="/assets/images/telephone.svg"
                     alt="telephone"
@@ -189,7 +199,8 @@ const getMenuLink = (item: any) => {
                   v-if="constants?.resources?.contacts?.email"
                   class="d-flex gap-2 mt-4"
                 >
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     width="20"
                     height="20"
                     src="/assets/images/message.svg"
@@ -217,6 +228,7 @@ const getMenuLink = (item: any) => {
             width="680"
             src="/assets/images/footer-bottom.png"
             alt="company"
+            loading="lazy"
           />
         </div>
       </div>
@@ -230,7 +242,7 @@ const getMenuLink = (item: any) => {
   align-items: center;
   gap: 10px;
   @media (max-width: 992px) {
-   flex-direction: column;
+    flex-direction: column;
   }
 }
 footer {

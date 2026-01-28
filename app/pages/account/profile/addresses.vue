@@ -67,7 +67,8 @@ onMounted(async () => {
         <div class="address-card">
           <div class="layer">
             <button class="edit" title="edit">
-              <NuxtImg
+              <img
+              loading="lazy"
                 width="20"
                 height=""
                 src="/assets/images/edit.svg"
@@ -75,7 +76,8 @@ onMounted(async () => {
               />
             </button>
             <button class="delete" title="delete">
-              <NuxtImg
+              <img
+              loading="lazy"
                 width="20"
                 height=""
                 src="/assets/images/delete.svg"

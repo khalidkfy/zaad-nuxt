@@ -19,7 +19,8 @@ await getAboutPage();
               </p>
             </div>
             <div class="img">
-              <NuxtImg
+              <img
+              loading="lazy"
                 width="627"
                 height="370"
                 src="/assets/images/about.svg"
@@ -39,7 +40,8 @@ await getAboutPage();
         <div class="mt-4">
           <div class="row">
             <div class="col-md-8">
-              <NuxtImg
+              <img
+              loading="lazy"
                 class="img-fluid w-100"
                 width="804"
                 height="474"
@@ -51,7 +53,8 @@ await getAboutPage();
             <div class="col-md-4">
               <div class="row h-100 gap-2">
                 <div class="col-md-12">
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     class="h-100"
                     width="385"
                     height="144"
@@ -61,7 +64,8 @@ await getAboutPage();
                   />
                 </div>
                 <div class="col-md-12">
-                  <NuxtImg
+                  <img
+                  loading="lazy"
                     class="h-100"
                     width="385"
                     height="310"
@@ -111,7 +115,8 @@ await getAboutPage();
             </div>
           </div>
           <div class="col-md-6 d-flex justify-content-end">
-            <NuxtImg
+            <img
+            loading="lazy"
               class="img-fluid w-100 h-100"
               src="/assets/images/about-numbers.svg"
               alt="about us"

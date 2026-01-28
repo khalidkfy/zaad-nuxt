@@ -39,6 +39,7 @@ await getProductsStores();
                   class="store"
                 >
                   <NuxtImg
+                  loading="lazy"
                     width="50"
                     height="50"
                     :title="store?.name"

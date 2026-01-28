@@ -26,7 +26,8 @@ definePageMeta({
                 :placeholder="$t('faq.search')"
               />
               <div class="input-group-text">
-                <NuxtImg
+                <img
+                loading="lazy"
                   width="16"
                   height="16"
                   src="/assets/images/search.svg"
