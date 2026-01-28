@@ -32,6 +32,7 @@ useSeo({
     productDetails.value?.seo.description ||
     productDetails.value?.short_description,
   title: productDetails.value?.seo.title || productDetails.value?.title,
+  og_image: productDetails.value?.seo.src,
 });
 
 const galleryImages = computed(() => {
@@ -53,7 +54,6 @@ const galleryImages = computed(() => {
 const qty = ref(productDetails?.value?.cart_count);
 const isCartItem = ref(productDetails?.value?.cart_item);
 const addQty = () => {
- 
   if (qty.value == productDetails?.value?.quantity) return;
   qty.value += 1;
 };
@@ -761,7 +761,7 @@ const checkout = async () => {
             </div>
             <div class="arrow">
               <img
-              loading="lazy"
+                loading="lazy"
                 src="/assets/images/arrow.svg"
                 alt="arrow"
                 width="16"
@@ -1150,7 +1150,6 @@ hr {
             background-color: #bb2d3b;
             color: #fff;
           }
-     
         }
         &:hover {
           background-color: #cecece;
@@ -1162,7 +1161,7 @@ hr {
         }
         &:disabled {
           cursor: no-drop;
-          opacity: .8;
+          opacity: 0.8;
         }
         svg {
           margin-inline-end: 8px;

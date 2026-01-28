@@ -35,12 +35,7 @@ export default defineNuxtConfig({
       { code: "ar", iso: "ar-AR", name: "Arabic", file: "ar.json" },
     ],
     defaultLocale: "ar",
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      redirectOn: "root",
-      alwaysRedirect: false,
-    },
+    detectBrowserLanguage: false,
   },
   vite: {
     build: {
