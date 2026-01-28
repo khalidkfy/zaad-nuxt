@@ -229,4 +229,7 @@ await getAboutPage();
     }
   }
 }
+::marker {
+    content: unset
+}
 </style>

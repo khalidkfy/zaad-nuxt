@@ -43,7 +43,11 @@ const activeTap = ref<string>("customers");
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss" >
+
+::marker {
+    content: unset
+}
 .page-content {
   margin-top: 40px;
 

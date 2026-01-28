@@ -19,6 +19,10 @@ definePageMeta({
    </div>
 </template>
 <style lang="scss" scoped>
+
+::marker {
+    content: unset
+}
    .page-content {
       margin-top: 40px;
       h1 {

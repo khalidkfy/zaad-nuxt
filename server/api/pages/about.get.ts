@@ -3,7 +3,7 @@ import { HttpService } from "@@/server/services/http-service";
 
 export default defineEventHandler(async (event) => {
   // Retrieve user-agent from headers using getRequestHeaders
-  // const headers = getRequestHeaders(event);
+  const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const res = await apiService.get({
       url: "api/pages/about-us",
       body: [],
-      // headers,
+      headers,
     });
      
     return res;
