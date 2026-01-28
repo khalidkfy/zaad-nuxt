@@ -32,7 +32,7 @@ useSeo({
     productDetails.value?.seo.description ||
     productDetails.value?.short_description,
   title: productDetails.value?.seo.title || productDetails.value?.title,
-  og_image: productDetails.value?.seo.src,
+  og_image: productDetails.value?.src,
 });
 
 const galleryImages = computed(() => {
