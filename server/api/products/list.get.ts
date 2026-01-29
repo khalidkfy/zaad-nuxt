@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
             .get({
                 url: "api/items",
                 body: body,
-                headers: headers,
+                // headers: headers,
             
             })
             .then((res) => {
