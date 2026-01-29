@@ -8,30 +8,45 @@ export class HttpService {
     const config = useRuntimeConfig();
     this.api_prefix = config.apiBase;
     this.event = event;
-     
+
   }
 
   prepareRequestHeaders = async (headers?: {}): Promise<{}> => {
     const session = await getUserSession(this.event);
     let authToken = null;
 
-     
 
-    if (session?.user) {
-      if (session?.access_token) {
-        authToken = session?.access_token;
-      }
+
+    if (session?.user && session?.access_token) {
+      authToken = session.access_token;
     }
-    return {
+
+    const preparedHeaders: Record<string, string> = {
       Accept: "application/json",
-      Authorization: authToken ? `Bearer ${authToken}` : "",
-      ...headers,
+      ...(authToken && { Authorization: `Bearer ${authToken}` }),
     };
+
+    const lang = getHeader(this.event, 'lang') || getHeader(this.event, 'Lang');
+    if (lang) {
+      preparedHeaders['Lang'] = lang;
+    }
+     if (headers && typeof headers === 'object') {
+      const allowedExternalHeaders = ['Lang', 'Accept-Language', 'Content-Type'];
+      
+      Object.entries(headers).forEach(([key, value]) => {
+        if (allowedExternalHeaders.includes(key) && value) {
+          preparedHeaders[key] = value;
+        }
+      });
+    }
+
+    return preparedHeaders;
+   
   };
 
   post = async (params: { url: String; body: Array<any>; headers?: {} }) => {
     const headers = await this.prepareRequestHeaders(params.headers);
- 
+
     return $fetch(`${this.api_prefix}/${params.url}`, {
       method: "POST",
       headers: headers,
