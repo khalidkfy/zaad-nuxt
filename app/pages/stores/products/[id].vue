@@ -13,6 +13,15 @@ const id = route.params.id;
 
 await getProductsStoreItems(id);
 
+console.log(productsStoreItems.value);
+
+if (!productsStoreItems.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: "not found",
+  });
+}
+
 useSeo({
   description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
   // title: `${productsStoreItems?.value?.seller?.store_name}`,
@@ -78,19 +87,34 @@ const loadMore = async () => {
           </div>
         </div>
         <div class="col-md-9">
-          <div class="row">
-            <div
-              class="col-sm-3 col-6 mb-4"
-              v-for="(product, i) in products"
-              :key="i"
-            >
-              <ProductCard
-                styleFor="store"
-                @removed="handleWhishRemove"
-                :product="product"
-              />
+          <template v-if="products?.length">
+            <div class="row">
+              <div
+                class="col-sm-3 col-6 mb-4"
+                v-for="(product, i) in products"
+                :key="i"
+              >
+                <ProductCard
+                  styleFor="store"
+                  @removed="handleWhishRemove"
+                  :product="product"
+                />
+              </div>
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <div class="row text-center">
+              <div class="col">
+                <div class="mb-4">{{ $t("items.noData") }}</div>
+                <NuxtLink
+                  :href="$localePath('/stores/products')"
+                  class="btn-zaad"
+                  >{{ $t("links.productsStores") }}</NuxtLink
+                >
+              </div>
+            </div>
+          </template>
+
           <div class="text-center mt-4" v-if="hasMore">
             <button class="btn-zaad" :disabled="loading" @click="loadMore">
               <span v-if="loading">{{ $t("general.wait") }}</span>

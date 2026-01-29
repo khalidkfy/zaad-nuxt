@@ -27,6 +27,13 @@ watch(addSuccess, (value) => {
 
 await getProductDetails(id);
 
+if (!productDetails.value || (productDetails.value as any).error) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: t("general.productNotFound"),
+  });
+}
+
 useSeo({
   description:
     productDetails.value?.seo.description ||

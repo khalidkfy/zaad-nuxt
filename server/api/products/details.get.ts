@@ -18,24 +18,23 @@ export default defineEventHandler(async (event) => {
     const apiServie = new HttpService(event);
 
     try {
-        const data = apiServie
-            .get({
-                url: `api/items/${body?.item_id}`,
-                body: body,
-                headers: headers,
-            
-            })
-            .then((res) => {
-                
-                return res;
-            })
-            .catch((err) => {
-                return err;
-            });
+        const data = await apiServie.get({
+            url: `api/items/${body?.item_id}`,
+            body,
+            headers,
+        });
+
+        if (!data) {
+            throw createError({ statusCode: 404, statusMessage: 'Product not found' });
+        }
 
         return data;
     } catch (err) {
-        console.warn("API offline → loading local fallback JSON", err);
+
+        if (err?.statusCode === 404) {
+            throw createError({ statusCode: 404, statusMessage: 'Product not found' });
+        }
+        return { error: 'API offline' };
 
     }
 });
