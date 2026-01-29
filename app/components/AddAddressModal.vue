@@ -148,8 +148,7 @@ const handleSubmit = async () => {
       },
     });
 
-    console.log(response, "responseresponseresponse");
-
+ 
     // Emit success event
     emit("newAddress", response);
 

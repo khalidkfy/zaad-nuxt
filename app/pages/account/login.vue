@@ -76,8 +76,7 @@ const handleLogin = async () => {
         password: values.password,
       },
     });
-    console.log(response, "response");
-
+ 
     if (response.access_token) {
       submitSuccess.value = true;
     }

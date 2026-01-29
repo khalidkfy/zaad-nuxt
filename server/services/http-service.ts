@@ -15,8 +15,7 @@ export class HttpService {
     const session = await getUserSession(this.event);
     let authToken = null;
 
-    console.log(headers,"hgaawd");
-    
+     
 
     if (session?.user) {
       if (session?.access_token) {
