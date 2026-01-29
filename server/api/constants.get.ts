@@ -5,6 +5,7 @@ import { HttpService } from "@@/server/services/http-service";
 export default defineEventHandler(async (event) => {
 
     
+    const headers = getRequestHeaders(event);
 
     const query = getQuery(event);
 
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
             .get({
                 url: "api/constants",
                 body: body,
-                // headers: headers,
+                headers: headers,
 
             })
             .then((res) => {

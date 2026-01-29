@@ -91,6 +91,11 @@ const checkout = async () => {
           {{ $t("links.products") }}
         </NuxtLink>
         <div>/</div>
+        <NuxtLink active-class="active" :href="$localePath(`/stores/products/${productDetails?.store?.id}`)">
+          {{productDetails?.store?.name}}
+        </NuxtLink>
+        <div>/</div>
+
         <NuxtLink
           active-class="active"
           :href="$localePath(`/products/item/${id}`)"

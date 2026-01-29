@@ -10,11 +10,12 @@ const category_id = computed(() => {
 const activeCategory = productsCategs.value.find(
   (item: any) => item.id == category_id.value,
 );
+let title = category_id.value
+  ? `${t("links.products")} - ${activeCategory?.name}`
+  : t("links.products");
 
 useSeo({
-  title: category_id.value
-    ? `${t("links.products")} | ${activeCategory?.name}`
-    : t("links.products"),
+  title: t("meta.setMeta", { meta: title }),
 });
 
 const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =

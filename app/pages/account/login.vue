@@ -11,7 +11,7 @@ const { t } = useI18n();
 const router = useRouter();
 const localePath = useLocalePath();
 useSeo({
-  title: t("login.h1"),
+  title: t("meta.setMeta", { meta: t("login.h1") }),
   description: t("login.h1"),
 });
 
@@ -54,7 +54,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
       },
     ],
     remember_me: [],
-  }
+  },
 );
 
 const formLoading = ref(false);
@@ -77,17 +77,17 @@ const handleLogin = async () => {
       },
     });
     console.log(response, "response");
-    
+
     if (response.access_token) {
       submitSuccess.value = true;
     }
     try {
       await fetch();
 
-      await getProfileRes()
-      
+      await getProfileRes();
+
       await router.push(localePath("/"));
-     } catch (e) {
+    } catch (e) {
       console.error("navigation failed", e);
     }
   } catch (err) {
@@ -99,18 +99,13 @@ const handleLogin = async () => {
 };
 const config = useRuntimeConfig();
 
-onMounted(() => {
- });
+onMounted(() => {});
 </script>
 <template>
   <section class="auth-section p-5">
     <div class="container">
       <div class="text-center">
-        <img
-          width="132"
-          height="32"
-          src="/assets/images/logo/zaad-logo.svg"
-        />
+        <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
         <h1>{{ $t("login.h1") }}</h1>
       </div>
 
@@ -208,7 +203,7 @@ section.auth-section {
   justify-content: center;
   margin: auto;
   width: 40%;
-  @media (max-width:992px) {
+  @media (max-width: 992px) {
     width: 100%;
   }
 

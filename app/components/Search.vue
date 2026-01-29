@@ -19,6 +19,7 @@ const handleSearch = () => {
     <form @submit.prevent="handleSearch">
       <div class="dropdown active-categ">
         <button
+        type="button"
           class="dropdown-toggle"
           title="Actions"
           data-bs-toggle="dropdown"

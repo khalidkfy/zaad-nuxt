@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Retrieve user-agent from headers using getRequestHeaders
-  // const headers = getRequestHeaders(event);
+  const headers = getRequestHeaders(event);
 
   // await requireAuth(event);
 
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       .get({
         url: `api/shopping-cart/items`,
         body: body,
-        // headers: headers,
+        headers: headers,
       })
       .then((res) => {
         return res;

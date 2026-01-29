@@ -1,5 +1,10 @@
 <script setup lang="ts">
-useSeo({});
+const {t} = useI18n();
+
+useSeo({
+  title: t("meta.setMeta", { meta: t("meta.pages.return.title") }),
+  description: t("meta.pages.return.desc"),
+});
 const { getReturnPage, returnPage } = usePages();
 await getReturnPage();
 definePageMeta({

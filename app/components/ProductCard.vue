@@ -196,11 +196,8 @@ watch(removeWhishErr, (val) => {
       <div v-else class="price">
         <div>
           <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
-            product?.regular_price
+            $t("general.curr_value", {value:  product?.regular_price})
           }}</span>
-          <span :style="{ color: textColor ? textColor : '' }" class="currency"
-            >ر.ع</span
-          >
         </div>
         <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
                     product?.regular_price }}</span> -->
@@ -278,7 +275,7 @@ watch(removeWhishErr, (val) => {
       background-color: var(--main-color);
       border-radius: 50%;
       width: 39px;
-      z-index: 99993;
+      z-index: 999;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -8,7 +8,7 @@ definePageMeta({
 });
 
 useSeo({
-  title: t("register.h1"),
+  title: t("meta.setMeta", { meta: t("register.h1") }),
   description: t("register.h1"),
 });
 
@@ -72,7 +72,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         }),
       },
     ],
-  }
+  },
 );
 
 const formLoading = ref(false);
@@ -81,7 +81,6 @@ const submitSuccess = ref(false);
 const viewPassword = ref(false);
 
 const handleResponseErr = (errs) => {
- 
   if (errs?.email) {
     errors.email = errs.email;
   }
@@ -127,7 +126,6 @@ const handleRegister = async () => {
       submitSuccess.value = true;
     }
   } catch (err) {
- 
     if (err?.data?.data?.errors) {
       handleResponseErr(err?.data?.data?.errors);
     }
@@ -141,11 +139,7 @@ const handleRegister = async () => {
   <section class="auth-section p-5">
     <div class="container">
       <div class="text-center">
-        <img
-          width="132"
-          height="32"
-          src="/assets/images/logo/zaad-logo.svg"
-        />
+        <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
         <h1>{{ $t("register.h1") }}</h1>
       </div>
 

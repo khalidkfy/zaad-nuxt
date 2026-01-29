@@ -1,7 +1,9 @@
 <script setup lang="ts">
-useSeo({});
-definePageMeta({
-  prerender: true,
+const { t } = useI18n();
+useSeo({
+  title: t("meta.setMeta", { meta: t("meta.pages.contact.title") }),
+  description: `${t("meta.pages.contact.desc")}`,
+  keywords: `${t("meta.pages.contact.keywords")}`,
 });
 </script>
 <template>
@@ -132,7 +134,6 @@ definePageMeta({
         <div class="col-md-5">
           <div class="d-flex h-100 w-100">
             <NuxtImg
-            
               class="img-fluid me-auto"
               width="180"
               loading="lazy"
@@ -160,7 +161,7 @@ definePageMeta({
               <div class="icon">
                 <a href="#">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -179,7 +180,7 @@ definePageMeta({
               <div class="icon">
                 <a href="#">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -198,7 +199,7 @@ definePageMeta({
               <div class="icon">
                 <a href="#">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"
@@ -217,8 +218,7 @@ definePageMeta({
               <div class="icon">
                 <a href="#">
                   <img
-
-                  loading="lazy"
+                    loading="lazy"
                     width="40"
                     height="40"
                     src="/assets/images/info-arrow.svg"

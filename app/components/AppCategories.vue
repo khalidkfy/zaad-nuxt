@@ -51,7 +51,7 @@ const sortedServices = computed(() => {
         </button>
 
         <!-- Services Button -->
-        <button
+        <!-- <button
           class="services me-2"
           title="services"
           :class="{ active: isMegaMenuOpen && activeTab === 'services' }"
@@ -68,7 +68,7 @@ const sortedServices = computed(() => {
             height="24"
           />
           <span class="ps-2">{{ $t("categs.services") }}</span>
-        </button>
+        </button> -->
       </div>
 
       <!-- Mega Menu Dropdown - MOVED OUTSIDE fixed-categs -->
@@ -87,13 +87,13 @@ const sortedServices = computed(() => {
             >
               {{ $t("categs.shopBy") }}
             </button>
-            <button
+            <!-- <button
               class="tab-button"
               :class="{ active: activeTab === 'services' }"
               @click="activeTab = 'services'"
             >
               {{ $t("categs.services") }}
-            </button>
+            </button> -->
           </div>
 
           <!-- Shop By Content -->
@@ -247,7 +247,7 @@ const sortedServices = computed(() => {
   top: 100%; /* Position below the holder */
   left: 0;
   width: 100%;
-  z-index: 999998;
+  z-index: 1001;
   background-color: white;
   z-index: 9999;
   margin-top: 10px;

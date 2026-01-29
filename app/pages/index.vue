@@ -10,6 +10,7 @@ definePageMeta({
 const baseUrl = config.public.baseUrl;
 
 useSeo({
+    title:t("meta.default.title")
 });
 
 const { getPage1, categoryProducts } = usePages();

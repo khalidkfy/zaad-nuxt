@@ -1,9 +1,28 @@
 {
   "meta": {
+    "setMeta": "{meta} - Zaad oman",
+    "appName": "Zaad Oman",
     "default": {
       "title": "Zaadoman Online shopping for electronic devices, clothes, computers, mobiles",
       "desc": "Online shopping at the best prices and specifications for mobiles, tablets, laptops, home appliances, clothes, cosmetics, makeup, perfume, watches and accessories Free Shipping Payment on receipt Zaadoman ",
       "keywords": "zaad, oman, shopping, ecommerce"
+    },
+    "pages": {
+      "contact": {
+        "title": "Contact Us",
+        "desc": "Contact Zaad Oman",
+        "keywords": "zaad, oman, contact, support"
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "desc": "Zaad Oman Privacy Policy",
+        "keywords": "zaad, oman, Privacy, Policy"
+      },
+       "return":{
+        "title": "Return Policy",
+        "desc": "The Return Policy of Zaad Oman",
+        "keywords": "zaad, oman, Return, Policy"
+      }
     }
   },
   "cookies": {

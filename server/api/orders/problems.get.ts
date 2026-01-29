@@ -3,6 +3,7 @@ import { HttpService } from "@@/server/services/http-service";
 
 
 export default defineEventHandler(async (event) => {
+  const headers = getRequestHeaders(event);
 
     const { user } = await requireUserSession(event);
 
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
             .get({
                 url: "api/dispute/problems",
                 body: body,
-                // headers: headers,
+                headers: headers,
 
             })
             .then((res) => {
