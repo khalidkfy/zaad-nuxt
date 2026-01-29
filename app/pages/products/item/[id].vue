@@ -62,7 +62,7 @@ const subQty = () => {
   qty.value -= 1;
 };
 
-const activeTab = ref("rates");
+const activeTab = ref("desc");
 const changeTab = (tab: string) => {
   activeTab.value = tab;
 };
@@ -80,6 +80,52 @@ const checkout = async () => {
   localStorage.setItem("checkoutData", JSON.stringify(data));
   router.push("/products/checkout");
 };
+
+const showShare = ref(false);
+const shareUrl = computed(() => {
+  if (process.client) {
+    return window.location.href;
+  }
+  return "";
+});
+const shareTitle = computed(() => productDetails.value?.title || "");
+const shareText = computed(() => productDetails.value?.short_description || "");
+
+// Native share (mobile)
+const handleShareClick = async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: shareTitle.value,
+        text: shareText.value,
+        url: shareUrl.value,
+      });
+    } catch (err) {
+      console.log("Share cancelled");
+    }
+  } else {
+    showShare.value = !showShare.value;
+  }
+};
+
+// Social share links
+const shareLinks = computed(() => ({
+  whatsapp: `https://wa.me/?text=${encodeURIComponent(
+    shareTitle.value + " " + shareUrl.value,
+  )}`,
+  facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    shareUrl.value,
+  )}`,
+  twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+    shareTitle.value,
+  )}&url=${encodeURIComponent(shareUrl.value)}`,
+  telegram: `https://t.me/share/url?url=${encodeURIComponent(
+    shareUrl.value,
+  )}&text=${encodeURIComponent(shareTitle.value)}`,
+  email: `mailto:?subject=${encodeURIComponent(
+    shareTitle.value,
+  )}&body=${encodeURIComponent(shareUrl.value)}`,
+}));
 </script>
 <template>
   <section class="mt-4">
@@ -91,8 +137,11 @@ const checkout = async () => {
           {{ $t("links.products") }}
         </NuxtLink>
         <div>/</div>
-        <NuxtLink active-class="active" :href="$localePath(`/stores/products/${productDetails?.store?.id}`)">
-          {{productDetails?.store?.name}}
+        <NuxtLink
+          active-class="active"
+          :href="$localePath(`/stores/products/${productDetails?.store?.id}`)"
+        >
+          {{ productDetails?.store?.name }}
         </NuxtLink>
         <div>/</div>
 
@@ -134,6 +183,7 @@ const checkout = async () => {
                 >
               </div>
               <ProductRate class="my-4" />
+              <p>{{ productDetails?.short_description }}</p>
               <div class="price">
                 {{
                   $t("general.curr_value", {
@@ -395,13 +445,13 @@ const checkout = async () => {
       <div class="row">
         <div class="col-md-7">
           <div class="product-tabs">
-            <div
+            <!-- <div
               @click.prevent="changeTab('rates')"
               :class="{ active: activeTab === 'rates' }"
               class="tab"
             >
               {{ $t("general.rates") }}
-            </div>
+            </div> -->
             <div
               @click.prevent="changeTab('desc')"
               :class="{ active: activeTab === 'desc' }"
@@ -415,7 +465,7 @@ const checkout = async () => {
           <div class="product-tab-content">
             <transition name="fade-slide" mode="out-in">
               <div :key="activeTab">
-                <div v-if="activeTab === 'rates'">
+                <!-- <div v-if="activeTab === 'rates'">
                   <div class="rates">
                     <div class="rate">
                       <div class="rate-value">4.5 <span> /5</span></div>
@@ -696,8 +746,8 @@ const checkout = async () => {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div v-else>
+                </div> -->
+                <div v-if="activeTab === 'desc'">
                   <div v-html="productDetails?.description"></div>
                 </div>
               </div>
@@ -705,7 +755,7 @@ const checkout = async () => {
           </div>
         </div>
         <div class="col-md-5">
-          <div class="share-item">
+          <div @click="handleShareClick" class="share-item">
             <div class="share">
               <div class="icon">
                 <svg
@@ -772,6 +822,13 @@ const checkout = async () => {
                 width="16"
                 height="8"
               />
+            </div>
+            <div v-if="showShare" class="share-popup">
+              <a :href="shareLinks.whatsapp" target="_blank">WhatsApp</a>
+              <a :href="shareLinks.facebook" target="_blank">Facebook</a>
+              <a :href="shareLinks.twitter" target="_blank">X / Twitter</a>
+              <a :href="shareLinks.telegram" target="_blank">Telegram</a>
+              <a :href="shareLinks.email">Email</a>
             </div>
           </div>
         </div>
@@ -1078,7 +1135,7 @@ hr {
     color: #000;
   }
   .qty {
-    margin-top: 20px;
+    margin: 20px 0;
     display: inline-flex;
     background-color: rgba(210, 210, 210, 0.1019607843);
     gap: 8px;
