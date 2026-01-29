@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
             
             })
             .then((res) => {
+                console.log("items res => ", res);
                 
                 return res;
             })
