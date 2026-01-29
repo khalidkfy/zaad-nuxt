@@ -326,6 +326,7 @@ const shareLinks = computed(() => ({
                   :disabled="!isCartItem"
                   :title="isCartItem ? $t('general.buyNow') : $t('cart.add')"
                   class="btn-zaad"
+                  v-if="isCartItem"
                 >
                   {{ $t("general.buyNow") }}
                 </button>
@@ -334,6 +335,7 @@ const shareLinks = computed(() => ({
                   @click.prevent="addToCart(productDetails?.id, qty)"
                   class="btn-cart"
                   v-if="!isCartItem"
+                  title="اضف الى السلة"
                 >
                   <svg
                     v-if="!addToCartLoading"
@@ -387,6 +389,7 @@ const shareLinks = computed(() => ({
                   "
                   class="btn-cart remove"
                   v-else
+                  title="ازالة من السلة"
                 >
                   <svg
                     v-if="!deleteCartLoading"
@@ -844,6 +847,7 @@ const shareLinks = computed(() => ({
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
+  margin-top: 15px;
   cursor: pointer;
   &:hover {
     .arrow {
@@ -1193,6 +1197,10 @@ hr {
   .btns {
     display: flex;
     gap: 12px;
+
+    @media (max-width: 992px) {
+      flex-wrap: wrap;
+    }
     button {
       border-radius: 16px;
       width: 50%;
@@ -1229,6 +1237,9 @@ hr {
           margin-inline-end: 8px;
           transition: var(--trans);
         }
+      }
+      @media (max-width: 992px) {
+        width: 100%;
       }
     }
   }

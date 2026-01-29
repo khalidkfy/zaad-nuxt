@@ -83,10 +83,23 @@ watch(removeWhishErr, (val) => {
     whishRef.value.classList.add("shake");
   }
 });
+
+const fallback = '/assets/images/logo/zaad-logo.svg' // put in /public/images
+
+const imageSrc = ref(
+  props.product?.logo ||
+  props.product?.src ||
+  props.product?.image ||
+  fallback
+)
+
+const onError = () => {
+  imageSrc.value = fallback
+}
 </script>
 <template>
   <div class="product-card" :aria-label="`Product: ${product?.title}`">
-    <div class="img-box">
+    <NuxtLink   :href="$localePath(`/products/item/${product?.id}`)"  class="img-box">
       <div
         class="cart"
         ref="cartRef"
@@ -152,11 +165,12 @@ watch(removeWhishErr, (val) => {
         class="product"
         loading="lazy"
         width="185"
-        :src="product?.logo || product?.src || product?.image"
+        :src="imageSrc"
         :alt="product?.title"
         :title="product?.title"
+        @error="onError"
       />
-    </div>
+    </NuxtLink>
     <NuxtLink
       :style="{ color: textColor ? textColor : '' }"
       v-if="showCateg && styleFor === 'default'"
