@@ -9,7 +9,7 @@ const props = defineProps({
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 const { topSellersSection } = usePages();
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 </script>
 <template>
   <section class="active-stores mt-5 pt-5">
@@ -20,11 +20,15 @@ import { Navigation } from "swiper/modules";
           <span>{{ topSellersSection?.title }}</span>
         </div>
         <Swiper
-          :modules="[Navigation]"
+          :modules="[Navigation, Autoplay]"
           :slides-per-view="8"
           :slides-per-group="1"
           :space-between="16"
-          :autoplay="true"
+          :autoplay="{
+            delay: 3000,
+            disableOnInteraction: false,
+          }"
+          :loop="true"
           :breakpoints="{
             0: { slidesPerView: 2 },
             768: { slidesPerView: 3 },
@@ -36,16 +40,23 @@ import { Navigation } from "swiper/modules";
             v-for="(item, index) in topSellersSection.data"
             :key="index"
           >
-            <NuxtLink :href="$localePath(`/stores/products/${item?.id}`)">
+            <NuxtLink
+              class="active-store"
+              :href="$localePath(`/stores/products/${item?.id}`)"
+            >
               <NuxtImg
+                fit="contain"
                 loading="lazy"
                 width="100"
+                background="#fff"
                 height="100"
                 :src="item.logo"
                 class="img-fluid"
                 :alt="item.name"
                 :title="item.name"
-            /></NuxtLink>
+              />
+              <span> {{ item.name }}</span>
+            </NuxtLink>
           </SwiperSlide>
         </Swiper>
       </div>
@@ -54,6 +65,23 @@ import { Navigation } from "swiper/modules";
 </template>
 <style scoped lang="scss">
 .active-stores {
+  .active-store {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transition: var(--trans);
+    &:hover {
+      transform: translateY(-2px);
+    }
+    img {
+      background-color: #fff;
+      object-fit: contain; 
+    }
+    span {
+      color: #1e1e1e;
+    }
+  }
   overflow: hidden;
   p {
     color: #1e1e1e;

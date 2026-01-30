@@ -19,17 +19,22 @@ const props = defineProps({
 });
 
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 </script>
 <template>
   <Swiper
-    :modules="[Navigation]"
+    :modules="[Navigation, Autoplay]"
     :slides-per-view="6"
     :slides-per-group="1"
     :space-between="16"
     :navigation="showControls"
+    :autoplay="{
+      delay: 3000,
+      disableOnInteraction: false,
+    }"
+    :loop="true"
     :breakpoints="{
       0: { slidesPerView: 2 },
       768: { slidesPerView: 3 },
@@ -42,6 +47,4 @@ import "swiper/css/navigation";
     </SwiperSlide>
   </Swiper>
 </template>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
