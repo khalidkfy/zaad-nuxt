@@ -33,6 +33,10 @@
     "en": "English",
     "ar": "Arabic"
   },
+  "offers":{
+    "title":"Our special offers never end!",
+    "text":"Endless offers! special gifts, special packaging"
+  },
   "general": {
     "search": "What are you looking at?",
     "buyNow": "Buy now",
@@ -284,6 +288,7 @@
     "postcode": "Postcode",
     "streetAddress": "Street Address",
     "noOrders": "No Order yet",
+    "noDisputes": "No disputes yet",
     "address_line1": "Address 1",
     "address_line2": "Address 2",
     "street": "street",

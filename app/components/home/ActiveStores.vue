@@ -28,7 +28,7 @@ import { Navigation, Autoplay } from "swiper/modules";
             delay: 3000,
             disableOnInteraction: false,
           }"
-          :loop="true"
+          :loop="false"
           :breakpoints="{
             0: { slidesPerView: 2 },
             768: { slidesPerView: 3 },

@@ -5,7 +5,7 @@ import { HttpService } from "@@/server/services/http-service";
 export default defineEventHandler(async (event) => {
 
     const { user } = await requireUserSession(event);
-  const headers = getRequestHeaders(event);
+    const headers = getRequestHeaders(event);
 
     if (!user) {
         throw createError({
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     try {
         const data = apiServie
             .get({
-                url: "api/customer/orders",
+                url: `api/dispute/${body?.disputeId}`,
                 body: body,
                 headers: headers,
 

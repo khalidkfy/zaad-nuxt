@@ -14,6 +14,7 @@ const props = defineProps({
     type: String,
   },
   textColor: String,
+  cartBg: String,
   discountedPriceColor: String,
 });
 
@@ -84,25 +85,26 @@ watch(removeWhishErr, (val) => {
   }
 });
 
-const fallback = '/assets/images/logo/zaad-logo.svg' // put in /public/images
+const fallback = "/assets/images/logo/zaad-logo.svg"; // put in /public/images
 
 const imageSrc = ref(
-  props.product?.logo ||
-  props.product?.src ||
-  props.product?.image ||
-  fallback
-)
+  props.product?.logo || props.product?.src || props.product?.image || fallback,
+);
 
 const onError = () => {
-  imageSrc.value = fallback
-}
+  imageSrc.value = fallback;
+};
 </script>
 <template>
   <div class="product-card" :aria-label="`Product: ${product?.title}`">
-    <NuxtLink   :href="$localePath(`/products/item/${product?.id}`)"  class="img-box">
+    <NuxtLink
+      :href="$localePath(`/products/item/${product?.id}`)"
+      class="img-box"
+    >
       <div
         class="cart"
         ref="cartRef"
+        :class="{ secColor: cartBg }"
         :title="$t('cart.add')"
         @click.prevent="addToCart(product?.id)"
       >
@@ -210,7 +212,7 @@ const onError = () => {
       <div v-else class="price">
         <div>
           <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
-            $t("general.curr_value", {value:  product?.regular_price})
+            $t("general.curr_value", { value: product?.regular_price })
           }}</span>
         </div>
         <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
@@ -234,6 +236,9 @@ const onError = () => {
     }
   }
   &:hover {
+    .product-info {
+      color: var(--main-color);
+    }
     .img-box {
       .whish {
         width: 32px;
@@ -284,6 +289,9 @@ const onError = () => {
     position: relative;
 
     .cart {
+      &.secColor {
+        background-color: #053b74;
+      }
       position: absolute;
       bottom: -10px;
       background-color: var(--main-color);
@@ -383,7 +391,7 @@ const onError = () => {
     .amount,
     .currency {
       color: #000;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
     }
 

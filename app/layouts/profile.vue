@@ -106,9 +106,9 @@ const showSidebar = computed(() => {
                       <span>مصر - الشاهرة الجديده</span>
                     </div>
                   </div>
-                  <button class="add-address">
+                  <!-- <button class="add-address">
                     {{ $t("general.addAddress") }}
-                  </button>
+                  </button> -->
                 </template>
                 <template v-else>
                   <div>
@@ -436,6 +436,7 @@ const showSidebar = computed(() => {
           </div>
         </div>
       </div>
+      
     </section>
   </main>
 

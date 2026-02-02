@@ -1,11 +1,8 @@
 import { getRequestHeaders } from "h3"; // Import getRequestHeaders from h3
 import { HttpService } from "@@/server/services/http-service";
 
-
 export default defineEventHandler(async (event) => {
-
     const { user } = await requireUserSession(event);
-  const headers = getRequestHeaders(event);
 
     if (!user) {
         throw createError({
@@ -14,21 +11,20 @@ export default defineEventHandler(async (event) => {
         });
     }
 
+    const headers = getRequestHeaders(event);
 
-    const query = getQuery(event);
 
-    const body: any = query;
+    const body = await readBody(event);
     // Call the API endpoint with the updated body
 
     const apiServie = new HttpService(event);
 
     try {
         const data = apiServie
-            .get({
-                url: "api/customer/orders",
+            .post({
+                url: `api/dispute/inform-admin/${body.disputeId}`,
                 body: body,
                 headers: headers,
-
             })
             .then((res) => {
 
@@ -41,6 +37,5 @@ export default defineEventHandler(async (event) => {
         return data;
     } catch (err) {
         console.warn("API offline → loading local fallback JSON", err);
-
     }
 });
