@@ -67,6 +67,14 @@ const validateForm = (): boolean => {
     isValid = false;
   }
 
+  if (!notes.value) {
+    validationErrors.push({
+      field: "notes",
+      message: "ادخل الملاحظات",
+    });
+    isValid = false;
+  }
+
   // Validate file if uploaded
   if (fileInput.value) {
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
@@ -87,6 +95,12 @@ const validateForm = (): boolean => {
       });
       isValid = false;
     }
+  } else {
+    validationErrors.push({
+      field: "file",
+      message: "اضف ملف الحوالة",
+    });
+    isValid = false;
   }
 
   return isValid;
@@ -118,6 +132,7 @@ const { locale } = useI18n();
 const toast = useToast();
 
 const submitForm = async () => {
+  // TODO API ISSUE WITH SUBMITTING
   if (!validateForm()) {
     return;
   }
@@ -132,9 +147,9 @@ const submitForm = async () => {
       },
       body: {
         order_id: props?.order?.id,
-        comment: desc.value.trim(),
-        problem_id: invoiceNum.value!,
-        order_item_id: selectedItem.value!,
+        transaction_no: invoiceNum.value,
+        user_notes: notes.value,
+        document:null // TODO UPLOAD FILES
       },
     });
 
@@ -266,18 +281,13 @@ onBeforeUnmount(() => {
                 :placeholder="'ادخل الملاحظات'"
                 :disabled="isSubmitting"
               />
-              <div
-                v-if="getError('notes')"
-                class="invalid-feedback d-block"
-              >
+              <div v-if="getError('notes')" class="invalid-feedback d-block">
                 {{ getError("notes") }}
               </div>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">
-                ملف الحوالة
-              </label>
+              <label class="form-label"> ملف الحوالة </label>
               <input
                 type="file"
                 class="form-control"

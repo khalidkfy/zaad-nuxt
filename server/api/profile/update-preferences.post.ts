@@ -12,29 +12,22 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    // Retrieve user-agent from headers using getRequestHeaders
-    // const headers = getRequestHeaders(event);
-
-    // await requireAuth(event);
-
-    // const userAgent = headers["user-agent"] || null;
-
     const query = getQuery(event);
 
-    const body: any = query;
+    const body = await readBody(event);
+
     // Call the API endpoint with the updated body
 
     const apiServie = new HttpService(event);
 
     try {
         const data = apiServie
-            .get({
-                url: `api/profile/addresses`,
+            .post({
+                url: "api/profile/preferences",
                 body: body,
                 headers: headers,
             })
-            .then((res) => {
-
+            .then(async (res) => {
                 return res;
             })
             .catch((err) => {
@@ -44,6 +37,6 @@ export default defineEventHandler(async (event) => {
 
         return data;
     } catch (err) {
-        console.warn("API offline → loading local fallback JSON", err);
+        console.warn("API offline → Faild");
     }
 });

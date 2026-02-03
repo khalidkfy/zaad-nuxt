@@ -1,26 +1,9 @@
 <script setup lang="ts">
-const { categs } = useCategs();
-const { products } = useProducts()
 
 </script>
 <template>
     <section class="preferances mt-5 pt-5" aria-label="Preferances Products">
-        <div class="container">
-            <div class="section-header">
-                <h3>{{ $t("general.preferancesProducts") }}</h3>
-                <NuxtLink href="/">{{ $t("general.showMore") }}</NuxtLink>
-            </div>
-            <div class="categs mt-3">
-                <button class="categ" :class="{ 'active': i == 0 }" v-for="(categ, i) in categs">{{ categ.name
-                    }}</button>
-            </div>
-            <div aria-label="Section Products " class="d-flex  mt-3 overflow-hidden">
-                <template v-for="(product, i) in products">
-                    <LazyProductCard class="mx-2 mb-2" :product="product" />
-
-                </template>
-            </div>
-        </div>
+       
 
     </section>
 </template>

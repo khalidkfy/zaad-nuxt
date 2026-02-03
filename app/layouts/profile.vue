@@ -13,10 +13,25 @@ const route = useRoute();
 const breadcrumbs = route.meta.breadcrumbs;
 
 const { getProfileRes, getProfileLoading, profileData } = useProfile();
+const {
+  preferences,
+  loading: preferencesLoading,
+  saving: preferencesSaving,
+  error: preferencesError,
+  successMessage,
+  fetchPreferences,
+  updatePreference,
+} = usePrivacyPreferences();
 
 onMounted(async () => {
   await getProfileRes();
+  await fetchPreferences();
 });
+
+const handlePreferenceChange = async (key: string, value: boolean) => {
+  const numericValue = value ? 1 : 0;
+  await updatePreference(key as any, numericValue);
+};
 
 const showSidebar = computed(() => {
   return !route.path.startsWith(
@@ -129,6 +144,147 @@ const showSidebar = computed(() => {
                     <div class="skeleton my-5 text"></div>
                   </div>
                 </template>
+              </div>
+              <div class="preferences mb-3">
+                <div class="title">اعدادات الخصوصية</div>
+
+                <!-- Loading State -->
+                <div v-if="preferencesLoading" class="loading-state">
+                  <div class="spinner"></div>
+                  <p>جاري تحميل إعدادات الخصوصية...</p>
+                </div>
+
+                <!-- Error State -->
+                <div v-else-if="preferencesError" class="error-state">
+                  <p>{{ preferencesError }}</p>
+                  <button @click="fetchPreferences" class="retry-btn">
+                    إعادة المحاولة
+                  </button>
+                </div>
+
+                <!-- Success Message -->
+                <div v-else-if="successMessage" class="success-message">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M20 6L9 17L4 12"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>{{ successMessage }}</span>
+                </div>
+
+                <!-- Preferences Form -->
+                <div v-else class="content">
+                  <div class="form-group">
+                    <div class="switch-container">
+                      <span class="switch-label">اظهار الايميل:</span>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="preferences?.show_email === 1"
+                          @change="
+                            handlePreferenceChange(
+                              'show_email',
+                              ($event.target as HTMLInputElement).checked,
+                            )
+                          "
+                          :disabled="preferencesSaving"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="switch-container">
+                      <span class="switch-label">اظهار الصورة الشخصية:</span>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="preferences?.show_profile_picture === 1"
+                          @change="
+                            handlePreferenceChange(
+                              'show_profile_picture',
+                              ($event.target as HTMLInputElement).checked,
+                            )
+                          "
+                          :disabled="preferencesSaving"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="switch-container">
+                      <span class="switch-label">اظهار الموبايل:</span>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="preferences?.show_mobile === 1"
+                          @change="
+                            handlePreferenceChange(
+                              'show_mobile',
+                              ($event.target as HTMLInputElement).checked,
+                            )
+                          "
+                          :disabled="preferencesSaving"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="switch-container">
+                      <span class="switch-label">اظهار الحالة:</span>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="preferences?.show_status === 1"
+                          @change="
+                            handlePreferenceChange(
+                              'show_status',
+                              ($event.target as HTMLInputElement).checked,
+                            )
+                          "
+                          :disabled="preferencesSaving"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="switch-container">
+                      <span class="switch-label">اظهار الاهتمامات:</span>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="preferences?.show_preferences === 1"
+                          @change="
+                            handlePreferenceChange(
+                              'show_preferences',
+                              ($event.target as HTMLInputElement).checked,
+                            )
+                          "
+                          :disabled="preferencesSaving"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
             <div :class="showSidebar ? 'col-md-8' : 'col-md-12'">
@@ -436,7 +592,6 @@ const showSidebar = computed(() => {
           </div>
         </div>
       </div>
-      
     </section>
   </main>
 
@@ -482,9 +637,6 @@ const showSidebar = computed(() => {
   background-color: #d7d7d7;
 }
 
-.content {
-  min-height: 500px;
-}
 
 .breadcrumbs {
   display: flex;
@@ -569,6 +721,259 @@ const showSidebar = computed(() => {
 
     &:hover {
       background-color: #e2e2e2;
+    }
+  }
+}
+.preferences {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+
+  .title {
+    font-size: 18px;
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    .switch-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .switch-label {
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+
+        input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+
+          &:checked + .slider {
+            background-color: var(--main-color);
+          }
+
+          &:checked + .slider:before {
+            transform: translateX(24px);
+          }
+
+          &:disabled + .slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          transition: 0.4s;
+          border-radius: 34px;
+
+          &:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+    }
+  }
+
+  // Loading State
+  .loading-state {
+    text-align: center;
+    padding: 20px;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--main-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    p {
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  // Error State
+  .error-state {
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+
+    p {
+      color: #c00;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .retry-btn {
+      background-color: #f55;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #d44;
+      }
+    }
+  }
+
+  // Success Message
+  .success-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease;
+
+    svg {
+      color: #155724;
+      flex-shrink: 0;
+    }
+
+    span {
+      color: #155724;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  // Action Buttons
+  .action-buttons {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+
+    .refresh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #fff;
+      border: 1px solid var(--main-color);
+      color: var(--main-color);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover:not(:disabled) {
+        background-color: var(--main-color);
+        color: white;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      svg {
+        transition: transform 0.3s;
+      }
+
+      &:hover:not(:disabled) svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Add to your existing CSS if not present
+.skeleton {
+  &.circular {
+    border-radius: 50%;
+  }
+
+  &.rectangular {
+    border-radius: 4px;
+  }
+
+  &.text {
+    height: 16px;
+    border-radius: 4px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .preferences {
+    padding: 15px;
+
+    .form-group {
+      .switch-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+
+        .switch {
+          align-self: flex-end;
+        }
+      }
     }
   }
 }

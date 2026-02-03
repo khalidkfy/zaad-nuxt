@@ -3,7 +3,6 @@ import { HttpService } from "@@/server/services/http-service";
 
 export default defineEventHandler(async (event) => {
     const { user } = await requireUserSession(event);
-    const headers = getRequestHeaders(event);
 
     if (!user) {
         throw createError({
@@ -11,6 +10,8 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Unauthorized",
         });
     }
+
+    const headers = getRequestHeaders(event);
 
     // Retrieve user-agent from headers using getRequestHeaders
     // const headers = getRequestHeaders(event);
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event) => {
     try {
         const data = apiServie
             .get({
-                url: `api/profile/addresses`,
+                url: `api/profile/preferences`,
                 body: body,
                 headers: headers,
             })

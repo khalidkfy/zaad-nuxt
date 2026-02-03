@@ -209,6 +209,7 @@ onMounted(async () => {
         </div>
       </div>
       <hr />
+      <!-- TODO update phone number, security questions -->
     </form>
     <form @submit.prevent="updateEmail">
       <h3>{{ $t("links.emailSettings") }}</h3>

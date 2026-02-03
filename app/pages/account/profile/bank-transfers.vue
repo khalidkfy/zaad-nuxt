@@ -16,7 +16,17 @@ definePageMeta({
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="section-title">{{ $t("links.bank-transfers") }}</h1>
   </div>
-  <div class="table-responsive">
+   <div class="row">
+        <div class="col text-center py-5 my-5">
+          <div class="no-items">
+            <div class="mb-3">لا يوجد حوالات بنيكة</div>
+            <NuxtLink :href="$localePath('/account/profile/orders')" class="btn-zaad">{{
+              $t("links.orders")
+            }}</NuxtLink>
+          </div>
+        </div>
+      </div>
+  <!-- <div class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
@@ -308,7 +318,7 @@ definePageMeta({
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
 </template>
 <style scoped lang="scss">
 .dropdown {
