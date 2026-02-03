@@ -517,7 +517,7 @@ onMounted(async () => {
     ref="orderDisputeModal"
   />
   <ModalSendMessageToSeller :order="selectedOrder" ref="sendSellerModal" />
-
+  <ModalAddSellerReceipt :order="selectedOrder"  ref="SellerReceiptModal"/>
   <!-- Seller Bank Account Modal -->
   <div
     class="modal SellerBankModal modal-lg"

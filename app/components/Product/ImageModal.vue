@@ -74,8 +74,9 @@ onMounted(() => {
               :alt="activeImage.alt"
               loading="lazy"
               format="webp"
-              sizes="90vw"
-            />
+              width="600"
+              height="600"
+             />
           </Transition>
         </div>
 

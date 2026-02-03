@@ -600,10 +600,10 @@ const { user, loggedIn, clear: logout } = useUserSession();
     }
   }
   .dropdown-menu {
-    width: 225%;
-    padding: 15px 15px;
+  
     li {
       margin-bottom: 10px;
+      white-space: nowrap;
 
       .drop-link {
         font-size: 15px;
