@@ -2,14 +2,13 @@
   <NuxtLoadingIndicator />
   <NuxtLayout>
     <NuxtPage />
+    <ScrollToTop />
   </NuxtLayout>
 </template>
 <script setup lang="ts">
 const { locale } = useI18n();
 
-onMounted(() => {
- 
-});
+onMounted(() => {});
 // onMounted(() => {
 //   if (process.client) {
 //     const script = document.createElement('script')

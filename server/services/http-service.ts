@@ -77,6 +77,8 @@ export class HttpService {
   delete = async (params: { url: String; body: Array<any>; headers?: {} }) => {
     const headers = await this.prepareRequestHeaders(params.headers);
 
+    console.log(`${this.api_prefix}/${params.url}`, "deleterdeleterdeleterdeleterdeleterdeleter");
+    
     return $fetch(`${this.api_prefix}/${params.url}`, {
       method: "delete",
       headers: headers,

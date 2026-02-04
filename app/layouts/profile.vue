@@ -587,6 +587,7 @@ const showSidebar = computed(() => {
                 <div class="profile-content">
                   <slot></slot>
                 </div>
+                <slot name="comments"></slot>
               </div>
             </div>
           </div>

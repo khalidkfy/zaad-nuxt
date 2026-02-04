@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 
-const props = defineProps({});
+const props = defineProps({
+  addressToEdit: {
+    type: Object,
+    default: null,
+  },
+});
 const { t, locale } = useI18n();
-const emit = defineEmits(["close", "success", "newAddress"]);
+const emit = defineEmits(["close", "success", "newAddress", "addressUpdated"]);
 const modalRef = ref(null);
 const isSubmitting = ref(false);
 const citiesRes = ref([]);
+
+const isEditMode = computed(() => !!props.addressToEdit);
+const modalTitle = computed(() =>
+  isEditMode.value ? t("general.editAddress") : t("general.addAddress"),
+);
+
 const getCitiesLoading = ref(false);
 
 // Form values
@@ -17,6 +28,7 @@ const formValues = reactive({
   country: "",
   city: "",
   postal_code: "",
+  id: null,
 });
 
 // Validation rules
@@ -60,6 +72,19 @@ const formRules = {
 const { values, errors, validateField, validateAll, reset, hasErrors } =
   useFormValidator(formValues, formRules);
 
+const resetForm = () => {
+  reset();
+  values.address_line1 = "";
+  values.address_line2 = "";
+  values.street = "";
+  values.country = "";
+  values.city = "";
+  values.postal_code = "";
+  citiesRes.value = [];
+  getCitiesLoading.value = false;
+  isSubmitting.value = false;
+};
+
 const showModal = () => {
   const addAddressModal = new bootstrap.Modal(
     document.getElementById("addAddressModal"),
@@ -79,6 +104,19 @@ const hideModal = () => {
   }
 };
 
+// Watch for addressToEdit prop changes
+watch(
+  () => props.addressToEdit,
+  (newAddress) => {
+    if (newAddress) {
+      loadAddressData(newAddress);
+    } else {
+      resetForm();
+    }
+  },
+  { immediate: true },
+);
+
 // Fetch countries
 const { getCountriesRes, getCountriesLoading, countryRes } = useCountry();
 
@@ -88,6 +126,19 @@ watch(
   async (newCountryId) => {
     if (newCountryId) {
       await getCities(newCountryId);
+      // If in edit mode and city was already selected, keep it selected
+      if (isEditMode.value && props.addressToEdit?.city_id) {
+        // Wait a tick for cities to load
+        setTimeout(() => {
+          if (
+            citiesRes.value.some(
+              (city) => city.id === props.addressToEdit.city_id,
+            )
+          ) {
+            values.city = props.addressToEdit.city_id;
+          }
+        }, 100);
+      }
     } else {
       citiesRes.value = [];
       values.city = "";
@@ -113,17 +164,23 @@ const getCities = async (countryId: any) => {
   }
 };
 
-const resetForm = () => {
+// Load address data for editing
+const loadAddressData = async (address: any) => {
   reset();
-  values.address_line1 = "";
-  values.address_line2 = "";
-  values.street = "";
-  values.country = "";
-  values.city = "";
-  values.postal_code = "";
-  citiesRes.value = [];
-  getCitiesLoading.value = false;
-  isSubmitting.value = false;
+
+  // Set form values from address object
+  values.id = address.id;
+  values.address_line1 = address.address_line_1 || address.address_line1 || "";
+  values.address_line2 = address.address_line_2 || address.address_line2 || "";
+  values.street = address.address_line_3 || address.street || "";
+  values.country = address.country_id || address.country || "";
+  values.city = address.city_id || address.city || "";
+  values.postal_code = address.postcode || address.postal_code || "";
+
+  // Fetch cities for the selected country
+  if (values.country) {
+    await getCities(values.country);
+  }
 };
 
 const handleSubmit = async () => {
@@ -134,23 +191,40 @@ const handleSubmit = async () => {
   isSubmitting.value = true;
 
   try {
-    // Submit the form data
-    const response = await $fetch("/api/profile/add-address", {
-      method: "POST",
-      body: {
-        address_line_1: values.address_line1,
-        address_line_2: values.address_line2,
-        address_line_3: values.street,
-        country_id: values.country,
-        city_id: values.city,
-        postcode: values.postal_code,
-        default: false,
-      },
-    });
+    const requestBody = {
+      address_line_1: values.address_line1,
+      address_line_2: values.address_line2,
+      address_line_3: values.street,
+      country_id: values.country,
+      city_id: values.city,
+      postcode: values.postal_code,
+      default: false,
+    };
 
- 
-    // Emit success event
-    emit("newAddress", response);
+    let response;
+
+    if (isEditMode.value) {
+      // Update existing address
+      response = await $fetch("/api/profile/update-address", {
+        method: "POST",
+        body: {
+          ...requestBody,
+          addressId: values.id,
+        },
+      });
+
+      // Emit update event
+      emit("addressUpdated", response);
+    } else {
+      // Create new address
+      response = await $fetch("/api/profile/add-address", {
+        method: "POST",
+        body: requestBody,
+      });
+
+      // Emit success event for new address
+      emit("newAddress", response);
+    }
 
     // Hide modal on success
     hideModal();
@@ -161,8 +235,10 @@ const handleSubmit = async () => {
     // Handle API validation errors
     if (error.data?.errors) {
       Object.keys(error.data.errors).forEach((key) => {
-        if (errors[key]) {
-          errors[key] = error.data.errors[key];
+        // Map backend field names to frontend field names if needed
+        const frontendKey = mapFieldName(key);
+        if (errors[frontendKey]) {
+          errors[frontendKey] = error.data.errors[key];
         }
       });
     }
@@ -172,6 +248,19 @@ const handleSubmit = async () => {
   }
 };
 
+// Helper function to map backend field names to frontend field names
+const mapFieldName = (backendKey: string): string => {
+  const fieldMap: Record<string, string> = {
+    address_line_1: "address_line1",
+    address_line_2: "address_line2",
+    address_line_3: "street",
+    country_id: "country",
+    city_id: "city",
+    postcode: "postal_code",
+  };
+
+  return fieldMap[backendKey] || backendKey;
+};
 defineExpose({
   showModal,
   hideModal,
@@ -181,6 +270,7 @@ onMounted(async () => {
   if (modalRef.value) {
     modalRef.value.addEventListener("hidden.bs.modal", () => {
       emit("close");
+      resetForm();
     });
   }
 });
@@ -208,7 +298,7 @@ onBeforeUnmount(() => {
       <div class="modal-content">
         <div class="modal-header">
           <div class="modal-title">
-            {{ $t("general.addAddress") }}
+            {{ modalTitle }}
           </div>
           <button
             type="button"
@@ -225,6 +315,7 @@ onBeforeUnmount(() => {
               @submit.prevent="handleSubmit"
             >
               <div class="row">
+                <input v-if="isEditMode" type="hidden" v-model="values.id" />
                 <div class="col-md-12 mb-3">
                   <div class="form-group">
                     <label for="address_line1" class="form-label">

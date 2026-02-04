@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t } = useI18n();
+const { t, locale } = useI18n();
 useSeo({});
 definePageMeta({
   layout: "profile",
@@ -12,22 +12,12 @@ definePageMeta({
   ],
 });
 const { getProfileLoading, profileData, getProfileRes } = useProfile();
+const addAddressModal = ref(null);
 
-const showModal = () => {
-  const adressModal = new bootstrap.Modal(
-    document.getElementById("adressModal"),
-    {}
-  );
-  adressModal.show();
+const showModal = async () => {
+  await addAddressModal.value.showModal();
 };
 
-const hideModal = () => {
-  const myModalEl = document.getElementById("adressModal");
-  const adressModal = bootstrap.Modal.getInstance(myModalEl);
-  if (adressModal) {
-    adressModal.hide();
-  }
-};
 const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
   {
     country: "",
@@ -39,7 +29,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         message: t("validations.required", { key: t("profile.country") }),
       },
     ],
-  }
+  },
 );
 const { getCountriesRes, getCountriesLoading, countryRes } = useCountry();
 
@@ -47,6 +37,47 @@ const handleSubmit = async () => {};
 onMounted(async () => {
   // await getCountriesRes();
 });
+
+const toast = useToast();
+const deleteAddress = async (adress: any) => {
+  try {
+    const res = await $fetch("/api/profile/delete-address", {
+      method: "DELETE",
+      headers: {
+        Lang: locale.value,
+      },
+      query: {
+        addressId: adress?.id,
+      },
+    });
+    if (res?.status) {
+      toast.success({
+        title: t("submit.success"),
+        message: t("submit.successP"),
+        rtl: locale.value === "ar",
+      });
+      await getProfileRes();
+    } else {
+      toast.error({
+        title: t("submit.error"),
+        message: t("submit.errorP"),
+        rtl: locale.value === "ar",
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error({
+      title: t("submit.error"),
+      message: t("submit.errorP"),
+      rtl: locale.value === "ar",
+    });
+  }
+};
+const addressToEdit = ref(null);
+const editAddress = async (address: any) => {
+  addressToEdit.value = address;
+  await showModal();
+};
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
@@ -66,18 +97,26 @@ onMounted(async () => {
       >
         <div class="address-card">
           <div class="layer">
-            <button class="edit" title="edit">
+            <button
+              @click.prevent="editAddress(adress)"
+              class="edit"
+              title="edit"
+            >
               <img
-              loading="lazy"
+                loading="lazy"
                 width="20"
                 height=""
                 src="/assets/images/edit.svg"
                 alt="edit"
               />
             </button>
-            <button class="delete" title="delete">
+            <button
+              @click.prevent="deleteAddress(adress)"
+              class="delete"
+              title="delete"
+            >
               <img
-              loading="lazy"
+                loading="lazy"
                 width="20"
                 height=""
                 src="/assets/images/delete.svg"
@@ -177,6 +216,12 @@ onMounted(async () => {
       </div>
     </div>
   </div>
+  <AddAddressModal
+    :address-to-edit="addressToEdit"
+    @newAddress="getProfileRes()"
+    @addressUpdated="getProfileRes()"
+    ref="addAddressModal"
+  />
 </template>
 <style scoped lang="scss">
 h1.section-title {

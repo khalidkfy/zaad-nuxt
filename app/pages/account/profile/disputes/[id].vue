@@ -112,8 +112,33 @@ const { profileData } = useProfile();
 const comment = ref("");
 const sendMsg = async () => {
   if (!comment.value.length) return;
+  try {
+    const res = await $fetch("/api/disputes/comment", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        disputeId: id,
+        comment: comment.value,
+        problem: dispute?.problem_id,
+        product: dispute?.item_id,
+      },
+    });
 
-  
+    toast.success({
+      title: t("submit.success"),
+      message: res?.message,
+      rtl: locale.value === "ar",
+    });
+    comment.value = "";
+    await getDispute();
+
+    console.log(res, "res");
+  } catch (err) {
+  } finally {
+    closeDisputeLoading.value = false;
+  }
 };
 </script>
 <template>
@@ -142,7 +167,7 @@ const sendMsg = async () => {
           إغلاق النزاع
         </button>
         <button
-          v-if="!dispute?.adminInformed"
+          v-if="!dispute?.adminInformed && dispute?.dispute_status_id != 4"
           :disabled="informAdminLoading"
           @click.prevent="informAdmin()"
           class="btn btn-sm btn-success"
@@ -234,14 +259,16 @@ const sendMsg = async () => {
       </div>
     </div>
     <hr class="" />
-    <form @submit.prevent="sendMsg()">
+    <form v-if="dispute?.dispute_status_id != 4" @submit.prevent="sendMsg()">
       <textarea
         class="form-control"
         v-model="comment"
         name="comment"
         id="comment"
       ></textarea>
-      <button type="submit" class="btn-zaad mt-3">ارسال</button>
+      <button :disabled="!comment.length" type="submit" class="btn-zaad mt-3">
+        ارسال
+      </button>
     </form>
   </div>
 </template>
