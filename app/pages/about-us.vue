@@ -128,7 +128,8 @@ await getAboutPage();
     </div>
   </section>
   <LazyHomeActiveStores page="about" />
-  <section class="mt-5 pt-5">
+  <!-- TODO:handle latest blogs in api -->
+  <!-- <section class="mt-5 pt-5">
     <div class="container">
       <div class="blogs">
         <h3>احدث مدونتنا</h3>
@@ -139,7 +140,7 @@ await getAboutPage();
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <LazyHomeFeatures />
   <LazyHomePromotionsSection />
 </template>

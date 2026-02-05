@@ -18,7 +18,7 @@
         "desc": "Zaad Oman Privacy Policy",
         "keywords": "zaad, oman, Privacy, Policy"
       },
-       "return":{
+      "return": {
         "title": "Return Policy",
         "desc": "The Return Policy of Zaad Oman",
         "keywords": "zaad, oman, Return, Policy"
@@ -33,9 +33,9 @@
     "en": "English",
     "ar": "Arabic"
   },
-  "offers":{
-    "title":"Our special offers never end!",
-    "text":"Endless offers! special gifts, special packaging"
+  "offers": {
+    "title": "Our special offers never end!",
+    "text": "Endless offers! special gifts, special packaging"
   },
   "general": {
     "search": "What are you looking at?",
@@ -195,6 +195,9 @@
     },
     "h1": "Contact us we will listen",
     "p": "نضمن لك أعلى معايير الحماية والسرية لبياناتك الشخصية، لتتسوق براحة واطمئنان. ثقتك أساس نجاحنا، وخصوصيتك أمانة نحافظ عليها في كل خطوة."
+  },
+  "forgot": {
+    "h1": "Reset Password"
   },
   "login": {
     "h1": "Register/Login",

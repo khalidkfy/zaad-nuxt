@@ -1,18 +1,14 @@
 <script setup lang="ts">
-const { fetch } = useUserSession();
-
 definePageMeta({
   layout: "auth",
 });
-
-const { getProfileRes } = useProfile();
 
 const { t } = useI18n();
 const router = useRouter();
 const localePath = useLocalePath();
 useSeo({
-  title: t("meta.setMeta", { meta: t("login.h1") }),
-  description: t("login.h1"),
+  title: t("meta.setMeta", { meta: t("forgot.h1") }),
+  description: t("forgot.h1"),
 });
 
 const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
@@ -62,7 +58,7 @@ const submitErr = ref("");
 const submitSuccess = ref(false);
 const viewPassword = ref(false);
 // Handle login
-const handleLogin = async () => {
+const handleSubmit = async () => {
   submitErr.value = "";
   submitSuccess.value = false;
   reset();
@@ -76,7 +72,7 @@ const handleLogin = async () => {
         password: values.password,
       },
     });
- 
+
     if (response.access_token) {
       submitSuccess.value = true;
     }
@@ -96,7 +92,6 @@ const handleLogin = async () => {
     formLoading.value = false;
   }
 };
-const config = useRuntimeConfig();
 
 onMounted(() => {});
 </script>
@@ -105,10 +100,11 @@ onMounted(() => {});
     <div class="container">
       <div class="text-center">
         <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
-        <h1>{{ $t("login.h1") }}</h1>
+        <h1>{{ $t("forgot.h1") }}</h1>
+        <p class="text-muted h6">سنرسل اليك رابطا لاعادة تعيين كلمة المرور</p>
       </div>
 
-      <form @submit.prevent="handleLogin()" class="auth-form">
+      <form @submit.prevent="handleSubmit()" class="auth-form">
         <div v-if="submitErr?.length" class="alert alert-warning my-3">
           {{ submitErr || t("validations.submitErr") }}
         </div>
@@ -137,48 +133,9 @@ onMounted(() => {});
             {{ errors.email[0] }}
           </div>
         </div>
-        <div class="mb-3">
-          <label for="passwordInput" class="form-label">{{
-            $t("login.password")
-          }}</label>
-          <input
-            :class="{ invalid: errors?.password?.length }"
-            v-model="values.password"
-            type="password"
-            class="form-control"
-            id="passwordInput"
-            :placeholder="$t('login.passwordPlace')"
-          />
-          <div
-            v-if="errors.password?.length"
-            id="emailHelp"
-            class="form-text text-danger text-sm"
-          >
-            {{ errors.password[0] }}
-          </div>
-        </div>
-        <div class="d-flex justify-content-between mb-3">
-          <div class="form-check custom-check">
-            <input
-              v-model="values.remember_me"
-              class="form-check-input"
-              type="checkbox"
-              id="reminderCheck"
-            />
-            <label class="form-check-label" for="reminderCheck">
-              {{ $t("login.remember") }}
-            </label>
-          </div>
-          <div class="forgot">
-            <div>
-              {{ $t("login.forgot") }}
-              <NuxtLink :href="$localePath('/account/forgot-password')">{{ $t("login.clickHere") }}</NuxtLink>
-            </div>
-          </div>
-        </div>
 
         <button :disabled="formLoading" type="submit" class="btn-zaad">
-          <span v-if="!formLoading">{{ $t("login.loginBtn") }}</span>
+          <span v-if="!formLoading">{{ $t("general.send") }}</span>
           <span v-else class="indicator-progress f-normal fs-20">
             {{ t("general.wait") }}
             <span
@@ -187,8 +144,8 @@ onMounted(() => {});
           </span>
         </button>
         <div class="mt-4 text-center fw-bold">
-          {{ $t("login.noAccount") }}
-          <NuxtLink :href="$localePath('/account/register')">{{
+         اذا كنت تتذكر كلمة المرور
+          <NuxtLink :href="$localePath('/account/login')">{{
             $t("login.clickHere")
           }}</NuxtLink>
         </div>

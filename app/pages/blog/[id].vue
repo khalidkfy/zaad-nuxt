@@ -89,6 +89,8 @@ section.blog {
       width: 100%;
       height: 100%;
       border-radius: 16px;
+      max-height: 300px;
+      object-fit: cover;
     }
 
     .layer {
