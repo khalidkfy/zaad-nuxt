@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { productsCategs: categs, servicesCategs } = useCategs();
 const { locale } = useI18n();
-const isMegaMenuOpen = ref(true);
+const isMegaMenuOpen = ref(false);
 const activeTab = ref<"shopBy" | "services">("shopBy");
 
 const shopByMenuShown = ref(false);
@@ -111,7 +111,7 @@ onMounted(async () => {
         <div
           v-if="isMegaMenuOpen"
           class="mega-menu"
-          @mouseleave="isMegaMenuOpen = true"
+          @mouseleave="isMegaMenuOpen = false"
         >
           <!-- Shop By Content -->
           <div v-show="activeTab === 'shopBy'" class="mega-menu-content">
@@ -145,7 +145,7 @@ onMounted(async () => {
                             <NuxtLink
                               v-for="store in activeCateg.stores"
                               :key="store.id"
-                              :href="$localePath(`/stores/${store.id}`)"
+                              :href="$localePath(`/stores/products/${store.id}`)"
                               class="store-card"
                             >
                               <img :src="store.logo" />
@@ -252,8 +252,7 @@ onMounted(async () => {
             </div>
           </div>
 
-          <!-- Close button for mobile -->
-          <button
+           <button
             class="mobile-close"
             @click="isMegaMenuOpen = false"
             aria-label="Close menu"
@@ -281,11 +280,10 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-
 <style scoped lang="scss">
-.holder {
+ .holder {
   position: relative;
-  align-items: center; /* Align items to top */
+  align-items: center;
 
   @media (max-width: 992px) {
     flex-wrap: wrap;
@@ -320,7 +318,7 @@ onMounted(async () => {
   border: 1px solid transparent;
   cursor: pointer;
   position: relative;
-  z-index: 10001; /* Higher than mega menu */
+  z-index: 10001;
 
   &.active {
     border-color: var(--main-color);
@@ -329,40 +327,20 @@ onMounted(async () => {
   }
 }
 
-.all-categs {
-  color: #4a4a4a;
-  background-color: #f2f3f7;
-
-  &.active {
-    background-color: white;
-  }
-}
-
-.services {
-  color: #004a98;
-  background-color: #e7ebffad;
-
-  &.active {
-    background-color: white;
-  }
-}
-
-/* Mega Menu Styles - POSITIONED RELATIVE TO HOLDER */
-.mega-menu {
+ .mega-menu {
   position: absolute;
-  top: 100%; /* Position below the holder */
+  top: 100%;
   left: 0;
   width: 100%;
   z-index: 1001;
   background-color: white;
-  z-index: 9999;
   margin-top: 10px;
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #eee;
 
-  @media (max-width: 992px) {
+   @media (max-width: 992px) {
     position: fixed;
     top: 0;
     left: 0;
@@ -371,208 +349,250 @@ onMounted(async () => {
     margin: 0;
     border-radius: 0;
     overflow-y: auto;
-    z-index: 100000; /* Very high for mobile */
+    z-index: 100000;
+    padding-top: 70px;  
+  }
+
+   @media (max-width: 576px) {
+    padding: 60px 15px 20px;
   }
 }
 
-/* Make sure the mega menu aligns properly */
-.container {
-  position: relative;
-}
-
-/* Ensure the mega menu has proper width calculation */
-.mega-menu {
-  width: calc(100% - var(--bs-gutter-x, 1.5rem));
-  margin-left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+ .mobile-close {
+  display: none;
 
   @media (max-width: 992px) {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-
-.mega-menu-tabs {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-
-  .tab-button {
-    padding: 0.5rem 1.5rem;
+    display: block;
+    position: fixed;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
+    font-size: 32px;
     color: #666;
-    font-size: 16px;
-    font-weight: 500;
     cursor: pointer;
-    border-radius: 8px;
-    transition: var(--trans);
+    z-index: 100001;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    line-height: 1;
+  }
+}
 
-    &.active {
-      color: var(--main-color);
-      background-color: #e7ebffad;
+ .categs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+
+   @media (max-width: 992px) {
+    max-height: 300px;
+    -webkit-overflow-scrolling: touch;
+    
+    &::-webkit-scrollbar {
+      width: 4px;
     }
-
-    &:hover {
-      color: var(--main-color);
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
     }
   }
-}
 
-.mega-menu-content {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.categs-content {
-  .content-title {
-    color: #000;
-    font-weight: 500;
+  .categ-item {
+    color: #4a4a4a;
     font-size: 14px;
+    padding: 12px 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: var(--trans);
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+      background: #fff;
+      color: var(--main-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+     @media (max-width: 768px) {
+      padding: 15px;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
   }
-  .categs-grid {
+}
+
+ .mega-details {
+  padding-inline-start: 20px;
+
+  @media (max-width: 992px) {
+    padding-inline-start: 0;
+    margin-top: 20px;
+  }
+}
+
+ .stores-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .store-card {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-color: #f9f9f9;
+    align-items: center;
+    gap: 10px;
+    background: #f9f9f9;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: var(--trans);
+    min-width: 100px;
+    text-decoration: none;
 
-    /* Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-
-    /* Webkit (Chrome, Edge, Safari) */
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-    }
-
-    /* Show scrollbar only on hover */
-    &:hover {
-      scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
-
-      &::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.25);
-      }
-    }
-
-    .categ-item {
-      color: #4a4a4a;
-      font-size: 14px;
+    @media (max-width: 768px) {
+      min-width: 90px;
       padding: 10px;
-      font-weight: 500;
-      border-radius: 4px;
-      transition: var(--trans);
-
-      &:hover,
-      &.active {
-        background: #fff;
-        color: var(--main-color);
-      }
     }
-  }
-  .mega-details {
-    padding-inline-start: 20px;
-  }
 
-  .stores-grid {
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 15px;
-
-    .store-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      background: #f9f9f9;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: var(--trans);
-      span {
-        color: #4A4A4A;
-      }
-      img {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 6px;
-      }
-
-      &:hover {
-        background: #fff;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      }
+    @media (max-width: 576px) {
+      min-width: 85px;
+      padding: 8px;
     }
-  }
 
-  .items-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-
-    .item-card {
-      display: block;
-      background: #f9f9f9;
-      border-radius: 10px;
-      padding: 10px;
-      transition: var(--trans);
-
-      img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 8px;
-      }
-
-      h6 {
-        font-size: 13px;
-        font-weight: 500;
-        margin-bottom: 4px;
-        color: #333;
-      }
-
-      .price {
+    span {
+      color: #4A4A4A;
+      font-size: 13px;
+      text-align: center;
+      
+      @media (max-width: 768px) {
         font-size: 12px;
-        color: var(--main-color);
-        font-weight: 600;
       }
+    }
 
-      &:hover {
-        background: white;
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      
+      @media (max-width: 768px) {
+        width: 35px;
+        height: 35px;
       }
+    }
+
+    &:hover {
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
     }
   }
 }
-.services-grid {
+
+ .content-title {
+  color: #000;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 15px;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+ .product-swiper {
+  position: relative;
+  
+  .swiper-slide {
+    height: auto;
+    
+     @media (max-width: 768px) {
+      padding: 5px;
+    }
+  }
+  
+  /* Custom navigation buttons */
+  :deep(.swiper-button-next),
+  :deep(.swiper-button-prev) {
+    background: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    
+    &::after {
+      font-size: 16px;
+      color: #333;
+    }
+    
+    @media (max-width: 768px) {
+      width: 32px;
+      height: 32px;
+      top: 40%;
+      
+      &::after {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  :deep(.swiper-button-disabled) {
+    opacity: 0.3;
+  }
+}
+
+ .marquee-item {
+  color: #888888;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: var(--trans);
+  text-decoration: none;
+  
+  @media (max-width: 768px) {
+    font-size: 13px;
+    margin: 0 10px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    color: #4a4a4a;
+  }
+}
+
+ .spinner-border {
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+ .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 
   .service-column {
     .service-title {
@@ -582,6 +602,10 @@ onMounted(async () => {
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #eee;
+      
+      @media (max-width: 768px) {
+        font-size: 15px;
+      }
     }
 
     .service-links {
@@ -594,6 +618,7 @@ onMounted(async () => {
         font-size: 14px;
         transition: var(--trans);
         display: block;
+        text-decoration: none;
 
         &:hover {
           color: var(--main-color);
@@ -620,42 +645,6 @@ onMounted(async () => {
   }
 }
 
-/* Close button for mobile */
-.mobile-close {
-  display: none;
-
-  @media (max-width: 992px) {
-    display: block;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 32px;
-    color: #666;
-    cursor: pointer;
-    z-index: 100001;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    line-height: 1;
-  }
-}
-
-.marquee-item {
-  color: #888888;
-  font-size: 14px;
-  white-space: nowrap;
-  transition: var(--trans);
-
-  &:hover {
-    text-decoration: underline;
-    color: #4a4a4a;
-  }
-}
-
 /* Transition effects */
 .fade-enter-active,
 .fade-leave-active {
@@ -668,5 +657,35 @@ onMounted(async () => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+ @media (max-width: 992px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button,
+  a {
+    cursor: pointer;
+  }
+  
+   .mega-menu {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+ .py-5 {
+  @media (max-width: 768px) {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+.my-5 {
+  @media (max-width: 768px) {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
 }
 </style>
