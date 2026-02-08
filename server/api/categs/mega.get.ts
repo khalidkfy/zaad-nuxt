@@ -1,0 +1,48 @@
+import { getRequestHeaders } from "h3"; // Import getRequestHeaders from h3
+import { HttpService } from "@@/server/services/http-service";
+
+import categsData from "~~/server/data/categs.json";
+
+export default defineEventHandler(async (event) => {
+  // Retrieve user-agent from headers using getRequestHeaders
+  const headers = getRequestHeaders(event);
+
+  // await requireAuth(event);
+
+
+  // const userAgent = getHeader(event, "user-agent");
+
+  // const headers: Record<string, string> = {};
+  // if (userAgent) headers["user-agent"] = userAgent;
+
+  const query = getQuery(event);
+
+  const body: any = [];
+  // Call the API endpoint with the updated body
+  // return categsData
+
+
+  const apiServie = new HttpService(event);
+
+  try {
+    const data = apiServie
+      .get({
+        url: "website-api/categories/mega",
+        body: body,
+        headers: headers,
+      })
+      .then((res) => {
+ 
+        return res;
+      })
+      .catch((err) => {
+ 
+        return err;
+      });
+
+    return data;
+  } catch (err) {
+    console.warn("API offline → loading local fallback JSON", err);
+
+  }
+});

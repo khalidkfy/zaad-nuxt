@@ -96,12 +96,17 @@ const onError = () => {
 };
 </script>
 <template>
-  <div class="product-card" :aria-label="`Product: ${product?.title}`">
+  <div
+    class="product-card"
+    :class="styleFor"
+    :aria-label="`Product: ${product?.title}`"
+  >
     <NuxtLink
       :href="$localePath(`/products/item/${product?.id}`)"
       class="img-box"
     >
       <div
+        v-if="styleFor !== 'mega'"
         class="cart"
         ref="cartRef"
         :class="{ secColor: cartBg }"
@@ -173,7 +178,8 @@ const onError = () => {
         @error="onError"
       />
     </NuxtLink>
-    <NuxtLink
+    <div class="info-holder">
+        <NuxtLink
       :style="{ color: textColor ? textColor : '' }"
       v-if="showCateg && styleFor === 'default'"
       :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
@@ -182,7 +188,7 @@ const onError = () => {
     >
     <NuxtLink
       :style="{ color: textColor ? textColor : '' }"
-      v-if="showCateg && styleFor === 'store'"
+      v-if="showCateg && (styleFor === 'store' || styleFor === 'mega')"
       :href="$localePath(`/products/${product?.category?.id}`)"
       class="categ"
       >{{ product?.category?.title }}</NuxtLink
@@ -219,6 +225,7 @@ const onError = () => {
                     product?.regular_price }}</span> -->
       </div>
     </NuxtLink>
+    </div>
   </div>
 </template>
 <style scoped lang="scss">
@@ -399,6 +406,15 @@ const onError = () => {
       color: #7b7b7b;
       font-size: 14px;
       text-decoration: line-through;
+    }
+  }
+
+  &.mega {
+    display: flex;
+    gap: 10px;
+    .img-box {
+      height: 112px;
+      max-width: 125px;
     }
   }
 }

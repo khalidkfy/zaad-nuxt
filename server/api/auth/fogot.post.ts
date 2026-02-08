@@ -18,8 +18,7 @@ export default defineEventHandler(async (event) => {
   const apiServie = new HttpService(event);
 
   try {
-    const userData = {};
-    const data = apiServie
+     const data = apiServie
       .post({
         url: "api/auth/login",
         body: body,
