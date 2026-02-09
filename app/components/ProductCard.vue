@@ -88,7 +88,7 @@ watch(removeWhishErr, (val) => {
 const fallback = "/assets/images/logo/zaad-logo.svg"; // put in /public/images
 
 const imageSrc = ref(
-  props.product?.logo || props.product?.src || props.product?.image || fallback,
+  props.product?.logo || props.product?.src || props.product?.image || fallback
 );
 
 const onError = () => {
@@ -96,15 +96,8 @@ const onError = () => {
 };
 </script>
 <template>
-  <div
-    class="product-card"
-    :class="styleFor"
-    :aria-label="`Product: ${product?.title}`"
-  >
-    <NuxtLink
-      :href="$localePath(`/products/item/${product?.id}`)"
-      class="img-box"
-    >
+  <div class="product-card" :class="styleFor" :aria-label="`Product: ${product?.title}`">
+    <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="img-box">
       <div
         v-if="styleFor !== 'mega'"
         class="cart"
@@ -164,9 +157,7 @@ const onError = () => {
           <span class="spinner-border text-dark spinner-border-sm"></span>
         </div>
       </div>
-      <div v-if="product?.discount" class="discount-label">
-        -{{ product?.discount }}%
-      </div>
+      <div v-if="product?.discount" class="discount-label">-{{ product?.discount }}%</div>
       <!-- <div v-if="product?.customOffer" class="custom-offer">{{ product?.customOffer }}</div> -->
       <NuxtImg
         class="product"
@@ -179,52 +170,49 @@ const onError = () => {
       />
     </NuxtLink>
     <div class="info-holder">
-        <NuxtLink
-      :style="{ color: textColor ? textColor : '' }"
-      v-if="showCateg && styleFor === 'default'"
-      :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
-      class="categ"
-      >{{ product?.seller?.storeName }}</NuxtLink
-    >
-    <NuxtLink
-      :style="{ color: textColor ? textColor : '' }"
-      v-if="showCateg && (styleFor === 'store' || styleFor === 'mega')"
-      :href="$localePath(`/products/${product?.category?.id}`)"
-      class="categ"
-      >{{ product?.category?.title }}</NuxtLink
-    >
-
-    <NuxtLink
-      :href="$localePath(`/products/item/${product?.id}`)"
-      class="product-info"
-    >
-      <div
+      <NuxtLink
         :style="{ color: textColor ? textColor : '' }"
-        :title="product?.title"
-        class="name"
+        v-if="showCateg && styleFor === 'default'"
+        :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
+        class="categ"
+        >{{ product?.seller?.storeName }}</NuxtLink
       >
-        {{ product?.title }}
-      </div>
-      <div v-if="styleFor === 'whish'" class="price">
-        <div>
-          <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
-            product?.price
-          }}</span>
-          <span :style="{ color: textColor ? textColor : '' }" class="currency"
-            >ر.ع</span
-          >
+      <NuxtLink
+        :style="{ color: textColor ? textColor : '' }"
+        v-if="showCateg && (styleFor === 'store' || styleFor === 'mega')"
+        :href="$localePath(`/products/${product?.category?.id}`)"
+        class="categ"
+        >{{ product?.category?.title }}</NuxtLink
+      >
+
+      <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="product-info">
+        <div
+          :style="{ color: textColor ? textColor : '' }"
+          :title="product?.title"
+          class="name"
+        >
+          {{ product?.title }}
         </div>
-      </div>
-      <div v-else class="price">
-        <div>
-          <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
-            $t("general.curr_value", { value: product?.regular_price })
-          }}</span>
+        <div v-if="styleFor === 'whish'" class="price">
+          <div>
+            <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
+              product?.price
+            }}</span>
+            <span :style="{ color: textColor ? textColor : '' }" class="currency"
+              >ر.ع</span
+            >
+          </div>
         </div>
-        <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
+        <div v-else class="price">
+          <div>
+            <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
+              $t("general.curr_value", { value: product?.regular_price })
+            }}</span>
+          </div>
+          <!-- <span :style="{ 'color': discountedPriceColor ? discountedPriceColor : '' }" class="discounted-price">{{
                     product?.regular_price }}</span> -->
-      </div>
-    </NuxtLink>
+        </div>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -247,6 +235,7 @@ const onError = () => {
       color: var(--main-color);
     }
     .img-box {
+      box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.15);
       .whish {
         width: 32px;
         height: 32px;

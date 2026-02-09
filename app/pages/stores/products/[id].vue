@@ -62,10 +62,7 @@ const loadMore = async () => {
           {{ $t("links.productsStores") }}
         </NuxtLink>
         <div>/</div>
-        <NuxtLink
-          active-class="active"
-          :href="$localePath(`/stores/products/${id}`)"
-        >
+        <NuxtLink active-class="active" :href="$localePath(`/stores/products/${id}`)">
           {{ seller?.store_name }}
         </NuxtLink>
       </div>
@@ -76,29 +73,20 @@ const loadMore = async () => {
       <div class="row">
         <div class="col-md-3 mb-4">
           <div class="seller-card">
-            <NuxtImg
-              width="100"
-              height="100"
-              :src="seller?.store_logo"
-            ></NuxtImg>
+            <NuxtImg width="100" height="100" :src="seller?.store_logo"></NuxtImg>
             <h1>{{ seller?.store_name }}</h1>
             <p>{{ seller?.store_address }}</p>
-            <p>{{ seller?.store_category }}</p>
+            <!-- TODO :: return categ id -->
+            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/products/${id}`)">
+              {{ seller?.store_category }}
+            </NuxtLink>
           </div>
         </div>
         <div class="col-md-9">
           <template v-if="products?.length">
             <div class="row">
-              <div
-                class="col-sm-3 col-6 mb-4"
-                v-for="(product, i) in products"
-                :key="i"
-              >
-                <ProductCard
-                  styleFor="store"
-                  @removed="handleWhishRemove"
-                  :product="product"
-                />
+              <div class="col-sm-3 col-6 mb-4" v-for="(product, i) in products" :key="i">
+                <ProductCard styleFor="store" @removed="handleWhishRemove" :product="product" />
               </div>
             </div>
           </template>
@@ -106,11 +94,8 @@ const loadMore = async () => {
             <div class="row text-center">
               <div class="col">
                 <div class="mb-4">{{ $t("items.noData") }}</div>
-                <NuxtLink
-                  :href="$localePath('/stores/products')"
-                  class="btn-zaad"
-                  >{{ $t("links.productsStores") }}</NuxtLink
-                >
+                <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad">{{ $t("links.productsStores") }}
+                </NuxtLink>
               </div>
             </div>
           </template>
@@ -137,17 +122,20 @@ const loadMore = async () => {
   flex-direction: column;
   border-radius: 8px;
   top: 26px;
+
   h1 {
     color: #262626;
     font-size: 24px;
     margin: 10px 0;
   }
+
   img {
     background-color: #fff;
     border-radius: 50%;
     padding: 5px;
   }
 }
+
 .breadcrumbs {
   display: flex;
 

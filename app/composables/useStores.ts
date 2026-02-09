@@ -19,7 +19,7 @@ export const useStores = () => {
                 }
             });
 
-             productsStores.value = res?.data
+            productsStores.value = res?.data
             // hasMore.value = res?.next_page_url.length > 0;
 
             // if (options?.append) {
@@ -85,7 +85,7 @@ export const useStores = () => {
                 }
             });
 
-             servicesStores.value = res?.data
+            servicesStores.value = res?.data
 
 
         } catch (error) {
@@ -95,7 +95,32 @@ export const useStores = () => {
         }
     }
 
+    const getCategoryStoresLoading = ref(true);
+    const categoryStores = ref(null)
+    const getCategoryStores = async (categId: any) => {
+        try {
+            getCategoryStoresLoading.value = true
 
+            const res = await $fetch("/api/stores/products/category", {
+                headers: {
+                    Lang: locale.value,
+                },
+                query: {
+                    categId: categId
+                }
+            });
+
+           categoryStores.value = res?.data;
+            
+
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            getCategoryStoresLoading.value = false;
+
+        }
+    }
 
     return {
         getProductsStores,
@@ -106,6 +131,9 @@ export const useStores = () => {
         getProductsStoreItems,
         getProductsStoreItemsLoading,
         hasMore,
-        currentPage
+        currentPage,
+        getCategoryStoresLoading,
+        getCategoryStores,
+        categoryStores,
     }
 };
