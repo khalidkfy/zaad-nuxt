@@ -204,7 +204,13 @@
     "p": "نضمن لك أعلى معايير الحماية والسرية لبياناتك الشخصية، لتتسوق براحة واطمئنان. ثقتك أساس نجاحنا، وخصوصيتك أمانة نحافظ عليها في كل خطوة."
   },
   "forgot": {
-    "h1": "Reset Password"
+    "h1": "Reset Password",
+    "success":"A password reset link will be sent to your email address."
+  },
+  "reset": {
+    "h1": "Reset Password",
+    "try":"Something wrong, Try again later",
+    "success":"A password reset link will be sent to your email address."
   },
   "login": {
     "h1": "Register/Login",

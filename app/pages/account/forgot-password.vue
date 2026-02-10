@@ -41,7 +41,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         }),
       },
     ],
-   
+
   },
 );
 
@@ -56,32 +56,32 @@ const handleSubmit = async () => {
   if (!validateAll() || hasErrors.value) return;
   formLoading.value = true;
   try {
-    const response = await $fetch("/api/auth/login", {
+    const response = await $fetch("/api/auth/forgot", {
       method: "POST",
       body: {
-        username: values.email,
+        email: values.email,
       },
     });
-
-    if (response.access_token) {
-      submitSuccess.value = true;
+    if (response?.status_code != 200) {
+      submitErr.value = response?.msg
+    } else {
+      submitSuccess.value = true
+      setTimeout(async() => {
+        await router.push(localePath("/account/login"));
+      }, 2000);
     }
-    try {
-      
 
-      await router.push(localePath("/"));
-    } catch (e) {
-      console.error("navigation failed", e);
-    }
+
+
   } catch (err) {
     console.log(err, "err");
-   
+
   } finally {
     formLoading.value = false;
   }
 };
 
-onMounted(() => {});
+onMounted(() => { });
 </script>
 <template>
   <section class="auth-section p-5">
@@ -96,26 +96,17 @@ onMounted(() => {});
         <div v-if="submitErr?.length" class="alert alert-warning my-3">
           {{ submitErr || t("validations.submitErr") }}
         </div>
-       
+        <div v-if="submitSuccess" class="alert alert-success my-3">
+          {{ t("forgot.success") }}
+        </div>
 
         <div class="mb-3">
           <label for="emailInput" class="form-label">{{
             $t("login.emailPhone")
           }}</label>
-          <input
-            :class="{ invalid: errors?.email?.length }"
-            v-model="values.email"
-            type="email"
-            class="form-control"
-            id="emailInput"
-            aria-describedby="emailHelp"
-            :placeholder="$t('login.emailPhonePlace')"
-          />
-          <div
-            v-if="errors.email?.length"
-            id="emailHelp"
-            class="form-text text-danger text-sm"
-          >
+          <input :class="{ invalid: errors?.email?.length }" v-model="values.email" type="email" class="form-control"
+            id="emailInput" aria-describedby="emailHelp" :placeholder="$t('login.emailPhonePlace')" />
+          <div v-if="errors.email?.length" id="emailHelp" class="form-text text-danger text-sm">
             {{ errors.email[0] }}
           </div>
         </div>
@@ -124,13 +115,11 @@ onMounted(() => {});
           <span v-if="!formLoading">{{ $t("general.send") }}</span>
           <span v-else class="indicator-progress f-normal fs-20">
             {{ t("general.wait") }}
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
           </span>
         </button>
         <div class="mt-4 text-center fw-bold">
-         اذا كنت تتذكر كلمة المرور
+          اذا كنت تتذكر كلمة المرور
           <NuxtLink :href="$localePath('/account/login')">{{
             $t("login.clickHere")
           }}</NuxtLink>
@@ -145,6 +134,7 @@ section.auth-section {
   justify-content: center;
   margin: auto;
   width: 40%;
+
   @media (max-width: 992px) {
     width: 100%;
   }
@@ -245,7 +235,7 @@ section.auth-section {
   }
 
   /* Check icon */
-  .custom-check .form-check-input:checked + .form-check-label::after {
+  .custom-check .form-check-input:checked+.form-check-label::after {
     content: "✓";
     position: absolute;
     right: 3px;

@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   try {
      const data = apiServie
       .post({
-        url: "api/auth/login",
+        url: "api/customer/password/reset",
         body: body,
         // headers: headers,
       })
