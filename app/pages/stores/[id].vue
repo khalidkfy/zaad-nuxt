@@ -4,12 +4,7 @@ const { t } = useI18n();
 const route = useRoute();
 const id = route.params.id;
 
-// useSeo({
-//   description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
-//   // title: `${productsStoreItems?.value?.seller?.store_name}`,
-//   title: `${productsStoreItems?.value?.seller?.store_name} - ${productsStoreItems?.value?.seller?.store_category} - ${t("meta.appName")}`,
-//   og_image: productsStoreItems?.value?.seller.store_logo,
-// });
+
 
 // const loadMore = async () => {
 //   if (!productsStoreItems.value.next_page_url) return;
@@ -27,7 +22,12 @@ const {
     categoryStores: data
 } = useStores();
 
-await getCategoryStores(id)
+await getCategoryStores(id);
+
+useSeo({
+    description: t('meta.pages.categoryStores.desc', {categ:data.value?.localeTitle}),
+    title: t("meta.setMeta", { meta: `${t("links.productsStores")} - ${data.value?.localeTitle}` }),
+});
 </script>
 <template>
     <section class="mt-4">

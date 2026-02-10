@@ -77,7 +77,7 @@ const loadMore = async () => {
             <h1>{{ seller?.store_name }}</h1>
             <p>{{ seller?.store_address }}</p>
             <!-- TODO :: return categ id -->
-            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/products/${id}`)">
+            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/${seller?.category_id}`)">
               {{ seller?.store_category }}
             </NuxtLink>
           </div>

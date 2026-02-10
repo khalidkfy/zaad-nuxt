@@ -8,6 +8,13 @@
       "keywords": "zaad, oman, shopping, ecommerce"
     },
     "pages": {
+      "categoryStores":{
+        "desc":"Explore {categ} Stores , Products and more"
+      },
+      
+      "productsStores":{
+        "desc":"Explore our products stores , enjoy shopping"
+      },
       "contact": {
         "title": "Contact Us",
         "desc": "Contact Zaad Oman",

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
-useSeo({});
+useSeo({
+  title: t("meta.setMeta",{meta:t("checkout.title")}),
+});
 const { getAddresses, getAddressesloading, addresses } = useProfile();
 const { validateCoupon, validateCouponRes, validateCouponLoading } =
   useProducts();
@@ -240,6 +242,9 @@ const createOrder = async () => {
       },
     });
 
+    console.log(res,"ASdadasd");
+    
+
     if (res && res.status == true) {
       await handleSuccessCreateOrder(res);
     }
@@ -315,7 +320,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
     <div class="container">
       <template v-if="!pageLoading">
         <div class="products">
-          <div class="table-responsive table-wrapper">
+          <div class=" table-wrapper">
             <div v-if="newAddressLoading" class="table-loader">
               <span class="spinner-border main-color spinner-border-lg"></span>
             </div>
@@ -972,6 +977,10 @@ button.action {
           opacity: 0.6;
         }
       }
+    }
+    max-width: 100%;
+    @media (max-width:992px) {
+      overflow: auto;
     }
   }
 }

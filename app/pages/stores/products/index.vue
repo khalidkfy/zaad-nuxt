@@ -2,7 +2,8 @@
 const { t } = useI18n();
 
 useSeo({
-  title: t("links.productsStores"),
+  title: t("meta.setMeta", {meta:t("links.productsStores")}),
+  description: t("meta.pages.productsStores.desc"),
 });
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -26,6 +27,7 @@ await getProductsStores();
   <section class="mt-4">
     <div class="container">
       <div class="stores-content" aria-label="stores by category">
+        <h1 class="h1-title">{{ $t("links.productsStores") }}</h1>
 
         <div class="row">
           <div class="col-lg-4 mb-4" v-for="(categ, i) in productsStores" :key="i">
@@ -33,8 +35,7 @@ await getProductsStores();
               <div class="head">
                 <h4>{{ categ?.localeTitle }}</h4>
                 <NuxtLink :href="$localePath(`/stores/${categ?.id}`)">
-                  عرض المزيد
-                </NuxtLink>
+                  {{ $t("general.showMore") }} </NuxtLink>
               </div>
               <div class="content">
                 <Swiper :modules="[Navigation, Autoplay]" :slides-per-view="3" :slides-per-group="1" :space-between="16"
@@ -50,7 +51,7 @@ await getProductsStores();
                     <NuxtLink :href="$localePath(`/stores/products/${store.id}`)" class="store-card">
                       <NuxtImg loading="lazy" width="50" height="50" :title="store?.name" :alt="store?.name"
                         :src="store?.logo"></NuxtImg>
-                     <span>{{ store.name }}</span>
+                      <span>{{ store.name }}</span>
                     </NuxtLink>
                   </SwiperSlide>
                 </Swiper>
@@ -89,7 +90,13 @@ await getProductsStores();
     margin: 0 7px;
   }
 }
-
+.h1-title {
+    font-weight: 700;
+    font-size: 24px;
+    color: #4A4A4A;
+    text-align: center;
+    margin-bottom: 30px;
+}
 .stores-content {
   .category {
     background-color: #F9F9F9;
@@ -102,6 +109,7 @@ await getProductsStores();
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+
     h4 {
       color: #4A4A4A;
       font-size: 16px;

@@ -8,7 +8,7 @@ const {
   cartCount,
 } = useCart();
 useSeo({
-  title: t("cart.title"),
+  title: t("meta.setMeta",{meta:t("cart.title")}),
 });
 definePageMeta({
   middleware: "authenticated",

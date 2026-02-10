@@ -14,8 +14,6 @@ useSeo({
 const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
   {
     email: "",
-    password: "",
-    remember_me: false,
   },
   {
     email: [
@@ -43,20 +41,13 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         }),
       },
     ],
-    password: [
-      {
-        required: true,
-        message: t("validations.required", { key: t("login.password") }),
-      },
-    ],
-    remember_me: [],
+   
   },
 );
 
 const formLoading = ref(false);
 const submitErr = ref("");
 const submitSuccess = ref(false);
-const viewPassword = ref(false);
 // Handle login
 const handleSubmit = async () => {
   submitErr.value = "";
@@ -69,7 +60,6 @@ const handleSubmit = async () => {
       method: "POST",
       body: {
         username: values.email,
-        password: values.password,
       },
     });
 
@@ -77,9 +67,7 @@ const handleSubmit = async () => {
       submitSuccess.value = true;
     }
     try {
-      await fetch();
-
-      await getProfileRes();
+      
 
       await router.push(localePath("/"));
     } catch (e) {
@@ -87,7 +75,7 @@ const handleSubmit = async () => {
     }
   } catch (err) {
     console.log(err, "err");
-    submitErr.value = err?.data?.data?.message;
+   
   } finally {
     formLoading.value = false;
   }
@@ -108,9 +96,7 @@ onMounted(() => {});
         <div v-if="submitErr?.length" class="alert alert-warning my-3">
           {{ submitErr || t("validations.submitErr") }}
         </div>
-        <div v-if="submitSuccess" class="alert alert-success my-3">
-          {{ t("login.signed-in") }}
-        </div>
+       
 
         <div class="mb-3">
           <label for="emailInput" class="form-label">{{
