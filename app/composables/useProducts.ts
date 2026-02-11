@@ -104,6 +104,8 @@ export const useProducts = () => {
   }
 
   const productDetails = ref(null);
+  const productRates = ref(null);
+
   const getProductDetailsLoading = ref(false);
   const getProductDetails = async (id: any) => {
     try {
@@ -118,8 +120,9 @@ export const useProducts = () => {
         }
       });
 
- 
+
       productDetails.value = res?.resource
+      productRates.value = res?.rates
 
 
     } catch (error) {
@@ -129,6 +132,7 @@ export const useProducts = () => {
 
     }
   }
+
   return {
     getProducts,
     productsRes,
@@ -140,6 +144,7 @@ export const useProducts = () => {
     getProductDetails,
     validateCoupon,
     validateCouponRes,
-    validateCouponLoading
+    validateCouponLoading,
+    productRates,
   };
 };
