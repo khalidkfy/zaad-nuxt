@@ -72,7 +72,7 @@ const getMenuLink = (item: any) => {
                 <h5 class="mb-4">{{ $t("footer.downloadApp") }}</h5>
                 <div class="row">
                   <div class="col-md-6">
-                    <NuxtLink href="/" class="download">
+                    <NuxtLink href="https://play.google.com/store/apps/details?id=om.zaad.buy" target="_blank" rel="noopener noreferrer" class="download">
                       <img
                         width="20"
                         height="20"
@@ -87,7 +87,7 @@ const getMenuLink = (item: any) => {
                     </NuxtLink>
                   </div>
                   <div class="col-md-6">
-                    <NuxtLink href="/" class="download">
+                    <NuxtLink href="https://apps.apple.com/om/app/zaad-buy/id1500632798" target="_blank" rel="noopener noreferrer" class="download">
                       <img
                         width="20"
                         height="20"
@@ -107,7 +107,7 @@ const getMenuLink = (item: any) => {
                     <NuxtImg
                       width="112"
                       height="112"
-                      src="/assets/images/qr.png"
+                      src="/assets/images/android-zad-qr.png"
                       alt="Google Play"
                       loading="lazy"
                     />
@@ -116,8 +116,8 @@ const getMenuLink = (item: any) => {
                     <NuxtImg
                       width="112"
                       height="112"
-                      src="/assets/images/qr.png"
-                      alt="Google Play"
+                      src="/assets/images/ios-zad-qr.png"
+                      alt="ios"
                       loading="lazy"
                     />
                   </div>
