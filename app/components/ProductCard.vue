@@ -251,7 +251,7 @@ const onError = () => {
       z-index: 22;
       color: #fff;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 10px;
       padding: 6px 5px;
       border-radius: 4px;
 
