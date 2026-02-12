@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
 useSeo({
-  title: t("meta.setMeta",{meta:t("checkout.title")}),
+  title: t("meta.setMeta", { meta: t("checkout.title") }),
 });
 const { getAddresses, getAddressesloading, addresses } = useProfile();
 const { validateCoupon, validateCouponRes, validateCouponLoading } =
@@ -61,9 +61,21 @@ const getCheckout = async (loadingType = null) => {
       },
     });
 
-    checkoutItems.value = Array.isArray(checkoutDataReq?.resources)
+    const responseItems = Array.isArray(checkoutDataReq?.resources)
       ? checkoutDataReq.resources
       : Object.values(checkoutDataReq?.resources || {});
+      
+    checkoutItems.value = responseItems.map((item) => {
+      const storedItem = paresdData.items.find(
+        (i) => i.item_id === item?.item?.id
+      );
+
+      if (storedItem) {
+        item.item.quantity = storedItem.quantity;
+      }
+
+      return item;
+    });
   } catch (err) {
   } finally {
     getCheckoutLoading.value = false;
@@ -242,8 +254,8 @@ const createOrder = async () => {
       },
     });
 
-    console.log(res,"ASdadasd");
-    
+    console.log(res, "ASdadasd");
+
 
     if (res && res.status == true) {
       await handleSuccessCreateOrder(res);
@@ -307,10 +319,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
           {{ $t("cart.title") }}
         </NuxtLink>
         <div>/</div>
-        <NuxtLink
-          active-class="active"
-          :href="$localePath(`/products/checkout`)"
-        >
+        <NuxtLink active-class="active" :href="$localePath(`/products/checkout`)">
           {{ $t("checkout.title") }}
         </NuxtLink>
       </div>
@@ -337,64 +346,40 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(item, i) in checkoutItems"
-                  :key="i"
-                  :class="{
-                    'shipping-error': !item.selectedShipping,
-                    disabled: !item.ShippingServices.length,
-                  }"
-                  :ref="(el) => (itemRefs[i] = el)"
-                >
+                <tr v-for="(item, i) in checkoutItems" :key="i" :class="{
+                  'shipping-error': !item.selectedShipping,
+                  disabled: !item.ShippingServices.length,
+                }" :ref="(el) => (itemRefs[i] = el)">
                   <td>
-                    <NuxtImg
-                    loading="lazy"
-                      width="100"
-                      height="100"
-                      :alt="item?.item?.title"
-                      :title="item?.item?.title"
-                      :src="item?.item?.src"
-                    />
+                    <NuxtImg loading="lazy" width="100" height="100" :alt="item?.item?.title" :title="item?.item?.title"
+                      :src="item?.item?.src" />
                   </td>
                   <td>
-                    <NuxtLink
-                      :href="$localePath(`/products/item/${item?.item?.id}`)"
-                    >
+                    <NuxtLink :href="$localePath(`/products/item/${item?.item?.id}`)">
                       {{ item?.item?.title }}
                     </NuxtLink>
                   </td>
                   <td>
                     <div class="dropdown shipping">
-                      <button
-                        v-if="item.ShippingServices.length"
-                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
+                      <button v-if="item.ShippingServices.length"
+                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         {{
                           item.selectedShipping
                             ? item.selectedShipping.title
                             : $t("checkout.chooseShipping")
                         }}
                       </button>
-                      <button
-                        v-else
-                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
+                      <button v-else class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         {{ $t("checkout.itemHasNoShippingOptions") }}
                       </button>
                       <ul class="dropdown-menu">
-                        <li
-                          @click="item.selectedShipping = shippingService"
-                          v-for="(shippingService, i) in item?.ShippingServices"
-                          :key="i"
-                          :class="{
+                        <li @click="item.selectedShipping = shippingService"
+                          v-for="(shippingService, i) in item?.ShippingServices" :key="i" :class="{
                             active:
                               item?.selectedShipping?.id == shippingService.id,
-                          }"
-                        >
+                          }">
                           {{ shippingService?.title }}
                         </li>
                       </ul>
@@ -405,8 +390,8 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                       {{
                         item.selectedShipping
                           ? $t("general.curr_value", {
-                              value: item.selectedShipping.price,
-                            })
+                            value: item.selectedShipping.price,
+                          })
                           : "--"
                       }}
                     </span>
@@ -420,36 +405,15 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                   </td>
                   <td>
                     <div class="qty">
-                      <div
-                        :class="{ disabled: item?.item?.quantity == 1 }"
-                        @click.prevent="subQty(item?.item)"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
+                      <div :class="{ disabled: item?.item?.quantity == 1 }" @click.prevent="subQty(item?.item)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                           <g clip-path="url(#clip0_142_912)">
                             <path
                               d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
-                              :stroke="
-                                item?.item?.quantity == 1 ? '#444C4E' : 'black'
-                              "
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M9 12H15"
-                              :stroke="
-                                item?.item?.quantity == 1 ? '#444C4E' : 'black'
-                              "
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
+                              :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'
+                                " stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9 12H15" :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'
+                              " stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                           </g>
                           <defs>
                             <clipPath id="clip0_142_912">
@@ -461,35 +425,15 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                       <!-- TODO::CHECK ITEM QUANTITY SHOULD BE LIKE IN CART -->
                       <span>{{ item?.item?.quantity }}</span>
                       <div @click.prevent="addQty(item?.item)">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                           <g clip-path="url(#clip0_142_907)">
                             <path
                               d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
-                              stroke="black"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M9 12H15"
-                              stroke="black"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M12 9V15"
-                              stroke="black"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
+                              stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9 12H15" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                              stroke-linejoin="round" />
+                            <path d="M12 9V15" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                              stroke-linejoin="round" />
                           </g>
                           <defs>
                             <clipPath id="clip0_142_907">
@@ -508,8 +452,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                             item?.item?.quantity * item?.item?.regular_price,
                           ).toFixed(2),
                         })
-                      }}</span
-                    >
+                      }}</span>
                   </td>
                   <!-- TODO::check if regular_price is right -->
                 </tr>
@@ -524,17 +467,11 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
               <div v-if="selectedAddress" class="body">
                 <div v-for="(address, i) in addresses" :key="i" class="address">
                   <label :for="`address-${i}`">
-                    <input
-                      type="radio"
-                      name="selectedAddress"
-                      :id="`address-${i}`"
-                      :value="address"
-                      v-model="selectedAddress"
-                    />
+                    <input type="radio" name="selectedAddress" :id="`address-${i}`" :value="address"
+                      v-model="selectedAddress" />
                     {{
                       `${address?.address_line_1} - ${address?.address_line_2} - ${address?.address_line_3}`
-                    }}</label
-                  >
+                    }}</label>
                 </div>
               </div>
               <div class="footer">
@@ -548,21 +485,11 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
             <div class="payment-methods">
               <div class="head">{{ $t("checkout.paymentMethod") }}</div>
               <div v-if="selectedAddress" class="body">
-                <div
-                  v-for="(method, i) in paymentMethods"
-                  :key="i"
-                  class="address"
-                >
+                <div v-for="(method, i) in paymentMethods" :key="i" class="address">
                   <label :for="`method-${i}`">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      :value="method"
-                      v-model="selectedPaymentMethod"
-                      :id="`method-${i}`"
-                    />
-                    {{ `${method?.name}` }}</label
-                  >
+                    <input type="radio" name="paymentMethod" :value="method" v-model="selectedPaymentMethod"
+                      :id="`method-${i}`" />
+                    {{ `${method?.name}` }}</label>
                 </div>
               </div>
             </div>
@@ -586,37 +513,21 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                   <label for="discount-code">{{ $t("cart.couponCode") }}</label>
                   <form @submit.prevent="validateCoupon(coupon, requestItems)">
                     <div class="box">
-                      <input
-                        type="text"
-                        v-model="coupon"
-                        name="discount-code"
-                        :placeholder="$t('cart.enterCoupon')"
-                        id="discount-code"
-                        :class="{
+                      <input type="text" v-model="coupon" name="discount-code" :placeholder="$t('cart.enterCoupon')"
+                        id="discount-code" :class="{
                           invalid:
                             validateCouponRes &&
                             validateCouponRes.status != true,
-                        }"
-                      />
-                      <button
-                        :disabled="validateCouponLoading"
-                        class="btn-zaad"
-                        type="submit"
-                      >
+                        }" />
+                      <button :disabled="validateCouponLoading" class="btn-zaad" type="submit">
                         {{ $t("general.apply") }}
                       </button>
                     </div>
                   </form>
-                  <div
-                    v-if="validateCouponRes && validateCouponRes.status != true"
-                    class="invalid-msg"
-                  >
+                  <div v-if="validateCouponRes && validateCouponRes.status != true" class="invalid-msg">
                     {{ validateCouponRes?.message }}
                   </div>
-                  <div
-                    class="valid-msg"
-                    v-if="validateCouponRes && validateCouponRes.status == true"
-                  >
+                  <div class="valid-msg" v-if="validateCouponRes && validateCouponRes.status == true">
                     {{ validateCouponRes?.message }}
                   </div>
                 </div>
@@ -655,61 +566,29 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                 </template>
               </div>
               <div class="footer">
-                <button
-                  @click.prevent="createOrder()"
-                  :disabled="cantCreateOrder"
-                  class="btn-zaad w-100"
-                >
+                <button @click.prevent="createOrder()" :disabled="cantCreateOrder" class="btn-zaad w-100">
                   {{ $t("checkout.completeCheckout") }}
                 </button>
 
-                <NuxtLink
-                  :href="$localePath('/shopping-cart')"
-                  class="btn-cart btn-zaad w-100"
-                >
-                  <svg
-                    v-if="!addToCartLoading"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="19"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    fill="none"
-                  >
+                <NuxtLink :href="$localePath('/shopping-cart')" class="btn-cart btn-zaad w-100">
+                  <svg v-if="!addToCartLoading" xmlns="http://www.w3.org/2000/svg" width="19" height="19"
+                    viewBox="0 0 19 19" fill="none">
                     <path
                       d="M15.3955 17.4792C16.0858 17.4792 16.6455 16.9195 16.6455 16.2292C16.6455 15.5389 16.0858 14.9792 15.3955 14.9792C14.7052 14.9792 14.1455 15.5389 14.1455 16.2292C14.1455 16.9195 14.7052 17.4792 15.3955 17.4792Z"
-                      fill="#4A4A4A"
-                      stroke="#4A4A4A"
-                      stroke-width="1.625"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                      fill="#4A4A4A" stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round"
+                      stroke-linejoin="round" />
                     <path
                       d="M7.0625 17.4792C7.75283 17.4792 8.3125 16.9195 8.3125 16.2292C8.3125 15.5389 7.75283 14.9792 7.0625 14.9792C6.37214 14.9792 5.8125 15.5389 5.8125 16.2292C5.8125 16.9195 6.37214 17.4792 7.0625 17.4792Z"
-                      fill="#4A4A4A"
-                      stroke="#4A4A4A"
-                      stroke-width="1.625"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                      fill="#4A4A4A" stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round"
+                      stroke-linejoin="round" />
                     <path
                       d="M3.3125 2.47917H17.4792L15.8125 11.6458H4.97917L3.3125 2.47917ZM3.3125 2.47917C3.17361 1.92361 2.47917 0.8125 0.8125 0.8125"
-                      stroke="#4A4A4A"
-                      stroke-width="1.625"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                      stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
                     <path
                       d="M15.8118 11.6459H4.97852H3.50416C2.01723 11.6459 1.22852 12.2969 1.22852 13.3125C1.22852 14.3282 2.01723 14.9792 3.50416 14.9792H15.3952"
-                      stroke="#4A4A4A"
-                      stroke-width="1.625"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                      stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-                  <span
-                    v-else
-                    class="spinner-border text-dark spinner-border-sm ms-2"
-                  ></span>
+                  <span v-else class="spinner-border text-dark spinner-border-sm ms-2"></span>
                   {{ $t("cart.edit") }}
                 </NuxtLink>
               </div>
@@ -743,7 +622,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
   </section>
 
   <ClientOnly>
-    <AddAddressModal ref="addAddressModal" @newAddress="getAddresses"/>
+    <AddAddressModal ref="addAddressModal" @newAddress="getAddresses" />
   </ClientOnly>
 </template>
 <style scoped lang="scss">
@@ -760,20 +639,24 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
   &:hover {
     background-color: #cecece;
     color: #000;
+
     svg {
       width: 20px;
       height: 20px;
     }
   }
+
   &:disabled {
     cursor: no-drop;
     opacity: 0.8;
   }
+
   svg {
     margin-inline-end: 8px;
     transition: var(--trans);
   }
 }
+
 button.action {
   padding: 7px 30px;
   border-radius: 16px;
@@ -781,13 +664,16 @@ button.action {
   color: #4a4a4a;
   transition: var(--trans);
   width: 100%;
+
   &:hover {
     background-color: #e2e2e2;
   }
 }
+
 .invoice {
   background-color: #f9f9f9;
   border-radius: 12px;
+
   .head {
     background-color: #ff6a2a;
     color: #fff;
@@ -796,16 +682,21 @@ button.action {
     border-top-right-radius: inherit;
     padding: 8px 12px;
   }
+
   .body {
     padding: 15px;
+
     .value {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       &:not(:last-child) {
         border-bottom: 1px solid #e4dbdb;
       }
+
       padding: 12px 0;
+
       span {
         &:last-child {
           font-weight: bold;
@@ -813,50 +704,62 @@ button.action {
         }
       }
     }
+
     .copoun {
       border-bottom: 1px solid #e4dbdb;
       padding: 12px 0;
+
       div.box {
         display: flex;
         align-items: center;
         gap: 10px;
       }
+
       input {
         width: 100%;
         border: 1px solid #dfdfdf;
         padding: 10px;
         border-radius: 14px;
         outline: none;
+
         &::placeholder {
           color: #a9a9a9;
         }
+
         &:focus {
           border-color: var(--main-color);
         }
+
         &.invalid {
           border-color: #dc3545;
         }
       }
     }
   }
+
   .footer {
     padding: 15px;
     display: flex;
     gap: 5px;
   }
+
   .flags {
     padding: 15px;
   }
 }
+
 .invalid-msg {
   color: #dc3545;
 }
+
 .valid-msg {
   color: #198754;
 }
+
 .payment-methods {
   background-color: #f9f9f9;
   border-radius: 12px;
+
   .head {
     background-color: var(--main-color);
     color: #fff;
@@ -865,13 +768,16 @@ button.action {
     border-top-right-radius: inherit;
     padding: 8px 12px;
   }
+
   .body {
     padding: 15px;
   }
 }
+
 .shipping-addresses {
   background-color: #f9f9f9;
   border-radius: 12px;
+
   .head {
     background-color: var(--main-color);
     color: #fff;
@@ -880,16 +786,20 @@ button.action {
     border-top-right-radius: inherit;
     padding: 8px 12px;
   }
+
   .body {
     padding: 15px;
+
     .address {
       margin-bottom: 10px;
     }
   }
+
   .footer {
     padding: 15px;
   }
 }
+
 .qty {
   display: flex;
   background-color: rgba(210, 210, 210, 0.1019607843);
@@ -905,17 +815,20 @@ button.action {
   align-items: center;
   margin: 0 auto;
 
-  > div {
+  >div {
     cursor: pointer;
     transition: var(--trans);
+
     &.disabled {
       cursor: no-drop;
     }
   }
-  > span {
+
+  >span {
     font-weight: 700;
   }
 }
+
 .breadcrumbs {
   display: flex;
 
@@ -940,9 +853,11 @@ button.action {
     margin: 0 7px;
   }
 }
+
 .products {
   .table-wrapper {
     position: relative;
+
     .table-loader {
       position: absolute;
       width: 100%;
@@ -954,61 +869,75 @@ button.action {
       justify-content: center;
       align-items: center;
     }
+
     table {
       width: 100%;
       background-color: #f9f9f9;
       border-radius: 24px;
       color: #000;
+
       thead {
         th {
           padding: 15px;
           text-align: center;
         }
       }
+
       td {
         text-align: center;
         padding: 15px;
       }
+
       a {
         color: #4a4a4a;
         transition: var(--trans);
         color: var(--main-color);
+
         &:hover {
           opacity: 0.6;
         }
       }
     }
+
     max-width: 100%;
+
     @media (max-width:992px) {
       overflow: auto;
     }
   }
 }
+
 .dropdown.shipping {
   .dropdown-menu {
     padding: 15px;
+
     li {
       margin-bottom: 10px;
       cursor: pointer;
       transition: var(--trans);
       font-size: 14px;
+
       &.active {
         color: var(--main-color);
       }
+
       &:hover {
         color: var(--main-color);
       }
+
       button {
         background-color: transparent;
       }
     }
   }
 }
+
 .shipping-error {
   .shipping-dropdown {
     color: #dc3545;
   }
 }
+
 tr.disabled {
   opacity: 0.6;
   pointer-events: none;
@@ -1018,15 +947,19 @@ tr.disabled {
   0% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-4px);
   }
+
   50% {
     transform: translateX(4px);
   }
+
   75% {
     transform: translateX(-4px);
   }
+
   100% {
     transform: translateX(0);
   }
