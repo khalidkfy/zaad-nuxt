@@ -189,10 +189,9 @@ const onError = () => {
   }
 
   &:hover {
-    .product-info {
-      color: var(--main-color);
+    .product-info,  .categ, .amount  {
+      color: var(--main-color) !important;
     }
-
     .img-box {
       box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.15);
 
