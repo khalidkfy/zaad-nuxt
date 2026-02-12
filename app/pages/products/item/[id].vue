@@ -136,7 +136,7 @@ const shareLinks = computed(() => ({
 
 
 const showMRateodal = () => {
-  
+
   const addRateModal = new bootstrap.Modal(
     document.getElementById("addRateModal"),
     {},
@@ -177,12 +177,14 @@ const submitRate = async () => {
       key: "rateSubmit",
       message: "يرجى اضافة تعليق"
     })
+    return;
   }
   if (submitRateValue.value <= 0) {
     errors.value.push({
       key: "rateSubmit",
       message: "يرجى اضافة تقييم"
-    })
+    });
+    return;
   }
 
   try {
@@ -204,7 +206,10 @@ const submitRate = async () => {
       message: res?.message,
       rtl: locale.value === "ar",
     });
-    
+
+    await getProductDetails(id);
+    hideRateModal();
+
   } catch (err) {
     console.log(err.data);
 
@@ -218,6 +223,20 @@ const submitRate = async () => {
   }
 
 }
+const { loggedIn, } = useUserSession();
+
+const cantRate = computed(() => {
+  if (!loggedIn.value) {
+    return 'سجل الدخول للتقيم'
+  }
+  console.log(productDetails.value?.rates.can_rate != true, "productDetails.value?.rates.can_rateproductDetails.value?.rates.can_rate");
+
+  if (productDetails.value?.rates.can_rate != true) {
+    return "لا تستطيع التقييم"
+  }
+
+  return '';
+})
 </script>
 <template>
   <section class="mt-4">
@@ -259,7 +278,7 @@ const submitRate = async () => {
                 <NuxtLink class="store" :href="$localePath(`/stores/products/${productDetails?.store?.id}`)
                   ">{{ productDetails?.store?.name }}</NuxtLink>
               </div>
-              <ProductRate class="my-4" />
+              <ProductRate :rates="productRates" :product="productDetails" class="my-4" />
               <p>{{ productDetails?.short_description }}</p>
               <div class="price">
                 {{
@@ -337,9 +356,9 @@ const submitRate = async () => {
                   }}</NuxtLink>
                 </div>
               </div>
-              <div class="mt-4 btns">
-                <button @click="checkout" :disabled="!isCartItem"
-                  :title="isCartItem ? $t('general.buyNow') : $t('cart.add')" class="btn-zaad" v-if="isCartItem">
+              <div class="mt-4 btns"> 
+                <button v-if="loggedIn" @click="checkout" :disabled="qty < 1"
+                class="btn-zaad">
                   {{ $t("general.buyNow") }}
                 </button>
                 <button :disabled="addToCartLoading || qty < 1" @click.prevent="addToCart(productDetails?.id, qty)"
@@ -532,8 +551,11 @@ const submitRate = async () => {
                   <div class="comments-section">
                     <div class="head">
                       <div>مراجعات الزبائن</div>
-                      
-                      <button :title="productDetails?.rates?.can_rate == true ? 'اضافة مراجعة جديدة': 'يحتاج الى شراء المنتج'" :disabled="!productDetails?.rates?.can_rate != true" @click.prevent="showMRateodal">اضافة جديد</button>
+
+                      <button v-if="productDetails?.rates.can_rate" @click.prevent="showMRateodal">اضافة
+                        جديد</button>
+
+                     
                     </div>
                     <div v-if="productDetails?.rates?.details.length" class="comments">
                       <div v-for="(rate, i) in productDetails?.rates?.details" class="comment">
@@ -813,10 +835,12 @@ const submitRate = async () => {
         outline: none;
         border: 1px solid #2b2932;
         padding: 5px 10px;
-        &:disabled{
+
+        &:disabled {
           opacity: 0.8;
           cursor: no-drop;
         }
+
         &:hover {
           color: #000;
           background-color: #e6e6e6;

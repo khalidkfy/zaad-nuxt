@@ -9,6 +9,8 @@ const { getProfileRes } = useProfile();
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute()
+
 const localePath = useLocalePath();
 useSeo({
   title: t("meta.setMeta", { meta: t("login.h1") }),
@@ -76,7 +78,7 @@ const handleLogin = async () => {
         password: values.password,
       },
     });
- 
+
     if (response.access_token) {
       submitSuccess.value = true;
     }
@@ -85,7 +87,9 @@ const handleLogin = async () => {
 
       await getProfileRes();
 
-      await router.push(localePath("/"));
+
+
+      await router.push(localePath(redirect()));
     } catch (e) {
       console.error("navigation failed", e);
     }
@@ -96,9 +100,22 @@ const handleLogin = async () => {
     formLoading.value = false;
   }
 };
+
+const redirect = () => {
+  const red = route.query.redirect;
+  if (!red || typeof red !== 'string') return '/';
+
+  // prevent external redirect
+  if (!red.startsWith('/')) return '/'
+
+  // prevent login loop
+  if (red.includes('/account/login')) return '/'
+
+  return red
+}
 const config = useRuntimeConfig();
 
-onMounted(() => {});
+onMounted(() => { });
 </script>
 <template>
   <section class="auth-section p-5">
@@ -120,20 +137,9 @@ onMounted(() => {});
           <label for="emailInput" class="form-label">{{
             $t("login.emailPhone")
           }}</label>
-          <input
-            :class="{ invalid: errors?.email?.length }"
-            v-model="values.email"
-            type="email"
-            class="form-control"
-            id="emailInput"
-            aria-describedby="emailHelp"
-            :placeholder="$t('login.emailPhonePlace')"
-          />
-          <div
-            v-if="errors.email?.length"
-            id="emailHelp"
-            class="form-text text-danger text-sm"
-          >
+          <input :class="{ invalid: errors?.email?.length }" v-model="values.email" type="email" class="form-control"
+            id="emailInput" aria-describedby="emailHelp" :placeholder="$t('login.emailPhonePlace')" />
+          <div v-if="errors.email?.length" id="emailHelp" class="form-text text-danger text-sm">
             {{ errors.email[0] }}
           </div>
         </div>
@@ -141,30 +147,15 @@ onMounted(() => {});
           <label for="passwordInput" class="form-label">{{
             $t("login.password")
           }}</label>
-          <input
-            :class="{ invalid: errors?.password?.length }"
-            v-model="values.password"
-            type="password"
-            class="form-control"
-            id="passwordInput"
-            :placeholder="$t('login.passwordPlace')"
-          />
-          <div
-            v-if="errors.password?.length"
-            id="emailHelp"
-            class="form-text text-danger text-sm"
-          >
+          <input :class="{ invalid: errors?.password?.length }" v-model="values.password" type="password"
+            class="form-control" id="passwordInput" :placeholder="$t('login.passwordPlace')" />
+          <div v-if="errors.password?.length" id="emailHelp" class="form-text text-danger text-sm">
             {{ errors.password[0] }}
           </div>
         </div>
         <div class="d-flex justify-content-between mb-3">
           <div class="form-check custom-check">
-            <input
-              v-model="values.remember_me"
-              class="form-check-input"
-              type="checkbox"
-              id="reminderCheck"
-            />
+            <input v-model="values.remember_me" class="form-check-input" type="checkbox" id="reminderCheck" />
             <label class="form-check-label" for="reminderCheck">
               {{ $t("login.remember") }}
             </label>
@@ -181,9 +172,7 @@ onMounted(() => {});
           <span v-if="!formLoading">{{ $t("login.loginBtn") }}</span>
           <span v-else class="indicator-progress f-normal fs-20">
             {{ t("general.wait") }}
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
           </span>
         </button>
         <div class="mt-4 text-center fw-bold">
@@ -202,6 +191,7 @@ section.auth-section {
   justify-content: center;
   margin: auto;
   width: 40%;
+
   @media (max-width: 992px) {
     width: 100%;
   }
@@ -302,7 +292,7 @@ section.auth-section {
   }
 
   /* Check icon */
-  .custom-check .form-check-input:checked + .form-check-label::after {
+  .custom-check .form-check-input:checked+.form-check-label::after {
     content: "✓";
     position: absolute;
     right: 3px;
