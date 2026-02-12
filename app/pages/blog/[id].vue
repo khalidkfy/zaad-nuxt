@@ -39,29 +39,37 @@ useSeo({
 });
 </script>
 <template>
+  <section class="mt-4">
+    <div class="container">
+      <div class="breadcrumbs">
+        <NuxtLink :href="$localePath('index')">{{ $t("links.home") }}</NuxtLink>
+        <div>/</div>
+        <NuxtLink active-class="active" :href="$localePath(`/blog`)">
+          {{ $t("links.blog") }}
+        </NuxtLink>
+        <div>/</div>
+        <NuxtLink active-class="active" :href="$localePath(`/blog/${blog?.data?.id}`)">
+          {{ blog?.data?.title }}
+        </NuxtLink>
+      </div>
+    </div>
+  </section>
   <section class="mt-5 blog">
     <div class="container">
       <h1>{{ blog?.data?.title }}</h1>
-      <div class="img">
-        <div class="layer"></div>
-        <NuxtImg
-          loading="lazy"
-          width="100"
-          height="100"
-          v-if="blog?.data?.image"
-          :alt="blog?.data?.title"
-          :title="blog?.data?.title"
-          :src="blog?.data?.image"
-        />
+      <div class="blog-banner" :style="{
+        backgroundImage: blog?.data?.image
+          ? `url(${blog.data.image})`
+          : 'none'
+      }">
+        <div class="overlay"></div>
+
+        <div class="banner-content">
+
+        </div>
       </div>
       <div class="time">
-        <img
-          loading="lazy"
-          src="/assets/images/time.svg"
-          alt="time"
-          width="18"
-          height="18"
-        />
+        <img loading="lazy" src="/assets/images/time.svg" alt="time" width="18" height="18" />
         <span> {{ blog?.data?.created_at }}</span>
       </div>
     </div>
@@ -73,35 +81,92 @@ useSeo({
   </section>
 </template>
 <style scoped lang="scss">
-section.blog {
-  h1 {
-    color: #272727;
-    font-size: 32px;
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.breadcrumbs {
+  display: flex;
+
+  a {
+    font-size: 14px;
+    color: #888888;
+    transition: var(--trans);
     font-weight: 500;
-    text-align: center;
-    margin-bottom: 30px;
+
+    &:hover {
+      color: #4a4a4a;
+    }
+
+    &.active {
+      color: #4a4a4a;
+      font-weight: 600;
+    }
   }
 
-  .img {
+  div {
+    color: #888888;
+    margin: 0 7px;
+  }
+}
+
+.blog-banner {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    min-height: 350px;
+  }
+
+  @media (min-width: 1200px) {
+    min-height: 420px;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+  }
+
+  .banner-content {
     position: relative;
+    z-index: 2;
+    padding: 20px;
 
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      max-height: 300px;
-      object-fit: cover;
-    }
+    h1 {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.3;
 
-    .layer {
-      width: 100%;
-      height: 100%;
-      background-color: #000;
-      position: absolute;
-      opacity: 0.22;
-      border-radius: 16px;
+      @media (min-width: 768px) {
+        font-size: 40px;
+      }
+
+      @media (min-width: 1200px) {
+        font-size: 48px;
+      }
     }
   }
+}
+
+section.blog {
+
 
   .time {
     margin-top: 12px;
