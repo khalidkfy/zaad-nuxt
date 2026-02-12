@@ -98,54 +98,25 @@ const onError = () => {
 <template>
   <div class="product-card" :class="styleFor" :aria-label="`Product: ${product?.title}`">
     <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="img-box">
-      <div
-        v-if="styleFor !== 'mega'"
-        class="cart"
-        ref="cartRef"
-        :class="{ secColor: cartBg }"
-        :title="$t('cart.add')"
-        @click.prevent="addToCart(product?.id)"
-      >
-        <NuxtImg
-          loading="lazy"
-          v-if="!addToCartLoading"
-          width="19"
-          height="19"
-          src="/assets/images/addcart.svg"
-          :alt="$t('cart.add')"
-        />
+      <div v-if="styleFor !== 'mega'" class="cart" ref="cartRef" :class="{ secColor: cartBg }" :title="$t('cart.add')"
+        @click.prevent="addToCart(product?.id)">
+        <NuxtImg loading="lazy" v-if="!addToCartLoading" width="19" height="19" src="/assets/images/addcart.svg"
+          :alt="$t('cart.add')" />
         <div v-else>
           <span class="spinner-border text-white spinner-border-sm"></span>
         </div>
       </div>
-      <div
-        v-if="loggedIn"
-        ref="whishRef"
-        class="whish"
-        :class="{ fav: product?.favorite_item == true || styleFor === 'whish' }"
-        :title="
-          product?.favorite_item == true || styleFor === 'whish'
-            ? $t('whish.remove')
-            : $t('whish.add')
-        "
-        @click.prevent="handleWhishSubmit(product)"
-      >
-        <svg
-          v-if="!addToWhishLoading && !removeWhishLoading"
-          xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
-          viewBox="0 0 15 15"
-          fill="none"
-        >
+      <div v-if="loggedIn" ref="whishRef" class="whish"
+        :class="{ fav: product?.favorite_item == true || styleFor === 'whish' }" :title="product?.favorite_item == true || styleFor === 'whish'
+          ? $t('whish.remove')
+          : $t('whish.add')
+          " @click.prevent="handleWhishSubmit(product)">
+        <svg v-if="!addToWhishLoading && !removeWhishLoading" xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+          viewBox="0 0 15 15" fill="none">
           <g clip-path="url(#clip0_176_1029)">
             <path
               d="M11.7008 7.5432L7.20077 12L2.70077 7.5432C2.40395 7.25437 2.17015 6.90721 2.0141 6.52358C1.85804 6.13996 1.7831 5.72817 1.79401 5.31416C1.80491 4.90015 1.90142 4.49288 2.07746 4.118C2.2535 3.74312 2.50525 3.40875 2.81686 3.13595C3.12847 2.86315 3.49319 2.65782 3.88805 2.53289C4.28292 2.40797 4.69937 2.36615 5.11119 2.41008C5.523 2.45401 5.92127 2.58274 6.28089 2.78815C6.64052 2.99356 6.95372 3.2712 7.20077 3.6036C7.44889 3.27362 7.76245 2.99839 8.12183 2.79517C8.4812 2.59194 8.87866 2.46507 9.28933 2.42251C9.69999 2.37996 10.115 2.42262 10.5084 2.54784C10.9018 2.67305 11.2652 2.87813 11.5757 3.15022C11.8862 3.42231 12.1372 3.75557 12.313 4.12914C12.4888 4.5027 12.5856 4.90853 12.5974 5.32123C12.6091 5.73392 12.5355 6.1446 12.3812 6.52755C12.227 6.91051 11.9953 7.2575 11.7008 7.5468"
-              stroke="#4A4A4A"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+              stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </g>
           <defs>
             <clipPath id="clip0_176_1029">
@@ -157,40 +128,26 @@ const onError = () => {
           <span class="spinner-border text-dark spinner-border-sm"></span>
         </div>
       </div>
+      <NuxtLink :style="{ color: textColor ? textColor : '' }" v-if="showCateg && styleFor === 'default'"
+        :href="$localePath(`/products/${product?.category?.id}`)" class="categ-lable">{{
+          product?.category?.title
+        }}</NuxtLink>
       <div v-if="product?.discount" class="discount-label">-{{ product?.discount }}%</div>
       <!-- <div v-if="product?.customOffer" class="custom-offer">{{ product?.customOffer }}</div> -->
-      <NuxtImg
-        class="product"
-        loading="lazy"
-        width="185"
-        :src="imageSrc"
-        :alt="product?.title"
-        :title="product?.title"
-        @error="onError"
-      />
+      <NuxtImg class="product" loading="lazy" width="185" :src="imageSrc" :alt="product?.title" :title="product?.title"
+        @error="onError" />
     </NuxtLink>
     <div class="info-holder">
-      <NuxtLink
-        :style="{ color: textColor ? textColor : '' }"
-        v-if="showCateg && styleFor === 'default'"
-        :href="$localePath(`/stores/products/${product?.seller?.store_id}`)"
-        class="categ"
-        >{{ product?.seller?.storeName }}</NuxtLink
-      >
-      <NuxtLink
-        :style="{ color: textColor ? textColor : '' }"
+      <NuxtLink :style="{ color: textColor ? textColor : '' }" v-if="showCateg && styleFor === 'default'"
+        :href="$localePath(`/stores/products/${product?.seller?.store_id}`)" class="categ">{{ product?.seller?.storeName
+        }}</NuxtLink>
+      <NuxtLink :style="{ color: textColor ? textColor : '' }"
         v-if="showCateg && (styleFor === 'store' || styleFor === 'mega')"
-        :href="$localePath(`/products/${product?.category?.id}`)"
-        class="categ"
-        >{{ product?.category?.title }}</NuxtLink
-      >
+        :href="$localePath(`/products/${product?.category?.id}`)" class="categ">{{ product?.category?.title }}
+      </NuxtLink>
 
       <NuxtLink :href="$localePath(`/products/item/${product?.id}`)" class="product-info">
-        <div
-          :style="{ color: textColor ? textColor : '' }"
-          :title="product?.title"
-          class="name"
-        >
+        <div :style="{ color: textColor ? textColor : '' }" :title="product?.title" class="name">
           {{ product?.title }}
         </div>
         <div v-if="styleFor === 'whish'" class="price">
@@ -198,9 +155,7 @@ const onError = () => {
             <span :style="{ color: textColor ? textColor : '' }" class="amount">{{
               product?.price
             }}</span>
-            <span :style="{ color: textColor ? textColor : '' }" class="currency"
-              >ر.ع</span
-            >
+            <span :style="{ color: textColor ? textColor : '' }" class="currency">ر.ع</span>
           </div>
         </div>
         <div v-else class="price">
@@ -222,20 +177,25 @@ const onError = () => {
     &.fav {
       width: 32px !important;
       height: 32px !important;
+
       svg {
         fill: red !important;
+
         path {
           stroke: red;
         }
       }
     }
   }
+
   &:hover {
     .product-info {
       color: var(--main-color);
     }
+
     .img-box {
       box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.15);
+
       .whish {
         width: 32px;
         height: 32px;
@@ -284,10 +244,25 @@ const onError = () => {
     border-radius: 8px;
     position: relative;
 
+    .categ-lable {
+      position: absolute;
+      background-color: #000;
+      top: 10px;
+      inset-inline-end: 8px;
+      z-index: 22;
+      color: #fff;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 6px 5px;
+      border-radius: 4px;
+
+    }
+
     .cart {
       &.secColor {
         background-color: #053b74;
       }
+
       position: absolute;
       bottom: -10px;
       background-color: var(--main-color);
@@ -330,6 +305,7 @@ const onError = () => {
         width: 32px;
         height: 32px;
       }
+
       &:hover {
         svg {
           width: 17px;
@@ -401,6 +377,7 @@ const onError = () => {
   &.mega {
     display: flex;
     gap: 10px;
+
     .img-box {
       height: 112px;
       max-width: 125px;

@@ -86,7 +86,7 @@ const loadMore = async () => {
           <template v-if="products?.length">
             <div class="row">
               <div class="col-sm-3 col-6 mb-4" v-for="(product, i) in products" :key="i">
-                <ProductCard styleFor="store" @removed="handleWhishRemove" :product="product" />
+                <ProductCard @removed="handleWhishRemove" :product="product" />
               </div>
             </div>
           </template>

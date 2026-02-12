@@ -43,7 +43,7 @@ import "swiper/css/navigation";
     class="product-swiper"
   >
     <SwiperSlide v-for="(item, index) in items" :key="index">
-      <LazyProductCard :product="item" />
+      <LazyProductCard :showCateg="false" :product="item" />
     </SwiperSlide>
   </Swiper>
 </template>

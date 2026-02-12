@@ -39,7 +39,7 @@ import "swiper/css/navigation";
               class="product-swiper"
             >
               <SwiperSlide v-for="(item, index) in products" :key="index">
-                <LazyProductCard cartBg="#ff601c" textColor="#fff" :product="item" />
+                <LazyProductCard :showCateg="false" cartBg="#ff601c" textColor="#fff" :product="item" />
               </SwiperSlide>
             </Swiper>
           </div>
