@@ -63,6 +63,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         required: true,
         message: t("validations.required", { key: t("register.phone") }),
       },
+
     ],
     passwordConfirm: [
       {
@@ -79,6 +80,8 @@ const formLoading = ref(false);
 const submitErr = ref("");
 const submitSuccess = ref(false);
 const viewPassword = ref(false);
+
+const mobileRegion = ref('OM');
 
 const handleResponseErr = (errs) => {
   if (errs?.email) {
@@ -108,8 +111,13 @@ const handleRegister = async () => {
   if (!validateAll() || hasErrors.value) return;
   formLoading.value = true;
   try {
-    const mobile_region = document.getElementById("mobile_region").value;
+    const mobile_region = mobileRegion.value;
 
+    if (!validatePhoneNumber(values.phone, mobile_region)) {
+      submitErr.value = t("validations.invalidPhone");
+      errors.phone = t("validations.invalidPhone");
+      return;
+    }
     const response = await $fetch("/api/auth/register", {
       method: "POST",
       body: {
@@ -120,10 +128,14 @@ const handleRegister = async () => {
         mobile: values.phone,
         mobile_region: mobile_region,
       },
-    }).then((res) => {});
+    })
 
     if (response.data) {
       submitSuccess.value = true;
+      setTimeout(async() => {
+        await router.push(localePath('/account/login'));
+
+      }, 2000);
     }
   } catch (err) {
     if (err?.data?.data?.errors) {
@@ -133,6 +145,16 @@ const handleRegister = async () => {
   } finally {
     formLoading.value = false;
   }
+};
+
+const validatePhoneNumber = (phone: string, region: string) => {
+  if (!phone) return false;
+
+
+  // allow digits only
+  if (!/^\d+$/.test(phone)) return false;
+
+  return true
 };
 </script>
 <template>
@@ -148,35 +170,22 @@ const handleRegister = async () => {
           {{ submitErr || t("validations.submitErr") }}
         </div>
         <div v-if="submitSuccess" class="alert alert-success my-3">
-          {{ t("login.signed-in") }}
+          {{ t("register.registerd") }}
         </div>
 
         <div class="mb-3">
           <label class="form-label">{{ $t("register.name") }}</label>
-          <input
-            :class="{ invalid: errors?.name?.length }"
-            v-model="values.name"
-            type="text"
-            class="form-control"
-            :placeholder="$t('register.namePlace')"
-          />
+          <input :class="{ invalid: errors?.name?.length }" v-model="values.name" type="text" class="form-control"
+            :placeholder="$t('register.namePlace')" />
           <div v-if="errors.name?.length" class="form-text text-danger text-sm">
             {{ errors.name[0] }}
           </div>
         </div>
         <div class="mb-3">
           <label class="form-label">{{ $t("register.email") }}</label>
-          <input
-            :class="{ invalid: errors?.email?.length }"
-            v-model="values.email"
-            type="email"
-            class="form-control"
-            :placeholder="$t('register.emailPlace')"
-          />
-          <div
-            v-if="errors.email?.length"
-            class="form-text text-danger text-sm"
-          >
+          <input :class="{ invalid: errors?.email?.length }" v-model="values.email" type="email" class="form-control"
+            :placeholder="$t('register.emailPlace')" />
+          <div v-if="errors.email?.length" class="form-text text-danger text-sm">
             {{ errors.email[0] }}
           </div>
         </div>
@@ -185,7 +194,7 @@ const handleRegister = async () => {
 
           <div class="input-group mb-3">
             <div class="input-group-text" id="basic-addon1">
-              <select id="mobile_region" class="form-select">
+              <select v-model="mobileRegion" class="form-select">
                 <template v-if="locale == 'ar'">
                   <option value="OM" selected>عُمان +968</option>
                   <option value="KW">الكويت +965</option>
@@ -209,19 +218,11 @@ const handleRegister = async () => {
               </select>
             </div>
 
-            <input
-              :class="{ invalid: errors?.phone?.length }"
-              v-model="values.phone"
-              type="text"
-              class="form-control"
-              :placeholder="$t('register.phonePlace')"
-            />
+            <input :class="{ invalid: errors?.phone?.length }" v-model="values.phone" type="text" class="form-control"
+              :placeholder="$t('register.phonePlace')" />
           </div>
 
-          <div
-            v-if="errors.phone?.length"
-            class="form-text text-danger text-sm"
-          >
+          <div v-if="errors.phone?.length" class="form-text text-danger text-sm">
             {{ errors.phone[0] }}
           </div>
         </div>
@@ -229,20 +230,12 @@ const handleRegister = async () => {
           <label class="form-label">{{ $t("register.password") }}</label>
 
           <div class="input-group mb-3">
-            <input
-              :class="{ invalid: errors?.password?.length }"
-              v-model="values.password"
-              type="password"
-              class="form-control"
-              :placeholder="$t('register.passwordPlace')"
-            />
+            <input :class="{ invalid: errors?.password?.length }" v-model="values.password" type="password"
+              class="form-control" :placeholder="$t('register.passwordPlace')" />
             <!-- <div class="input-group-text" id="basic-addon1">eye</div> -->
           </div>
 
-          <div
-            v-if="errors.password?.length"
-            class="form-text text-danger text-sm"
-          >
+          <div v-if="errors.password?.length" class="form-text text-danger text-sm">
             {{ errors.password[0] }}
           </div>
         </div>
@@ -250,20 +243,12 @@ const handleRegister = async () => {
           <label class="form-label">{{ $t("register.passwordConfirm") }}</label>
 
           <div class="input-group mb-3">
-            <input
-              :class="{ invalid: errors?.passwordConfirm?.length }"
-              v-model="values.passwordConfirm"
-              type="password"
-              class="form-control"
-              :placeholder="$t('register.passwordConfirmPlace')"
-            />
+            <input :class="{ invalid: errors?.passwordConfirm?.length }" v-model="values.passwordConfirm"
+              type="password" class="form-control" :placeholder="$t('register.passwordConfirmPlace')" />
             <!-- <div class="input-group-text" id="basic-addon1">eye</div> -->
           </div>
 
-          <div
-            v-if="errors.password?.length"
-            class="form-text text-danger text-sm"
-          >
+          <div v-if="errors.password?.length" class="form-text text-danger text-sm">
             {{ errors.passwordConfirm[0] }}
           </div>
         </div>
@@ -272,9 +257,7 @@ const handleRegister = async () => {
           <span v-if="!formLoading">{{ $t("register.btn") }}</span>
           <span v-else class="indicator-progress f-normal fs-20">
             {{ t("general.wait") }}
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
           </span>
         </button>
         <div class="mt-4 text-center fw-bold">
@@ -390,7 +373,7 @@ section.auth-section {
   }
 
   /* Check icon */
-  .custom-check .form-check-input:checked + .form-check-label::after {
+  .custom-check .form-check-input:checked+.form-check-label::after {
     content: "✓";
     position: absolute;
     right: 3px;

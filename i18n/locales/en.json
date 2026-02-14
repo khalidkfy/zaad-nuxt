@@ -230,6 +230,7 @@
     "loged-out-desc": "Sign in to enjoy shopping expierance"
   },
   "validations": {
+    "invalidPhone": "Invalid phone number.",
     "422": "Make sure to fill in all fields.",
     "required": "{key} is required",
     "requiredField": "This field is required",
@@ -292,6 +293,8 @@
     "search": "What are you looking at?"
   },
   "profile": {
+    "uploadImg": "Uplaod image",
+    "removeImg": "Remove",
     "personalInfo": "Personal information",
     "name": "Name",
     "gender": "Gender",
@@ -326,7 +329,17 @@
     }
   },
   "items": {
-    "noData": "There is no products right now, try again later or change filters"
+    "noData": "There is no products right now, try again later or change filters",
+    "shareItem":"Share product with friends",
+    "shareItemP":"share the product if you like it",
+    "newComments":"new commnets",
+    "customersReviews":"Customers reviews",
+    "addNew":"Add New",
+    "unknown":"Unknown customer",
+    "noReviews":"No reviews yet",
+    "addReview":"Add review",
+    "rate":"Rate",
+    "comment":"Comment"
   },
   "checkout": {
     "title": "Checkout",

@@ -58,7 +58,7 @@ watch(
     if (newProfile) {
       values.name = newProfile.name || "";
       values.email = newProfile.email || "";
-      values.country = newProfile?.profile?.country_json.id || "";
+      values.country = newProfile?.profile?.country_json?.id || "";
       values.gender = newProfile?.profile?.gender || "";
       values.lang = newProfile?.profile?.language || "";
       // add other fields as needed

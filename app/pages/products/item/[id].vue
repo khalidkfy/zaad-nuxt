@@ -175,14 +175,14 @@ const submitRate = async () => {
   if (!submitRateNote.value.length) {
     errors.value.push({
       key: "rateSubmit",
-      message: "يرجى اضافة تعليق"
+      message: t("validations.required", {key:t('items.comment')})
     })
     return;
   }
   if (submitRateValue.value <= 0) {
     errors.value.push({
       key: "rateSubmit",
-      message: "يرجى اضافة تقييم"
+      message: t("validations.required", {key:t('items.rate')})
     });
     return;
   }
@@ -356,9 +356,8 @@ const cantRate = computed(() => {
                   }}</NuxtLink>
                 </div>
               </div>
-              <div class="mt-4 btns"> 
-                <button v-if="loggedIn" @click="checkout" :disabled="qty < 1"
-                class="btn-zaad">
+              <div class="mt-4 btns">
+                <button v-if="loggedIn" @click="checkout" :disabled="qty < 1" class="btn-zaad">
                   {{ $t("general.buyNow") }}
                 </button>
                 <button :disabled="addToCartLoading || qty < 1" @click.prevent="addToCart(productDetails?.id, qty)"
@@ -437,7 +436,7 @@ const cantRate = computed(() => {
 
                       </div>
 
-                      <div class="new-comments">( {{ productRates?.total_rating }} تعليق جديد )</div>
+                      <div class="new-comments">( {{ productRates?.total_rating }}  {{ $t("items.newComments") }} )</div>
                     </div>
                     <div class="rate-labels">
                       <div class="label">
@@ -550,12 +549,11 @@ const cantRate = computed(() => {
                   </div>
                   <div class="comments-section">
                     <div class="head">
-                      <div>مراجعات الزبائن</div>
+                      <div>{{ $t("items.customersReviews") }}</div>
 
-                      <button v-if="productDetails?.rates.can_rate" @click.prevent="showMRateodal">اضافة
-                        جديد</button>
+                      <button v-if="productDetails?.rates.can_rate" @click.prevent="showMRateodal">{{ $t("items.addNew") }}</button>
 
-                     
+
                     </div>
                     <div v-if="productDetails?.rates?.details.length" class="comments">
                       <div v-for="(rate, i) in productDetails?.rates?.details" class="comment">
@@ -581,7 +579,7 @@ const cantRate = computed(() => {
                               </defs>
                             </svg>
                           </div>
-                          <span>{{ rate?.user || 'غير معروف' }}</span>
+                          <span>{{ rate?.user || $t("items.unknown") }}</span>
                         </div>
                         <div class="stars">
                           <svg v-for="i in 5" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -611,7 +609,7 @@ const cantRate = computed(() => {
                       </div>
                     </div>
                     <div v-else>
-                      <div class="mt-4">لا يوجد مراجعات بعد</div>
+                      <div class="mt-4">{{ $t("items.noReviews") }}</div>
                     </div>
                   </div>
                 </div>
@@ -650,8 +648,8 @@ const cantRate = computed(() => {
                 </svg>
               </div>
               <div class="text">
-                <span>شارك اصدقائك المنتج</span>
-                <span>اذا عجبك المنتج بتقدر تشاركه مع اصدقائك</span>
+                <span>{{ $t("items.shareItem") }}</span>
+                <span>{{ $t("items.shareItemP") }}</span>
               </div>
             </div>
             <div class="arrow">
@@ -674,7 +672,7 @@ const cantRate = computed(() => {
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-title">
-              اضافة مراجعة
+                {{ $t("items.addReview") }}
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -688,7 +686,7 @@ const cantRate = computed(() => {
 
                 <div class="mb-3">
                   <label class="form-label">
-                    التقييم <span class="text-danger">*</span>
+                    {{$t("items.rate")}} <span class="text-danger">*</span>
                   </label>
                   <div class="submit-rate">
                     <svg @click.prevent="submitRateValue = i" v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg"
@@ -708,10 +706,10 @@ const cantRate = computed(() => {
                 </div>
                 <div class="mb-3">
                   <label class="form-label">
-                    تعليق <span class="text-danger">*</span>
+                    {{$t("items.comment")}} <span class="text-danger">*</span>
                   </label>
                   <textarea v-model="submitRateNote" rows="5" cols="20" class="form-control"
-                    :placeholder="$t('general.desc')"></textarea>
+                    :placeholder="$t('items.comment')"></textarea>
 
                 </div>
                 <button :disabled="submitRateLoading" type="submit"
@@ -743,6 +741,10 @@ const cantRate = computed(() => {
   </section>
 </template>
 <style scss lang="scss">
+[dir="ltr"] .arrow img {
+  scale: -1;
+}
+
 .submit-rate {
   display: flex;
   gap: 10px;
@@ -809,6 +811,7 @@ const cantRate = computed(() => {
     border-radius: 50%;
     justify-content: center;
   }
+
 }
 
 .product-tab-content {

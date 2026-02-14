@@ -35,9 +35,72 @@ const handlePreferenceChange = async (key: string, value: boolean) => {
 
 const showSidebar = computed(() => {
   return !route.path.startsWith(
-    `${locale.value == "ar" ? "" : "/en"}/account/profile/orders`,
+    `${locale.value == "ar" ? "" : "/en"}/account/profile/orders`
   );
 });
+
+const fileInput = ref<HTMLInputElement | null>(null);
+const previewImage = ref<string | null>(null);
+const selectedFile = ref<File | null>(null);
+
+const openFilePicker = () => {
+  fileInput.value?.click();
+};
+
+//  TODO Image not handeled from backend
+const handleImageChange = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Image must be less than 2MB");
+    return;
+  }
+
+  selectedFile.value = file;
+  previewImage.value = URL.createObjectURL(file);
+};
+
+const removeSelectedImage = () => {
+  if (previewImage.value) {
+    URL.revokeObjectURL(previewImage.value);
+  }
+
+  previewImage.value = null;
+  selectedFile.value = null;
+
+  if (fileInput.value) {
+    fileInput.value.value = "";
+  }
+};
+
+const uploadingImage = ref(false);
+
+const uploadProfileImage = async () => {
+  if (!selectedFile.value) return;
+
+  const formData = new FormData();
+  formData.append("image", selectedFile.value);
+  uploadingImage.value = true;
+
+  try {
+    const response = await $fetch("/api/profile/update", {
+      method: "POST",
+      body: formData,
+    });
+
+    await getProfileRes();
+    // Optional: refresh profile image after upload
+    previewImage.value = null;
+    selectedFile.value = null;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    uploadingImage.value = false;
+  }
+};
 </script>
 <template>
   <AppHeader layout="app" />
@@ -48,9 +111,7 @@ const showSidebar = computed(() => {
     <section class="mt-3">
       <div class="container">
         <div class="breadcrumbs">
-          <NuxtLink :href="$localePath('index')">{{
-            $t("links.home")
-          }}</NuxtLink>
+          <NuxtLink :href="$localePath('index')">{{ $t("links.home") }}</NuxtLink>
           <div>/</div>
           <template v-for="(breadcrumb, i) in breadcrumbs">
             <NuxtLink class="active" :href="$localePath(breadcrumb?.url)">
@@ -69,18 +130,72 @@ const showSidebar = computed(() => {
               <div class="user-info-card">
                 <template v-if="!getProfileLoading">
                   <div class="info text-center">
-                    <img
-                      loading="lazy"
-                      width="117"
-                      height="117"
-                      :src="
-                        profileData?.profile?.image ?? '/assets/images/user.svg'
-                      "
-                      :alt="profileData?.name"
-                    />
+                    <div class="avatar-wrapper">
+                      <div v-if="uploadingImage" class="avatar-loading-overlay">
+                        <div class="spinner-border text-light"></div>
+                      </div>
+                      <img
+                        class="avatar-img"
+                        :src="
+                          previewImage ||
+                          profileData?.profile?.image ||
+                          '/assets/images/user.svg'
+                        "
+                        :alt="profileData?.name"
+                      />
+
+                      <!-- Edit button -->
+                      <button
+                        :disabled="uploadingImage"
+                        class="edit-btn"
+                        @click="openFilePicker"
+                      >
+                        <img
+                          src="/assets/images/edit.svg"
+                          alt="edit"
+                          width="20"
+                          height="20"
+                        />
+                      </button>
+
+                      <input
+                        ref="fileInput"
+                        type="file"
+                        accept="image/*"
+                        class="d-none"
+                        @change="handleImageChange"
+                      />
+                    </div>
+
+                    <div v-if="previewImage" class="avatar-actions mt-3">
+                      <button
+                        class="btn btn-success"
+                        :disabled="uploadingImage"
+                        @click="uploadProfileImage"
+                      >
+                        <span v-if="!uploadingImage">
+                          {{ $t("profile.uploadImg") }}
+                        </span>
+
+                        <span v-else class="d-flex align-items-center gap-2">
+                          {{ $t("general.wait") }}
+                          <span class="spinner-border spinner-border-sm"></span>
+                        </span>
+                      </button>
+
+                      <button
+                        class="btn btn-danger"
+                        :disabled="uploadingImage"
+                        @click="removeSelectedImage"
+                      >
+                        {{ $t("profile.removeImg") }}
+                      </button>
+                    </div>
+
                     <div class="name">{{ profileData?.name }}</div>
                     <div class="id">#{{ profileData?.id }}</div>
                   </div>
+
                   <div class="contact">
                     <div>
                       <img
@@ -283,7 +398,6 @@ const showSidebar = computed(() => {
                       </label>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -599,6 +713,71 @@ const showSidebar = computed(() => {
   <AppFooter />
 </template>
 <style lang="scss" scoped>
+.avatar-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.avatar-actions button {
+  border-radius: 10px;
+  padding: 8px 16px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 117px;
+  height: 117px;
+  margin: auto;
+}
+
+.avatar-img {
+  width: 117px;
+  height: 117px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f2f2f2;
+  transition: 0.3s;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #fff;
+  border: none;
+  color: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+/* Show edit on hover */
+.avatar-wrapper:hover .edit-btn {
+  opacity: 1;
+}
+
+/* Mobile always visible */
+@media (hover: none) {
+  .edit-btn {
+    opacity: 1;
+  }
+}
+
 .profile-content {
   background-color: #f9f9f9;
   width: 100%;
@@ -637,7 +816,6 @@ const showSidebar = computed(() => {
 .skeleton {
   background-color: #d7d7d7;
 }
-
 
 .breadcrumbs {
   display: flex;
