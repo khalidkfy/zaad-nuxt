@@ -2,7 +2,10 @@
 const { user, fetch: refreshSession } = useUserSession();
 const toast = useToast();
 const { t, locale } = useI18n();
-useSeo({});
+useSeo({
+  title: t("meta.setMeta", { meta: t("profile.personalInfo") }),
+  description: t("meta.setMeta", { meta: t("profile.personalInfo") }),
+});
 definePageMeta({
   layout: "profile",
   middleware: "authenticated",
@@ -70,7 +73,6 @@ const formLoading = ref(false);
 const submitErr = ref("");
 const submitSuccess = ref(false);
 const handleSubmit = async () => {
-
   submitErr.value = "";
   submitSuccess.value = false;
   reset();
@@ -134,9 +136,7 @@ onMounted(async () => {
       >
         <span v-if="!formLoading"> {{ $t("general.save") }}</span>
         <span v-else class="indicator-progress f-normal fs-20">
-          <span
-            class="spinner-border spinner-border-sm align-middle ms-2"
-          ></span>
+          <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
         </span>
       </button>
     </template>
@@ -184,9 +184,7 @@ onMounted(async () => {
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="form-group">
-            <label for="name" class="form-label">{{
-              $t("profile.name")
-            }}</label>
+            <label for="name" class="form-label">{{ $t("profile.name") }}</label>
             <input
               class="form-control"
               type="text"
@@ -196,19 +194,14 @@ onMounted(async () => {
               :class="{ invalid: errors?.name?.length }"
               :placeholder="$t('profile.name')"
             />
-            <div
-              v-if="errors.name?.length"
-              class="form-text text-danger text-sm"
-            >
+            <div v-if="errors.name?.length" class="form-text text-danger text-sm">
               {{ errors.name[0] }}
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-3">
           <div class="form-group">
-            <label for="country" class="form-label">
-              {{ $t("profile.country") }}</label
-            >
+            <label for="country" class="form-label"> {{ $t("profile.country") }}</label>
             <select
               v-model="values.country"
               class="form-select"
@@ -230,19 +223,14 @@ onMounted(async () => {
                 {{ country?.title }}
               </option>
             </select>
-            <div
-              v-if="errors.country?.length"
-              class="form-text text-danger text-sm"
-            >
+            <div v-if="errors.country?.length" class="form-text text-danger text-sm">
               {{ errors.country[0] }}
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-3">
           <div class="form-group">
-            <label for="gender" class="form-label">
-              {{ $t("profile.gender") }}</label
-            >
+            <label for="gender" class="form-label"> {{ $t("profile.gender") }}</label>
             <select
               v-model="values.gender"
               class="form-select"
@@ -257,19 +245,14 @@ onMounted(async () => {
               <option value="ذكر">{{ $t("profile.male") }}</option>
               <option value="انثي">{{ $t("profile.female") }}</option>
             </select>
-            <div
-              v-if="errors.gender?.length"
-              class="form-text text-danger text-sm"
-            >
+            <div v-if="errors.gender?.length" class="form-text text-danger text-sm">
               {{ errors.gender[0] }}
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-3">
           <div class="form-group">
-            <label for="lang" class="form-label">
-              {{ $t("profile.lang") }}</label
-            >
+            <label for="lang" class="form-label"> {{ $t("profile.lang") }}</label>
             <select
               v-model="values.lang"
               class="form-select"
@@ -284,10 +267,7 @@ onMounted(async () => {
               <option value="English">{{ $t("langs.en") }}</option>
               <option value="العربية">{{ $t("langs.ar") }}</option>
             </select>
-            <div
-              v-if="errors.lang?.length"
-              class="form-text text-danger text-sm"
-            >
+            <div v-if="errors.lang?.length" class="form-text text-danger text-sm">
               {{ errors.lang[0] }}
             </div>
           </div>

@@ -339,6 +339,7 @@
   },
   "checkout": {
     "title": "الشراء",
+    "AddAddressNote": "يرجى اضافة عنوانك",
     "shippingService": "شركة الشحن",
     "shippingPrice": "سعر الشحن",
     "chooseShipping": " اختر شركة الشحن",

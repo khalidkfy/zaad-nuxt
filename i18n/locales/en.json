@@ -343,6 +343,7 @@
   },
   "checkout": {
     "title": "Checkout",
+    "AddAddressNote": "Please add your address",
     "shippingService": "Shipping service",
     "shippingPrice": "Shipping price",
     "chooseShipping": "Choose shipping service",

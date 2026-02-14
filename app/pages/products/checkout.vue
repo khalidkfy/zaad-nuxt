@@ -4,8 +4,7 @@ useSeo({
   title: t("meta.setMeta", { meta: t("checkout.title") }),
 });
 const { getAddresses, getAddressesloading, addresses } = useProfile();
-const { validateCoupon, validateCouponRes, validateCouponLoading } =
-  useProducts();
+const { validateCoupon, validateCouponRes, validateCouponLoading } = useProducts();
 
 const pageLoading = computed(() => {
   return getAddressesloading.value || getCheckoutLoading.value;
@@ -64,11 +63,9 @@ const getCheckout = async (loadingType = null) => {
     const responseItems = Array.isArray(checkoutDataReq?.resources)
       ? checkoutDataReq.resources
       : Object.values(checkoutDataReq?.resources || {});
-      
+
     checkoutItems.value = responseItems.map((item) => {
-      const storedItem = paresdData.items.find(
-        (i) => i.item_id === item?.item?.id
-      );
+      const storedItem = paresdData.items.find((i) => i.item_id === item?.item?.id);
 
       if (storedItem) {
         item.item.quantity = storedItem.quantity;
@@ -99,17 +96,14 @@ const getSellerPaymentMethods = async () => {
   const paresdData = checkoutData.value || loadCheckoutData();
   if (!paresdData) return;
 
-  const sellerPaymentMethods = await $fetch(
-    "/api/products/seller-payment-methods",
-    {
-      headers: {
-        Lang: locale.value,
-      },
-      query: {
-        seller_id: paresdData?.seller?.id,
-      },
+  const sellerPaymentMethods = await $fetch("/api/products/seller-payment-methods", {
+    headers: {
+      Lang: locale.value,
     },
-  );
+    query: {
+      seller_id: paresdData?.seller?.id,
+    },
+  });
   paymentMethods.value = sellerPaymentMethods?.resources;
 
   selectedPaymentMethod.value = paymentMethods.value[0] || null;
@@ -173,9 +167,7 @@ const requestItems = computed(() => {
     items.push({
       item_id: product?.item?.id,
       quantity: product?.item?.quantity,
-      service_id: product?.selectedShipping
-        ? product?.selectedShipping?.id
-        : null,
+      service_id: product?.selectedShipping ? product?.selectedShipping?.id : null,
     });
   }
   return items;
@@ -212,7 +204,7 @@ const checkItemsShippingService = () => {
 
   // Scroll to first invalid item
   const firstInvalidIndex = checkoutItems.value.findIndex(
-    (item) => !item.selectedShipping,
+    (item) => !item.selectedShipping
   );
 
   if (firstInvalidIndex !== -1) {
@@ -256,7 +248,6 @@ const createOrder = async () => {
 
     console.log(res, "ASdadasd");
 
-
     if (res && res.status == true) {
       await handleSuccessCreateOrder(res);
     }
@@ -285,13 +276,17 @@ const getEmailSmsFlags = async () => {
   mobile_verified.value = flags?.data?.mobile_verified_at;
 };
 onMounted(async () => {
+  await initCheckout();
+});
+
+const initCheckout = async () => {
   await getAddresses().then((data) => {
     selectedAddress.value = addresses.value[0];
   });
   await getSellerPaymentMethods();
   await getEmailSmsFlags();
   await getCheckout();
-});
+};
 
 const cantCreateOrder = computed(() => {
   return (
@@ -308,6 +303,10 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
     await getCheckout("newAddress");
   }
 });
+
+const handleNewAddress = async () => {
+  await initCheckout();
+};
 </script>
 <template>
   <section class="mt-4">
@@ -328,138 +327,204 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
   <section class="mt-4">
     <div class="container">
       <template v-if="!pageLoading">
-        <div class="products">
-          <div class=" table-wrapper">
-            <div v-if="newAddressLoading" class="table-loader">
-              <span class="spinner-border main-color spinner-border-lg"></span>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>{{ $t("general.img") }}</th>
-                  <th>{{ $t("general.product") }}</th>
-                  <th>{{ $t("checkout.shippingService") }}</th>
-                  <th>{{ $t("checkout.shippingPrice") }}</th>
-                  <th>{{ $t("general.price") }}</th>
-                  <th>{{ $t("general.qty") }}</th>
-                  <th>{{ $t("cart.total") }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, i) in checkoutItems" :key="i" :class="{
-                  'shipping-error': !item.selectedShipping,
-                  disabled: !item.ShippingServices.length,
-                }" :ref="(el) => (itemRefs[i] = el)">
-                  <td>
-                    <NuxtImg loading="lazy" width="100" height="100" :alt="item?.item?.title" :title="item?.item?.title"
-                      :src="item?.item?.src" />
-                  </td>
-                  <td>
-                    <NuxtLink :href="$localePath(`/products/item/${item?.item?.id}`)">
-                      {{ item?.item?.title }}
-                    </NuxtLink>
-                  </td>
-                  <td>
-                    <div class="dropdown shipping">
-                      <button v-if="item.ShippingServices.length"
-                        class="nav-link d-inline-block dropdown-toggle shipping-dropdown" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+        <!-- checkout erros 1. selectedAddress -->
+        <template v-if="selectedAddress">
+          <div class="products">
+            <div class="table-wrapper">
+              <div v-if="newAddressLoading" class="table-loader">
+                <span class="spinner-border main-color spinner-border-lg"></span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>{{ $t("general.img") }}</th>
+                    <th>{{ $t("general.product") }}</th>
+                    <th>{{ $t("checkout.shippingService") }}</th>
+                    <th>{{ $t("checkout.shippingPrice") }}</th>
+                    <th>{{ $t("general.price") }}</th>
+                    <th>{{ $t("general.qty") }}</th>
+                    <th>{{ $t("cart.total") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(item, i) in checkoutItems"
+                    :key="i"
+                    :class="{
+                      'shipping-error': !item.selectedShipping,
+                      disabled: !item.ShippingServices.length,
+                    }"
+                    :ref="(el) => (itemRefs[i] = el)"
+                  >
+                    <td>
+                      <NuxtImg
+                        loading="lazy"
+                        width="100"
+                        height="100"
+                        :alt="item?.item?.title"
+                        :title="item?.item?.title"
+                        :src="item?.item?.src"
+                      />
+                    </td>
+                    <td>
+                      <NuxtLink :href="$localePath(`/products/item/${item?.item?.id}`)">
+                        {{ item?.item?.title }}
+                      </NuxtLink>
+                    </td>
+                    <td>
+                      <div class="dropdown shipping">
+                        <button
+                          v-if="item.ShippingServices.length"
+                          class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          {{
+                            item.selectedShipping
+                              ? item.selectedShipping.title
+                              : $t("checkout.chooseShipping")
+                          }}
+                        </button>
+                        <button
+                          v-else
+                          class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          {{ $t("checkout.itemHasNoShippingOptions") }}
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li
+                            @click="item.selectedShipping = shippingService"
+                            v-for="(shippingService, i) in item?.ShippingServices"
+                            :key="i"
+                            :class="{
+                              active: item?.selectedShipping?.id == shippingService.id,
+                            }"
+                          >
+                            {{ shippingService?.title }}
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="shipping-dropdown">
                         {{
                           item.selectedShipping
-                            ? item.selectedShipping.title
-                            : $t("checkout.chooseShipping")
+                            ? $t("general.curr_value", {
+                                value: item.selectedShipping.price,
+                              })
+                            : "--"
                         }}
-                      </button>
-                      <button v-else class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ $t("checkout.itemHasNoShippingOptions") }}
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li @click="item.selectedShipping = shippingService"
-                          v-for="(shippingService, i) in item?.ShippingServices" :key="i" :class="{
-                            active:
-                              item?.selectedShipping?.id == shippingService.id,
-                          }">
-                          {{ shippingService?.title }}
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="shipping-dropdown">
-                      {{
-                        item.selectedShipping
-                          ? $t("general.curr_value", {
-                            value: item.selectedShipping.price,
-                          })
-                          : "--"
-                      }}
-                    </span>
-                  </td>
-                  <td>
-                    {{
-                      $t("general.curr_value", {
-                        value: item?.item?.regular_price,
-                      })
-                    }}
-                  </td>
-                  <td>
-                    <div class="qty">
-                      <div :class="{ disabled: item?.item?.quantity == 1 }" @click.prevent="subQty(item?.item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                          <g clip-path="url(#clip0_142_912)">
-                            <path
-                              d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
-                              :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'
-                                " stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M9 12H15" :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'
-                              " stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_142_912">
-                              <rect width="24" height="24" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>
-                      </div>
-                      <!-- TODO::CHECK ITEM QUANTITY SHOULD BE LIKE IN CART -->
-                      <span>{{ item?.item?.quantity }}</span>
-                      <div @click.prevent="addQty(item?.item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                          <g clip-path="url(#clip0_142_907)">
-                            <path
-                              d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
-                              stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M9 12H15" stroke="black" stroke-width="1.5" stroke-linecap="round"
-                              stroke-linejoin="round" />
-                            <path d="M12 9V15" stroke="black" stroke-width="1.5" stroke-linecap="round"
-                              stroke-linejoin="round" />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_142_907">
-                              <rect width="24" height="24" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="fw-bold">
+                      </span>
+                    </td>
+                    <td>
                       {{
                         $t("general.curr_value", {
-                          value: Number(
-                            item?.item?.quantity * item?.item?.regular_price,
-                          ).toFixed(2),
+                          value: item?.item?.regular_price,
                         })
-                      }}</span>
-                  </td>
-                  <!-- TODO::check if regular_price is right -->
-                </tr>
-              </tbody>
-            </table>
+                      }}
+                    </td>
+                    <td>
+                      <div class="qty">
+                        <div
+                          :class="{ disabled: item?.item?.quantity == 1 }"
+                          @click.prevent="subQty(item?.item)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <g clip-path="url(#clip0_142_912)">
+                              <path
+                                d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
+                                :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M9 12H15"
+                                :stroke="item?.item?.quantity == 1 ? '#444C4E' : 'black'"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_142_912">
+                                <rect width="24" height="24" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+                        <!-- TODO::CHECK ITEM QUANTITY SHOULD BE LIKE IN CART -->
+                        <span>{{ item?.item?.quantity }}</span>
+                        <div @click.prevent="addQty(item?.item)">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <g clip-path="url(#clip0_142_907)">
+                              <path
+                                d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 9.61305 20.0518 7.32387 18.364 5.63604C16.6761 3.94821 14.3869 3 12 3C9.61305 3 7.32387 3.94821 5.63604 5.63604C3.94821 7.32387 3 9.61305 3 12Z"
+                                stroke="black"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M9 12H15"
+                                stroke="black"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M12 9V15"
+                                stroke="black"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_142_907">
+                                <rect width="24" height="24" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="fw-bold">
+                        {{
+                          $t("general.curr_value", {
+                            value: Number(
+                              item?.item?.quantity * item?.item?.regular_price
+                            ).toFixed(2),
+                          })
+                        }}</span
+                      >
+                    </td>
+                    <!-- TODO::check if regular_price is right -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div class="alert alert-warning">{{ $t("checkout.AddAddressNote") }}</div>
+        </template>
+
         <div class="row mt-5">
           <div class="col-md-4 mb-3">
             <div class="shipping-addresses">
@@ -467,11 +532,17 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
               <div v-if="selectedAddress" class="body">
                 <div v-for="(address, i) in addresses" :key="i" class="address">
                   <label :for="`address-${i}`">
-                    <input type="radio" name="selectedAddress" :id="`address-${i}`" :value="address"
-                      v-model="selectedAddress" />
+                    <input
+                      type="radio"
+                      name="selectedAddress"
+                      :id="`address-${i}`"
+                      :value="address"
+                      v-model="selectedAddress"
+                    />
                     {{
                       `${address?.address_line_1} - ${address?.address_line_2} - ${address?.address_line_3}`
-                    }}</label>
+                    }}</label
+                  >
                 </div>
               </div>
               <div class="footer">
@@ -487,9 +558,15 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
               <div v-if="selectedAddress" class="body">
                 <div v-for="(method, i) in paymentMethods" :key="i" class="address">
                   <label :for="`method-${i}`">
-                    <input type="radio" name="paymentMethod" :value="method" v-model="selectedPaymentMethod"
-                      :id="`method-${i}`" />
-                    {{ `${method?.name}` }}</label>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      :value="method"
+                      v-model="selectedPaymentMethod"
+                      :id="`method-${i}`"
+                    />
+                    {{ `${method?.name}` }}</label
+                  >
                 </div>
               </div>
             </div>
@@ -513,29 +590,41 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                   <label for="discount-code">{{ $t("cart.couponCode") }}</label>
                   <form @submit.prevent="validateCoupon(coupon, requestItems)">
                     <div class="box">
-                      <input type="text" v-model="coupon" name="discount-code" :placeholder="$t('cart.enterCoupon')"
-                        id="discount-code" :class="{
-                          invalid:
-                            validateCouponRes &&
-                            validateCouponRes.status != true,
-                        }" />
-                      <button :disabled="validateCouponLoading" class="btn-zaad" type="submit">
+                      <input
+                        type="text"
+                        v-model="coupon"
+                        name="discount-code"
+                        :placeholder="$t('cart.enterCoupon')"
+                        id="discount-code"
+                        :class="{
+                          invalid: validateCouponRes && validateCouponRes.status != true,
+                        }"
+                      />
+                      <button
+                        :disabled="validateCouponLoading"
+                        class="btn-zaad"
+                        type="submit"
+                      >
                         {{ $t("general.apply") }}
                       </button>
                     </div>
                   </form>
-                  <div v-if="validateCouponRes && validateCouponRes.status != true" class="invalid-msg">
+                  <div
+                    v-if="validateCouponRes && validateCouponRes.status != true"
+                    class="invalid-msg"
+                  >
                     {{ validateCouponRes?.message }}
                   </div>
-                  <div class="valid-msg" v-if="validateCouponRes && validateCouponRes.status == true">
+                  <div
+                    class="valid-msg"
+                    v-if="validateCouponRes && validateCouponRes.status == true"
+                  >
                     {{ validateCouponRes?.message }}
                   </div>
                 </div>
                 <div v-if="couponDetails.net_price <= 0" class="value">
                   <span>{{ $t("cart.totalPrice") }}</span>
-                  <span>{{
-                    $t("general.curr_value", { value: getTotalCart })
-                  }}</span>
+                  <span>{{ $t("general.curr_value", { value: getTotalCart }) }}</span>
                 </div>
                 <template v-if="couponDetails && couponDetails.net_price > 0">
                   <!-- TODO:: After apply coupon can the quantity change ? -->
@@ -566,29 +655,18 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
                 </template>
               </div>
               <div class="footer">
-                <button @click.prevent="createOrder()" :disabled="cantCreateOrder" class="btn-zaad w-100">
+                <button
+                  @click.prevent="createOrder()"
+                  :disabled="cantCreateOrder"
+                  class="btn-zaad w-100"
+                >
                   {{ $t("checkout.completeCheckout") }}
                 </button>
 
-                <NuxtLink :href="$localePath('/shopping-cart')" class="btn-cart btn-zaad w-100">
-                  <svg v-if="!addToCartLoading" xmlns="http://www.w3.org/2000/svg" width="19" height="19"
-                    viewBox="0 0 19 19" fill="none">
-                    <path
-                      d="M15.3955 17.4792C16.0858 17.4792 16.6455 16.9195 16.6455 16.2292C16.6455 15.5389 16.0858 14.9792 15.3955 14.9792C14.7052 14.9792 14.1455 15.5389 14.1455 16.2292C14.1455 16.9195 14.7052 17.4792 15.3955 17.4792Z"
-                      fill="#4A4A4A" stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path
-                      d="M7.0625 17.4792C7.75283 17.4792 8.3125 16.9195 8.3125 16.2292C8.3125 15.5389 7.75283 14.9792 7.0625 14.9792C6.37214 14.9792 5.8125 15.5389 5.8125 16.2292C5.8125 16.9195 6.37214 17.4792 7.0625 17.4792Z"
-                      fill="#4A4A4A" stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path
-                      d="M3.3125 2.47917H17.4792L15.8125 11.6458H4.97917L3.3125 2.47917ZM3.3125 2.47917C3.17361 1.92361 2.47917 0.8125 0.8125 0.8125"
-                      stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
-                    <path
-                      d="M15.8118 11.6459H4.97852H3.50416C2.01723 11.6459 1.22852 12.2969 1.22852 13.3125C1.22852 14.3282 2.01723 14.9792 3.50416 14.9792H15.3952"
-                      stroke="#4A4A4A" stroke-width="1.625" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                  <span v-else class="spinner-border text-dark spinner-border-sm ms-2"></span>
+                <NuxtLink
+                  :href="$localePath('/shopping-cart')"
+                  class="btn-cart btn-zaad w-100"
+                >
                   {{ $t("cart.edit") }}
                 </NuxtLink>
               </div>
@@ -622,7 +700,7 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
   </section>
 
   <ClientOnly>
-    <AddAddressModal ref="addAddressModal" @newAddress="getAddresses" />
+    <AddAddressModal ref="addAddressModal" @newAddress="handleNewAddress" />
   </ClientOnly>
 </template>
 <style scoped lang="scss">
@@ -815,7 +893,7 @@ button.action {
   align-items: center;
   margin: 0 auto;
 
-  >div {
+  > div {
     cursor: pointer;
     transition: var(--trans);
 
@@ -824,7 +902,7 @@ button.action {
     }
   }
 
-  >span {
+  > span {
     font-weight: 700;
   }
 }
@@ -901,7 +979,7 @@ button.action {
 
     max-width: 100%;
 
-    @media (max-width:992px) {
+    @media (max-width: 992px) {
       overflow: auto;
     }
   }
