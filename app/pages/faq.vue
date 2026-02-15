@@ -2,6 +2,70 @@
 definePageMeta({
   prerender: true,
 });
+const { t, locale } = useI18n();
+
+useSeo({
+  title: t("meta.setMeta", { meta: t("links.faq") }),
+  description: t("meta.setMeta", { meta: t("links.faq") }),
+});
+
+const questions = ref([]);
+const getFaqs = async () => {
+  try {
+    const faqs = await $fetch("/api/faq/list", {
+      headers: {
+        Lang: locale.value,
+      },
+    });
+
+    questions.value = groupByCategory(faqs?.data);
+  } catch (err) {
+    console.log(err);
+  } finally {
+  }
+};
+
+const groupByCategory = (items: any) => {
+  return items.reduce((acc, item) => {
+    const category = item.category_name;
+
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+
+    acc[category].push(item);
+
+    return acc;
+  }, {});
+};
+
+await getFaqs();
+const search = ref("");
+const filteredQuestions = computed(() => {
+  if (!search.value) return questions.value;
+
+  const term = search.value.toLowerCase();
+
+  const result: any = {};
+
+  Object.entries(questions.value).forEach(([category, faqs]) => {
+    const filteredFaqs = (faqs as any[]).filter(
+      (faq) =>
+        faq.question.toLowerCase().includes(term) ||
+        faq.answer.toLowerCase().includes(term)
+    );
+
+    if (filteredFaqs.length) {
+      result[category] = filteredFaqs;
+    }
+  });
+
+  return result;
+});
+
+const hasResults = computed(() => {
+  return Object.keys(filteredQuestions.value).length > 0;
+});
 </script>
 <template>
   <section class="mt-5">
@@ -11,8 +75,8 @@ definePageMeta({
           <p class="title">{{ $t("links.faq") }}</p>
           <h1>اكتشف ردود عن اسالتك جميعها</h1>
           <p class="p">
-            اكتشف الإنجازات التي تميزنا. من المشاريع الرائدة إلى الجوائز
-            المرموقة في الصناعة، نفخر بإنجازاتنا
+            اكتشف الإنجازات التي تميزنا. من المشاريع الرائدة إلى الجوائز المرموقة في
+            الصناعة، نفخر بإنجازاتنا
           </p>
         </div>
         <!-- search -->
@@ -20,6 +84,7 @@ definePageMeta({
           <div class="col-md-4 mx-auto mt-4">
             <div class="input-group">
               <input
+                v-model="search"
                 type="text"
                 class="form-control"
                 id="phone"
@@ -27,7 +92,7 @@ definePageMeta({
               />
               <div class="input-group-text">
                 <img
-                loading="lazy"
+                  loading="lazy"
                   width="16"
                   height="16"
                   src="/assets/images/search.svg"
@@ -41,69 +106,55 @@ definePageMeta({
   </section>
   <section class="mt-5">
     <div class="container">
-      <div class="accordion faqs mt-5" id="accordionFaqs">
-        <div class="accordion-item">
-          <h3 class="accordion-header" id="flush-headingOne-1">
-            <button
-              class="accordion-button collapsed fw-bold"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseOne-accordionFaqs"
-              aria-expanded="false"
-              aria-controls="flush-collapseOne-accordionFaqs"
+      <div v-if="hasResults" class="accordion faqs mt-5" id="accordionFaqs">
+        <div
+          v-for="(faqs, categoryName, categoryIndex) in filteredQuestions"
+          :key="categoryIndex"
+          class="faq-categ"
+        >
+          <h2 class="mb-4">{{ categoryName }}</h2>
+
+          <!--FAQs is inside category -->
+          <div v-for="(faq, faqIndex) in faqs" :key="faq.id" class="accordion-item">
+            <h3 class="accordion-header">
+              <button
+                class="accordion-button collapsed fw-bold"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="`#faq-${faq.id}`"
+                aria-expanded="false"
+              >
+                {{ faq.question }}
+              </button>
+            </h3>
+
+            <div
+              :id="`faq-${faq.id}`"
+              class="accordion-collapse collapse"
+              data-bs-parent="#accordionFaqs"
             >
-              ماذا في حال التسبّب بأي ضرر لزاد عُمان بسبب خرقي لأحد القوانين ضمن
-              هذه الاتّفاقيّة؟
-            </button>
-          </h3>
-          <div
-            id="flush-collapseOne-accordionFaqs"
-            data-bs-parent="#accordionFaqs"
-            class="accordion-collapse collapse"
-            aria-labelledby="flush-headingOne-1"
-          >
-            <div class="accordion-body">
-              منذ عام 2025، يعمل زاد التجاري على بناء جسور تربط بين البائعين
-              والمشترين الذين يجمعهم الشغف والقيم المشتركة. في زاد، يجد الناس
-              المكان الأمثل لشراء وبيع المنتجات التي تلبّي احتياجاتهم، وتُثري
-              مجموعاتهم، وتضيف لمسة من السعادة إلى حياتهم — سواء كانت منتجات
-              حديثة تواكب العصر أو قطع مميزة من الماضي.
+              <div class="accordion-body">
+                {{ faq.answer }}
+              </div>
             </div>
           </div>
         </div>
-        <div class="accordion-item">
-          <h3 class="accordion-header" id="flush-headingOne-2">
-            <button
-              class="accordion-button collapsed fw-bold"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#flush-collapseOne-accordionFaqs2"
-              aria-expanded="false"
-              aria-controls="flush-collapseOne-accordionFaqs"
-            >
-              عنوان السؤال
-            </button>
-          </h3>
-          <div
-            id="flush-collapseOne-accordionFaqs2"
-            data-bs-parent="#accordionFaqs"
-            class="accordion-collapse collapse"
-            aria-labelledby="flush-headingOne-2"
-          >
-            <div class="accordion-body">
-              منذ عام 2025، يعمل زاد التجاري على بناء جسور تربط بين البائعين
-              والمشترين الذين يجمعهم الشغف والقيم المشتركة. في زاد، يجد الناس
-              المكان الأمثل لشراء وبيع المنتجات التي تلبّي احتياجاتهم، وتُثري
-              مجموعاتهم، وتضيف لمسة من السعادة إلى حياتهم — سواء كانت منتجات
-              حديثة تواكب العصر أو قطع مميزة من الماضي.
-            </div>
-          </div>
-        </div>
+      </div>
+      <div v-else class="text-center py-5">
+        <h4 class="mb-3">{{ $t("faq.noResults") }}</h4>
+        <p class="text-muted">
+          {{ $t("faq.tryDifferentKeyword") }}
+        </p>
       </div>
     </div>
   </section>
 </template>
 <style scoped lang="scss">
+.faq-categ {
+  h2 {
+    color: var(--main-color);
+  }
+}
 .faq-banner {
   padding: 40px;
   // background-color: #BCBCBC14;

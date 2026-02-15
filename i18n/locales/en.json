@@ -8,12 +8,11 @@
       "keywords": "zaad, oman, shopping, ecommerce"
     },
     "pages": {
-      "categoryStores":{
-        "desc":"Explore {categ} Stores , Products and more"
+      "categoryStores": {
+        "desc": "Explore {categ} Stores , Products and more"
       },
-      
-      "productsStores":{
-        "desc":"Explore our products stores , enjoy shopping"
+      "productsStores": {
+        "desc": "Explore our products stores , enjoy shopping"
       },
       "contact": {
         "title": "Contact Us",
@@ -209,12 +208,12 @@
   },
   "forgot": {
     "h1": "Reset Password",
-    "success":"A password reset link will be sent to your email address."
+    "success": "A password reset link will be sent to your email address."
   },
   "reset": {
     "h1": "Reset Password",
-    "try":"Something wrong, Try again later",
-    "success":"A password reset link will be sent to your email address."
+    "try": "Something wrong, Try again later",
+    "success": "A password reset link will be sent to your email address."
   },
   "login": {
     "h1": "Register/Login",
@@ -294,7 +293,9 @@
     "authErr": "Please log in to add items to your whish list"
   },
   "faq": {
-    "search": "What are you looking at?"
+    "search": "What are you looking at?",
+    "noResults": "No results found",
+    "tryDifferentKeyword": "Try searching with different keywords"
   },
   "profile": {
     "uploadImg": "Uplaod image",
@@ -340,18 +341,18 @@
   },
   "items": {
     "noData": "There is no products right now, try again later or change filters",
-    "shareItem":"Share product with friends",
-    "shareItemP":"share the product if you like it",
-    "newComments":"new commnets",
-    "customersReviews":"Customers reviews",
-    "addNew":"Add New",
-    "unknown":"Unknown customer",
-    "noReviews":"No reviews yet",
-    "addReview":"Add review",
-    "rate":"Rate",
-    "comment":"Comment",
-    "recommended":"Recommended products for you",
-    "chooseBrand":"Choose by brand"
+    "shareItem": "Share product with friends",
+    "shareItemP": "share the product if you like it",
+    "newComments": "new commnets",
+    "customersReviews": "Customers reviews",
+    "addNew": "Add New",
+    "unknown": "Unknown customer",
+    "noReviews": "No reviews yet",
+    "addReview": "Add review",
+    "rate": "Rate",
+    "comment": "Comment",
+    "recommended": "Recommended products for you",
+    "chooseBrand": "Choose by brand"
   },
   "checkout": {
     "title": "Checkout",

@@ -167,6 +167,9 @@ export const usePages = () => {
   };
   // about page
 
+
+  
+
   return {
     getPage1,
     pageOne,
