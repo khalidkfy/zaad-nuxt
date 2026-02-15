@@ -345,7 +345,9 @@
     "noReviews":"لا يوجد مراجعات بعد",
     "addReview":"اضافة مراجعة",
     "rate":"التقييم",
-    "comment":"تعليق"
+    "comment":"تعليق",
+    "recommended":"منتجات موصى بها لك",
+    "chooseBrand":"اختار حسب البراند"
   },
   "checkout": {
     "title": "الشراء",

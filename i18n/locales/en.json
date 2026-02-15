@@ -349,7 +349,9 @@
     "noReviews":"No reviews yet",
     "addReview":"Add review",
     "rate":"Rate",
-    "comment":"Comment"
+    "comment":"Comment",
+    "recommended":"Recommended products for you",
+    "chooseBrand":"Choose by brand"
   },
   "checkout": {
     "title": "Checkout",

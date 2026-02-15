@@ -21,7 +21,7 @@ const visibleChildren = (service: any) => {
 };
 const sortedServices = computed(() => {
   return [...servicesCategs.value].sort(
-    (a, b) => b.childrens.length - a.childrens.length,
+    (a, b) => b.childrens.length - a.childrens.length
   );
 });
 const megaLoading = ref(true);
@@ -76,12 +76,7 @@ onMounted(async () => {
             activeTab = 'shopBy';
           "
         >
-          <img
-            src="/assets/images/categs.svg"
-            width="24"
-            alt="all"
-            height="24"
-          />
+          <img src="/assets/images/categs.svg" width="24" alt="all" height="24" />
           <span class="ps-2">{{ $t("categs.shopBy") }}</span>
         </button>
 
@@ -108,11 +103,7 @@ onMounted(async () => {
 
       <!-- Mega Menu Dropdown - MOVED OUTSIDE fixed-categs -->
       <Transition name="fade">
-        <div
-          v-if="isMegaMenuOpen"
-          class="mega-menu"
-          @mouseleave="isMegaMenuOpen = false"
-        >
+        <div v-if="isMegaMenuOpen" class="mega-menu" @mouseleave="isMegaMenuOpen = false">
           <!-- Shop By Content -->
           <div v-show="activeTab === 'shopBy'" class="mega-menu-content">
             <template v-if="!megaLoading">
@@ -135,20 +126,22 @@ onMounted(async () => {
                     <div class="col-md-8" v-if="activeCateg">
                       <div class="mega-details">
                         <!-- STORES -->
-                        <div
-                          v-if="activeCateg.stores?.length"
-                          class="stores-block mb-5"
-                        >
-                          <p class="content-title">اختار حسب البراند</p>
+                        <div v-if="activeCateg.stores?.length" class="stores-block mb-5">
+                          <p class="content-title">{{ $t("items.chooseBrand") }}</p>
 
                           <div class="stores-grid">
-                            <StoreCard v-for="store in activeCateg.stores" :store="store"/>
+                            <StoreCard
+                              v-for="store in activeCateg.stores"
+                              :store="store"
+                              :key="store.id"
+                            />
                           </div>
                         </div>
 
                         <div class="mega-items">
-                          <p class="content-title">منتجات موصى بها لك</p>
+                          <p class="content-title">{{ $t("items.recommended") }}</p>
                           <Swiper
+                            :key="activeCateg?.id"
                             v-if="activeCateg.items?.length"
                             :modules="[Navigation, Autoplay]"
                             :slides-per-view="3"
@@ -168,16 +161,10 @@ onMounted(async () => {
                             class="product-swiper"
                           >
                             <SwiperSlide
-                              v-for="(item, index) in activeCateg.items.slice(
-                                0,
-                                6,
-                              )"
-                              :key="index"
+                              v-for="(item, index) in activeCateg.items.slice(0, 6)"
+                              :key="item.id"
                             >
-                              <LazyProductCard
-                                style-for="mega"
-                                :product="item"
-                              />
+                              <LazyProductCard style-for="mega" :product="item"  :key="item.id"/>
                             </SwiperSlide>
                           </Swiper>
                         </div>
@@ -199,9 +186,7 @@ onMounted(async () => {
               <div class="row">
                 <div class="col text-center py-5 my-5">
                   <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">{{
-                      $t("general.wait")
-                    }}</span>
+                    <span class="visually-hidden">{{ $t("general.wait") }}</span>
                   </div>
                   <p class="mt-3">{{ $t("general.wait") }}</p>
                 </div>
@@ -244,7 +229,7 @@ onMounted(async () => {
             </div>
           </div>
 
-           <button
+          <button
             class="mobile-close"
             @click="isMegaMenuOpen = false"
             aria-label="Close menu"
@@ -254,12 +239,7 @@ onMounted(async () => {
         </div>
       </Transition>
 
-      <Marquee
-        :overlay="false"
-        :pause-on-hover="true"
-        :duration="20"
-        gap="2rem"
-      >
+      <Marquee :overlay="false" :pause-on-hover="true" :duration="20" gap="2rem">
         <NuxtLink
           class="marquee-item"
           v-for="categ in categs"
@@ -273,7 +253,7 @@ onMounted(async () => {
   </div>
 </template>
 <style scoped lang="scss">
- .holder {
+.holder {
   position: relative;
   align-items: center;
 
@@ -319,7 +299,7 @@ onMounted(async () => {
   }
 }
 
- .mega-menu {
+.mega-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -332,7 +312,7 @@ onMounted(async () => {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #eee;
 
-   @media (max-width: 992px) {
+  @media (max-width: 992px) {
     position: fixed;
     top: 0;
     left: 0;
@@ -342,15 +322,15 @@ onMounted(async () => {
     border-radius: 0;
     overflow-y: auto;
     z-index: 100000;
-    padding-top: 70px;  
+    padding-top: 70px;
   }
 
-   @media (max-width: 576px) {
+  @media (max-width: 576px) {
     padding: 60px 15px 20px;
   }
 }
 
- .mobile-close {
+.mobile-close {
   display: none;
 
   @media (max-width: 992px) {
@@ -373,7 +353,7 @@ onMounted(async () => {
   }
 }
 
- .categs-grid {
+.categs-grid {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -383,14 +363,14 @@ onMounted(async () => {
   padding: 10px;
   border-radius: 8px;
 
-   @media (max-width: 992px) {
+  @media (max-width: 992px) {
     max-height: 300px;
     -webkit-overflow-scrolling: touch;
-    
+
     &::-webkit-scrollbar {
       width: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.1);
       border-radius: 2px;
@@ -412,8 +392,8 @@ onMounted(async () => {
       color: var(--main-color);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    
-     @media (max-width: 768px) {
+
+    @media (max-width: 768px) {
       padding: 15px;
       font-size: 15px;
       margin-bottom: 5px;
@@ -421,7 +401,7 @@ onMounted(async () => {
   }
 }
 
- .mega-details {
+.mega-details {
   padding-inline-start: 20px;
 
   @media (max-width: 992px) {
@@ -430,7 +410,7 @@ onMounted(async () => {
   }
 }
 
- .stores-grid {
+.stores-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -439,16 +419,14 @@ onMounted(async () => {
     gap: 10px;
     justify-content: center;
   }
-
-
 }
 
- .content-title {
+.content-title {
   color: #000;
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 15px;
-  
+
   @media (max-width: 768px) {
     font-size: 16px;
     text-align: center;
@@ -456,17 +434,17 @@ onMounted(async () => {
   }
 }
 
- .product-swiper {
+.product-swiper {
   position: relative;
-  
+
   .swiper-slide {
     height: auto;
-    
-     @media (max-width: 768px) {
+
+    @media (max-width: 768px) {
       padding: 5px;
     }
   }
-  
+
   /* Custom navigation buttons */
   :deep(.swiper-button-next),
   :deep(.swiper-button-prev) {
@@ -475,35 +453,35 @@ onMounted(async () => {
     height: 36px;
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    
+
     &::after {
       font-size: 16px;
       color: #333;
     }
-    
+
     @media (max-width: 768px) {
       width: 32px;
       height: 32px;
       top: 40%;
-      
+
       &::after {
         font-size: 14px;
       }
     }
   }
-  
+
   :deep(.swiper-button-disabled) {
     opacity: 0.3;
   }
 }
 
- .marquee-item {
+.marquee-item {
   color: #888888;
   font-size: 14px;
   white-space: nowrap;
   transition: var(--trans);
   text-decoration: none;
-  
+
   @media (max-width: 768px) {
     font-size: 13px;
     margin: 0 10px;
@@ -515,23 +493,23 @@ onMounted(async () => {
   }
 }
 
- .spinner-border {
+.spinner-border {
   @media (max-width: 768px) {
     width: 40px;
     height: 40px;
   }
 }
 
- .services-grid {
+.services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
   }
-  
+
   @media (max-width: 576px) {
     grid-template-columns: 1fr;
     gap: 15px;
@@ -545,7 +523,7 @@ onMounted(async () => {
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #eee;
-      
+
       @media (max-width: 768px) {
         font-size: 15px;
       }
@@ -591,9 +569,7 @@ onMounted(async () => {
 /* Transition effects */
 .fade-enter-active,
 .fade-leave-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .fade-enter-from,
@@ -602,23 +578,23 @@ onMounted(async () => {
   transform: translateY(-20px);
 }
 
- @media (max-width: 992px) {
+@media (max-width: 992px) {
   * {
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   button,
   a {
     cursor: pointer;
   }
-  
-   .mega-menu {
+
+  .mega-menu {
     max-width: 100vw;
     overflow-x: hidden;
   }
 }
 
- .py-5 {
+.py-5 {
   @media (max-width: 768px) {
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;
