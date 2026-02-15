@@ -218,7 +218,7 @@ const onError = () => {
   }
 
   .name {
-    margin-top: 6px;
+    margin-top: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

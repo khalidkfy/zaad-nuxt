@@ -19,21 +19,23 @@ const getCategId = (categ) => {
         :style="{ 'flex-direction': flexDirection ? flexDirection : '' }"
         class="row mt-2"
       >
-        <div class="col-md-3 d-none d-md-block">
-          <NuxtImg
-            loading="lazy"
-            class="img-fluid w-100 h-100"
-            :alt="categoryProducts?.title"
-            :src="categoryProducts?.items[0]?.src"
-          />
+        <div class="col-md-2 d-none d-md-block">
+          <div class="category-side-image">
+            <NuxtLink :href="$localePath(`/products/${getCategId(categoryProducts)}`)">
+              <NuxtImg
+                loading="lazy"
+                :alt="categoryProducts?.title"
+                :src="categoryProducts?.items[0]?.src"
+              />
+            </NuxtLink>
+          </div>
         </div>
-        <div class="col-12 col-md-9">
+        <div class="col-12 col-md-10">
           <div class="section-header mt-2 mb-3">
             <h3>{{ categoryProducts?.title || $t("general.keepShopping") }}</h3>
-            <NuxtLink
-              :href="$localePath(`/products/${getCategId(categoryProducts)}`)"
-              >{{ categoryProducts?.action_title }}</NuxtLink
-            >
+            <NuxtLink :href="$localePath(`/products/${getCategId(categoryProducts)}`)">{{
+              categoryProducts?.action_title
+            }}</NuxtLink>
           </div>
           <div aria-label="Section Products " class="d-flex overflow-hidden">
             <BaseProductsCarousel
@@ -47,3 +49,21 @@ const getCategId = (categ) => {
     </div>
   </section>
 </template>
+<style scoped lang="scss">
+.category-side-image {
+  height: 100%;
+  overflow: hidden;
+  > a {
+    transition: var(--trans);
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.category-side-image img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center; /* change to top if needed */
+}
+</style>
