@@ -193,7 +193,6 @@ const uploadProfileImage = async () => {
                     </div>
 
                     <div class="name">{{ profileData?.name }}</div>
-                    <div class="id">#{{ profileData?.id }}</div>
                   </div>
 
                   <div class="contact">
@@ -218,27 +217,7 @@ const uploadProfileImage = async () => {
                       <span dir="ltr">{{ profileData?.email }}</span>
                     </div>
                   </div>
-                  <hr class="my-5" />
-                  <div
-                    class="address"
-                    v-for="(address, i) in profileData?.address"
-                    :key="i"
-                  >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      height="20"
-                      src="/assets/images/loca.svg"
-                      alt="location"
-                    />
-                    <div>
-                      <span>العنوان</span>
-                      <span>مصر - الشاهرة الجديده</span>
-                    </div>
-                  </div>
-                  <!-- <button class="add-address">
-                    {{ $t("general.addAddress") }}
-                  </button> -->
+                
                 </template>
                 <template v-else>
                   <div>
@@ -261,19 +240,19 @@ const uploadProfileImage = async () => {
                 </template>
               </div>
               <div class="preferences mb-3">
-                <div class="title">اعدادات الخصوصية</div>
+                <div class="title">{{ $t("profile.privacySettings") }}</div>
 
                 <!-- Loading State -->
                 <div v-if="preferencesLoading" class="loading-state">
                   <div class="spinner"></div>
-                  <p>جاري تحميل إعدادات الخصوصية...</p>
+                  <p>{{ $t("general.wait") }}</p>
                 </div>
 
                 <!-- Error State -->
                 <div v-else-if="preferencesError" class="error-state">
                   <p>{{ preferencesError }}</p>
                   <button @click="fetchPreferences" class="retry-btn">
-                    إعادة المحاولة
+                    {{ $t("general.retry") }}
                   </button>
                 </div>
 
@@ -301,7 +280,7 @@ const uploadProfileImage = async () => {
                 <div v-else class="content">
                   <div class="form-group">
                     <div class="switch-container">
-                      <span class="switch-label">اظهار الايميل:</span>
+                      <span class="switch-label">{{ $t("profile.showEmail") }}</span>
                       <label class="switch">
                         <input
                           type="checkbox"
@@ -321,7 +300,7 @@ const uploadProfileImage = async () => {
 
                   <div class="form-group">
                     <div class="switch-container">
-                      <span class="switch-label">اظهار الصورة الشخصية:</span>
+                      <span class="switch-label">{{ $t("profile.showImg") }}</span>
                       <label class="switch">
                         <input
                           type="checkbox"
@@ -341,7 +320,7 @@ const uploadProfileImage = async () => {
 
                   <div class="form-group">
                     <div class="switch-container">
-                      <span class="switch-label">اظهار الموبايل:</span>
+                      <span class="switch-label">{{ $t("profile.showMobile") }}</span>
                       <label class="switch">
                         <input
                           type="checkbox"
@@ -361,7 +340,7 @@ const uploadProfileImage = async () => {
 
                   <div class="form-group">
                     <div class="switch-container">
-                      <span class="switch-label">اظهار الحالة:</span>
+                      <span class="switch-label">{{ $t("profile.showStatus") }}</span>
                       <label class="switch">
                         <input
                           type="checkbox"
@@ -381,7 +360,7 @@ const uploadProfileImage = async () => {
 
                   <div class="form-group">
                     <div class="switch-container">
-                      <span class="switch-label">اظهار الاهتمامات:</span>
+                      <span class="switch-label">{{ $t("profile.showIntrests") }}</span>
                       <label class="switch">
                         <input
                           type="checkbox"
@@ -860,15 +839,16 @@ const uploadProfileImage = async () => {
 
   .contact {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     margin-top: 25px;
+    align-items: flex-start;
 
     > div {
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-
+      gap: 10px;
       span {
         color: #717171;
       }

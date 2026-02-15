@@ -2,9 +2,15 @@
 definePageMeta({
   prerender: true,
 });
+const { t } = useI18n();
+
 const { aboutPage, getAboutPage, getPage1 } = usePages();
 await getPage1();
 await getAboutPage();
+useSeo({
+  title: t("meta.setMeta", { meta: t("links.aboutUs") }),
+  description: t("meta.setMeta", { meta: t("links.aboutUs") }),
+});
 </script>
 <template>
   <section class="mt-3" aria-label="about us">
@@ -14,13 +20,11 @@ await getAboutPage();
           <div class="wrapper">
             <div class="">
               <h1>حيث يلتقي الشغف بالهدف</h1>
-              <p>
-                حيث يجتمع الناس، ويجدون مجتمعًا، وينمون من خلال تجارة هادفة.
-              </p>
+              <p>حيث يجتمع الناس، ويجدون مجتمعًا، وينمون من خلال تجارة هادفة.</p>
             </div>
             <div class="img">
               <img
-              loading="lazy"
+                loading="lazy"
                 width="627"
                 height="370"
                 src="/assets/images/about.svg"
@@ -41,7 +45,7 @@ await getAboutPage();
           <div class="row">
             <div class="col-md-8">
               <img
-              loading="lazy"
+                loading="lazy"
                 class="img-fluid w-100"
                 width="804"
                 height="474"
@@ -54,7 +58,7 @@ await getAboutPage();
               <div class="row h-100 gap-2">
                 <div class="col-md-12">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     class="h-100"
                     width="385"
                     height="144"
@@ -65,7 +69,7 @@ await getAboutPage();
                 </div>
                 <div class="col-md-12">
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     class="h-100"
                     width="385"
                     height="310"
@@ -116,7 +120,7 @@ await getAboutPage();
           </div>
           <div class="col-md-6 d-flex justify-content-end">
             <img
-            loading="lazy"
+              loading="lazy"
               class="img-fluid w-100 h-100"
               src="/assets/images/about-numbers.svg"
               alt="about us"
@@ -231,6 +235,6 @@ await getAboutPage();
   }
 }
 ::marker {
-    content: unset
+  content: unset;
 }
 </style>

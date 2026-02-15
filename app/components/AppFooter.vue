@@ -15,7 +15,7 @@ const getMenuLink = (item: any) => {
       return "/return-policy";
       break;
     case "pages/204":
-      return "/terms-and-conditions";
+      return "/terms-and-conditions?type=seller";
       break;
     case "faq":
       return "/faq";
@@ -72,7 +72,12 @@ const getMenuLink = (item: any) => {
                 <h5 class="mb-4">{{ $t("footer.downloadApp") }}</h5>
                 <div class="row">
                   <div class="col-md-6">
-                    <NuxtLink href="https://play.google.com/store/apps/details?id=om.zaad.buy" target="_blank" rel="noopener noreferrer" class="download">
+                    <NuxtLink
+                      href="https://play.google.com/store/apps/details?id=om.zaad.buy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="download"
+                    >
                       <img
                         width="20"
                         height="20"
@@ -87,7 +92,12 @@ const getMenuLink = (item: any) => {
                     </NuxtLink>
                   </div>
                   <div class="col-md-6">
-                    <NuxtLink href="https://apps.apple.com/om/app/zaad-buy/id1500632798" target="_blank" rel="noopener noreferrer" class="download">
+                    <NuxtLink
+                      href="https://apps.apple.com/om/app/zaad-buy/id1500632798"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="download"
+                    >
                       <img
                         width="20"
                         height="20"
@@ -110,6 +120,7 @@ const getMenuLink = (item: any) => {
                       src="/assets/images/android-zad-qr.png"
                       alt="Google Play"
                       loading="lazy"
+                      class="w-100 h-100"
                     />
                   </div>
                   <div class="col-md-6">
@@ -119,6 +130,7 @@ const getMenuLink = (item: any) => {
                       src="/assets/images/ios-zad-qr.png"
                       alt="ios"
                       loading="lazy"
+                      class="w-100 h-100"
                     />
                   </div>
                 </div>
@@ -200,15 +212,13 @@ const getMenuLink = (item: any) => {
                   class="d-flex gap-2 mt-4"
                 >
                   <img
-                  loading="lazy"
+                    loading="lazy"
                     width="20"
                     height="20"
                     src="/assets/images/message.svg"
                     alt="email"
                   />
-                  <span class="follow">{{
-                    constants?.resources?.contacts?.email
-                  }}</span>
+                  <span class="follow">{{ constants?.resources?.contacts?.email }}</span>
                 </div>
               </div>
             </div>

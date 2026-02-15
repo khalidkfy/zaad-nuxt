@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n();
-useSeo({});
+useSeo({
+  title:t("meta.setMeta", {meta:t("links.orders")}),
+  description:t("meta.setMeta", {meta:t("links.orders")}),
+});
 definePageMeta({
   layout: "profile",
   middleware: "authenticated",
@@ -394,7 +397,7 @@ onMounted(async () => {
                         {{ $t("order.sendSeller") }}
                       </button>
                     </li>
-                    <li>
+                    <li v-if="order?.status?.id != 0">
                       <button
                         @click.prevent="showOrderDispute(order)"
                         class="dispute"

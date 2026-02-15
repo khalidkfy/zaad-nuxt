@@ -1,11 +1,21 @@
 <script setup lang="ts">
-useSeo({});
+const { t } = useI18n();
+const route = useRoute();
+
+const { type } = route.query;
+
+console.log(type, "Asdasdasdadasdasdadtypwef");
+
+useSeo({
+  title: t("meta.setMeta", { meta: t("links.terms") }),
+  description: t("meta.setMeta", { meta: t("links.terms") }),
+});
 const { getTermsPage, termsPage, sellerTerms } = usePages();
 await getTermsPage();
 definePageMeta({
   prerender: true,
 });
-const activeTap = ref<string>("customers");
+const activeTap = ref<string>(type == 'seller' ? 'seller' : 'customers');
 </script>
 <template>
   <div class="page-content">
@@ -34,19 +44,15 @@ const activeTap = ref<string>("customers");
             v-show="activeTap === 'customers'"
             v-html="termsPage?.resource?.html"
           ></div>
-          <div
-            v-show="activeTap === 'seller'"
-            v-html="sellerTerms?.resource?.html"
-          ></div>
+          <div v-show="activeTap === 'seller'" v-html="sellerTerms?.resource?.html"></div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<style lang="scss" >
-
+<style lang="scss">
 ::marker {
-    content: unset
+  content: unset;
 }
 .page-content {
   margin-top: 40px;

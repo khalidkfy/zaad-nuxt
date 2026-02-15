@@ -30,7 +30,7 @@ const getMeta = (key: string): string | undefined => {
 };
 
 useSeo({
-  title: blog?.data?.meta?.title,
+  title: t("meta.setMeta", {meta:blog?.data?.meta?.title}),
   description: getMeta("description"),
   keywords: getMeta("keywords"),
   og_image: getMeta("og:image"),
@@ -48,7 +48,7 @@ useSeo({
           {{ $t("links.blog") }}
         </NuxtLink>
         <div>/</div>
-        <NuxtLink active-class="active" :href="$localePath(`/blog/${blog?.data?.id}`)">
+        <NuxtLink active-class="active" :href="$localePath(`/blog/${blog?.data?.slug}`)">
           {{ blog?.data?.title }}
         </NuxtLink>
       </div>

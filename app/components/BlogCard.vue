@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 <template>
     <div aria-label="blog">
-        <NuxtLink :href="$localePath(`/blog/${blog?.id}`)" class="blog-card">
+        <NuxtLink :href="$localePath(`/blog/${blog?.slug}`)" class="blog-card">
             <NuxtImg loading="lazy" v-if="blog?.image" width="100" height="100" :src="blog?.image" :alt="blog?.title" :title="blog?.title" />
             <div class="content">
                 <div class="date">{{ blog?.created_at }}</div>

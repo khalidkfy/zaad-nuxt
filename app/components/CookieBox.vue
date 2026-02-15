@@ -3,6 +3,7 @@
     v-if="showCookieBox"
     aria-label="cookie box"
     class="cookie-box"
+    :class="{show:showCookieBox}"
   >
     <p class="me-2">
       {{ $t("cookies.text") }}
@@ -54,6 +55,10 @@ const acceptCookies = () => {
   color: #fff;
   padding: 10px;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 19199;
+  top: 0;
   font-size: 12px;
 
   a {

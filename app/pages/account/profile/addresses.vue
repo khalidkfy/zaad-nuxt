@@ -29,7 +29,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         message: t("validations.required", { key: t("profile.country") }),
       },
     ],
-  },
+  }
 );
 const { getCountriesRes, getCountriesLoading, countryRes } = useCountry();
 
@@ -56,6 +56,7 @@ const deleteAddress = async (adress: any) => {
         message: t("submit.successP"),
         rtl: locale.value === "ar",
       });
+      confirmDeleteHide();
       await getProfileRes();
     } else {
       toast.error({
@@ -73,6 +74,22 @@ const deleteAddress = async (adress: any) => {
     });
   }
 };
+
+const selectedAddress = ref(null);
+const confirmDelete = (address: any) => {
+  selectedAddress.value = address;
+  const confirmDelete = new bootstrap.Modal(document.getElementById("confirmDelete"), {});
+  confirmDelete.show();
+};
+
+const confirmDeleteHide = () => {
+  const myModalEl = document.getElementById("confirmDelete");
+  const confirmDelete = bootstrap.Modal.getInstance(myModalEl);
+  if (confirmDelete) {
+    confirmDelete.hide();
+  }
+};
+
 const addressToEdit = ref(null);
 const editAddress = async (address: any) => {
   addressToEdit.value = address;
@@ -90,18 +107,10 @@ const editAddress = async (address: any) => {
   </div>
   <div class="content">
     <div class="row">
-      <div
-        class="col-md-3 mb-4"
-        v-for="(adress, i) in profileData?.addresses"
-        :key="i"
-      >
+      <div class="col-md-3 mb-4" v-for="(adress, i) in profileData?.addresses" :key="i">
         <div class="address-card">
           <div class="layer">
-            <button
-              @click.prevent="editAddress(adress)"
-              class="edit"
-              title="edit"
-            >
+            <button @click.prevent="editAddress(adress)" class="edit" title="edit">
               <img
                 loading="lazy"
                 width="20"
@@ -110,11 +119,7 @@ const editAddress = async (address: any) => {
                 alt="edit"
               />
             </button>
-            <button
-              @click.prevent="deleteAddress(adress)"
-              class="delete"
-              title="delete"
-            >
+            <button @click.prevent="confirmDelete(adress)" class="delete" title="delete">
               <img
                 loading="lazy"
                 width="20"
@@ -139,9 +144,7 @@ const editAddress = async (address: any) => {
           </div>
           <div>
             <span>{{ $t("profile.streetAddress") }}</span>
-            <span>{{
-              `${adress.address_line_1} - ${adress.address_line_2}`
-            }}</span>
+            <span>{{ `${adress.address_line_1} - ${adress.address_line_2}` }}</span>
           </div>
         </div>
       </div>
@@ -149,69 +152,74 @@ const editAddress = async (address: any) => {
   </div>
 
   <div
-    class="modal adressModal"
-    id="adressModal"
+    class="modal confirmDelete fade"
+    id="confirmDelete"
     role="dialog"
     tabindex="-1"
-    aria-labelledby="adressModal"
+    aria-labelledby="confirmDelete"
     aria-hidden="true"
     ref="modalRef"
   >
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">
-            {{ $t("general.addAddress") }}
+        <div class="modal-body p-0 text-center">
+          <div class="my-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              id="Group_90679"
+              data-name="Group 90679"
+              width="55"
+              height="55"
+              viewBox="0 0 78.937 70.822"
+            >
+              <g id="Group_90674" data-name="Group 90674">
+                <g id="Group_90673" data-name="Group 90673" transform="translate(0 0)">
+                  <path
+                    id="Path_97084"
+                    data-name="Path 97084"
+                    d="M77.678,83.215,47.506,30.956a9.282,9.282,0,0,0-16.077,0L1.258,83.214A9.282,9.282,0,0,0,9.3,97.137H69.64a9.282,9.282,0,0,0,8.039-13.923Zm-4.005,6.97a4.61,4.61,0,0,1-4.033,2.329H9.3a4.657,4.657,0,0,1-4.033-6.986L35.435,33.268a4.657,4.657,0,0,1,8.067,0L73.673,85.527A4.61,4.61,0,0,1,73.673,90.184Z"
+                    transform="translate(0 -26.315)"
+                    fill="var(--main-color)"
+                  />
+                </g>
+              </g>
+              <g
+                id="Group_90676"
+                data-name="Group 90676"
+                transform="translate(37.156 23.079)"
+              >
+                <g id="Group_90675" data-name="Group 90675">
+                  <rect
+                    id="Rectangle_22336"
+                    data-name="Rectangle 22336"
+                    width="4.625"
+                    height="23.123"
+                    fill="var(--main-color)"
+                  />
+                </g>
+              </g>
+              <g
+                id="Group_90678"
+                data-name="Group 90678"
+                transform="translate(36.385 50.827)"
+              >
+                <g id="Group_90677" data-name="Group 90677">
+                  <path
+                    id="Path_97085"
+                    data-name="Path 97085"
+                    d="M239.085,355.99a3.083,3.083,0,1,0,3.083,3.083A3.087,3.087,0,0,0,239.085,355.99Z"
+                    transform="translate(-236.002 -355.99)"
+                    fill="var(--main-color)"
+                  />
+                </g>
+              </g>
+            </svg>
           </div>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <p class="text-dark">{{$t("general.confirmDelete")}}</p>
         </div>
-        <div class="modal-body pt-0">
-          <form
-            @submit.prevent="handleSubmit()"
-            class="personal-info-form h-100 d-flex justify-content-between flex-column"
-          >
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <div class="form-group">
-                  <label for="country" class="form-label">
-                    {{ $t("profile.country") }}</label
-                  >
-                  <select
-                    v-model="values.country"
-                    class="form-select"
-                    name="country"
-                    :class="{ invalid: errors?.country?.length }"
-                    id="country"
-                  >
-                    <option v-if="!getCountriesLoading" disabled selected>
-                      {{ $t("profile.country") }}
-                    </option>
-                    <option v-else disabled selected>
-                      {{ $t("general.wait") }}
-                    </option>
-                    <option
-                      v-for="(country, i) in countryRes?.resources"
-                      :key="i"
-                      :value="country?.id"
-                    >
-                      {{ country?.title }}
-                    </option>
-                  </select>
-                  <div
-                    v-if="errors.country?.length"
-                    class="form-text text-danger text-sm"
-                  >
-                    {{ errors.country[0] }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+        <div class="modal-footer border-0 justify-content-center p-0 pb-1">
+          <button @click.prevent="deleteAddress(selectedAddress)" class="btn-zaad">{{$t("general.confirm")}}</button>
+          <button  @click.prevent="confirmDeleteHide" class="btn-zaad bg-danger">{{$t("general.close")}}</button>
         </div>
       </div>
     </div>

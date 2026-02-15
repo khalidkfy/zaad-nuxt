@@ -142,15 +142,7 @@ onMounted(async () => {
                           <p class="content-title">اختار حسب البراند</p>
 
                           <div class="stores-grid">
-                            <NuxtLink
-                              v-for="store in activeCateg.stores"
-                              :key="store.id"
-                              :href="$localePath(`/stores/products/${store.id}`)"
-                              class="store-card"
-                            >
-                              <img :src="store.logo" />
-                              <span>{{ store.name }}</span>
-                            </NuxtLink>
+                            <StoreCard v-for="store in activeCateg.stores" :store="store"/>
                           </div>
                         </div>
 
@@ -448,56 +440,7 @@ onMounted(async () => {
     justify-content: center;
   }
 
-  .store-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    background: #f9f9f9;
-    padding: 12px 15px;
-    border-radius: 8px;
-    transition: var(--trans);
-    min-width: 100px;
-    text-decoration: none;
 
-    @media (max-width: 768px) {
-      min-width: 90px;
-      padding: 10px;
-    }
-
-    @media (max-width: 576px) {
-      min-width: 85px;
-      padding: 8px;
-    }
-
-    span {
-      color: #4A4A4A;
-      font-size: 13px;
-      text-align: center;
-      
-      @media (max-width: 768px) {
-        font-size: 12px;
-      }
-    }
-
-    img {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 6px;
-      
-      @media (max-width: 768px) {
-        width: 35px;
-        height: 35px;
-      }
-    }
-
-    &:hover {
-      background: #fff;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      transform: translateY(-2px);
-    }
-  }
 }
 
  .content-title {
