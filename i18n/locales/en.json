@@ -201,10 +201,12 @@
       "problemTypePlaceholder": "Choose Problem Type",
       "msg": "Your Message",
       "msgPlaceholder": "Enter Your Your Message",
-      "confirm": "اكد ان كل بياناتي صحيحة"
+      "confirm": "confirme that all my information is correct."
     },
+    "email":"Email address",
+    "hotline":"Hotline",
     "h1": "Contact us we will listen",
-    "p": "نضمن لك أعلى معايير الحماية والسرية لبياناتك الشخصية، لتتسوق براحة واطمئنان. ثقتك أساس نجاحنا، وخصوصيتك أمانة نحافظ عليها في كل خطوة."
+    "p": "We guarantee the highest standards of protection and confidentiality for your personal data, so you can shop with peace of mind. Your trust is the foundation of our success, and your privacy is a responsibility we uphold at every step."
   },
   "forgot": {
     "h1": "Reset Password",
@@ -398,5 +400,14 @@
     "sellerBank": "Seller Bank Account",
     "bankAccountFor": "Bank account for",
     "receipt": "Add a photo of the payment receipt"
+  },
+  "about": {
+    "h1": "Where passion meets purpose",
+    "p": "Where people come together, find a community, and grow through meaningful commerce.",
+    "statsTitle": "Zaad Oman by numbers",
+    "activeCustomers": "Active customers around the world",
+    "activeCategs": "Category and classification",
+    "activeItems": "Products, categories and services",
+    "activeStores": "Shops and sellers"
   }
 }

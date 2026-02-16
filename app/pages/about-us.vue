@@ -19,8 +19,8 @@ useSeo({
         <div class="page-banner">
           <div class="wrapper">
             <div class="">
-              <h1>حيث يلتقي الشغف بالهدف</h1>
-              <p>حيث يجتمع الناس، ويجدون مجتمعًا، وينمون من خلال تجارة هادفة.</p>
+              <h1>{{ $t("about.h1") }}</h1>
+              <p>{{ $t("about.p") }}</p>
             </div>
             <div class="img">
               <img
@@ -88,32 +88,32 @@ useSeo({
   <section class="mt-5 pt-5">
     <div class="zaad-by-numbers">
       <div class="container">
-        <h2>زاد بواسطة الارقام</h2>
+        <h2>{{$t("about.statsTitle")}}</h2>
         <div class="row align-items-center mt-4">
           <div class="col-md-6">
             <div class="row">
               <div class="col-md-6 mb-4">
                 <div class="number-card">
                   <div class="value">+2000</div>
-                  <div class="text">مشترون نشطون حول العالم</div>
+                  <div class="text">{{$t("about.activeCustomers")}}</div>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="number-card">
-                  <div class="value">+2000</div>
-                  <div class="text">مشترون نشطون حول العالم</div>
+                  <div class="value">+1000</div>
+                  <div class="text">{{$t("about.activeStores")}}</div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="number-card">
-                  <div class="value">+2000</div>
-                  <div class="text">مشترون نشطون حول العالم</div>
+                  <div class="value">+5000</div>
+                  <div class="text">{{$t("about.activeItems")}}</div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="number-card">
-                  <div class="value">+2000</div>
-                  <div class="text">مشترون نشطون حول العالم</div>
+                  <div class="value">+100</div>
+                  <div class="text">{{$t("about.activeCategs")}}</div>
                 </div>
               </div>
             </div>
