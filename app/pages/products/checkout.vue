@@ -153,7 +153,6 @@ const couponDetails = computed(() => {
 
   return data;
 });
-// TODO REFRESH ITEMS WHEN CHANGE ADDRESS
 const addAddressModal = ref(null);
 const showAddressModal = async () => {
   await addAddressModal.value.showModal();
@@ -461,7 +460,6 @@ const handleNewAddress = async () => {
                             </defs>
                           </svg>
                         </div>
-                        <!-- TODO::CHECK ITEM QUANTITY SHOULD BE LIKE IN CART -->
                         <span>{{ item?.item?.quantity }}</span>
                         <div @click.prevent="addQty(item?.item)">
                           <svg
@@ -696,7 +694,6 @@ const handleNewAddress = async () => {
         </div>
       </template>
     </div>
-    <!-- TODO::Edit Cart and sller info -->
   </section>
 
   <ClientOnly>

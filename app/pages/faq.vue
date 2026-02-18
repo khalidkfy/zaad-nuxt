@@ -73,10 +73,9 @@ const hasResults = computed(() => {
       <div class="faq-banner">
         <div class="text-center">
           <p class="title">{{ $t("links.faq") }}</p>
-          <h1>اكتشف ردود عن اسالتك جميعها</h1>
+          <h1>{{ $t("faq.h1") }}</h1>
           <p class="p">
-            اكتشف الإنجازات التي تميزنا. من المشاريع الرائدة إلى الجوائز المرموقة في
-            الصناعة، نفخر بإنجازاتنا
+           {{ $t("faq.p") }}
           </p>
         </div>
         <!-- search -->

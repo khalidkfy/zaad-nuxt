@@ -41,8 +41,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
         }),
       },
     ],
-
-  },
+  }
 );
 
 const formLoading = ref(false);
@@ -63,25 +62,21 @@ const handleSubmit = async () => {
       },
     });
     if (response?.status_code != 200) {
-      submitErr.value = response?.msg
+      submitErr.value = response?.msg;
     } else {
-      submitSuccess.value = true
-      setTimeout(async() => {
+      submitSuccess.value = true;
+      setTimeout(async () => {
         await router.push(localePath("/account/login"));
       }, 2000);
     }
-
-
-
   } catch (err) {
     console.log(err, "err");
-
   } finally {
     formLoading.value = false;
   }
 };
 
-onMounted(() => { });
+onMounted(() => {});
 </script>
 <template>
   <section class="auth-section p-5">
@@ -89,7 +84,7 @@ onMounted(() => { });
       <div class="text-center">
         <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
         <h1>{{ $t("forgot.h1") }}</h1>
-        <p class="text-muted h6">سنرسل اليك رابطا لاعادة تعيين كلمة المرور</p>
+        <p class="text-muted h6">{{ $t("forgot.weSendEmail") }}</p>
       </div>
 
       <form @submit.prevent="handleSubmit()" class="auth-form">
@@ -101,12 +96,21 @@ onMounted(() => { });
         </div>
 
         <div class="mb-3">
-          <label for="emailInput" class="form-label">{{
-            $t("login.emailPhone")
-          }}</label>
-          <input :class="{ invalid: errors?.email?.length }" v-model="values.email" type="email" class="form-control"
-            id="emailInput" aria-describedby="emailHelp" :placeholder="$t('login.emailPhonePlace')" />
-          <div v-if="errors.email?.length" id="emailHelp" class="form-text text-danger text-sm">
+          <label for="emailInput" class="form-label">{{ $t("login.emailPhone") }}</label>
+          <input
+            :class="{ invalid: errors?.email?.length }"
+            v-model="values.email"
+            type="email"
+            class="form-control"
+            id="emailInput"
+            aria-describedby="emailHelp"
+            :placeholder="$t('login.emailPhonePlace')"
+          />
+          <div
+            v-if="errors.email?.length"
+            id="emailHelp"
+            class="form-text text-danger text-sm"
+          >
             {{ errors.email[0] }}
           </div>
         </div>
@@ -119,7 +123,7 @@ onMounted(() => { });
           </span>
         </button>
         <div class="mt-4 text-center fw-bold">
-          اذا كنت تتذكر كلمة المرور
+          {{ $t("register.remember") }}
           <NuxtLink :href="$localePath('/account/login')">{{
             $t("login.clickHere")
           }}</NuxtLink>
@@ -235,7 +239,7 @@ section.auth-section {
   }
 
   /* Check icon */
-  .custom-check .form-check-input:checked+.form-check-label::after {
+  .custom-check .form-check-input:checked + .form-check-label::after {
     content: "✓";
     position: absolute;
     right: 3px;

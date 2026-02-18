@@ -9,7 +9,7 @@ const { getProfileRes } = useProfile();
 
 const { t } = useI18n();
 const router = useRouter();
-const route = useRoute()
+const route = useRoute();
 
 const localePath = useLocalePath();
 useSeo({
@@ -56,7 +56,7 @@ const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
       },
     ],
     remember_me: [],
-  },
+  }
 );
 
 const formLoading = ref(false);
@@ -87,8 +87,6 @@ const handleLogin = async () => {
 
       await getProfileRes();
 
-
-
       await router.push(localePath(redirect()));
     } catch (e) {
       console.error("navigation failed", e);
@@ -103,25 +101,27 @@ const handleLogin = async () => {
 
 const redirect = () => {
   const red = route.query.redirect;
-  if (!red || typeof red !== 'string') return '/';
+  if (!red || typeof red !== "string") return "/";
 
   // prevent external redirect
-  if (!red.startsWith('/')) return '/'
+  if (!red.startsWith("/")) return "/";
 
   // prevent login loop
-  if (red.includes('/account/login')) return '/'
+  if (red.includes("/account/login")) return "/";
 
-  return red
-}
+  return red;
+};
 const config = useRuntimeConfig();
 
-onMounted(() => { });
+onMounted(() => {});
 </script>
 <template>
   <section class="auth-section p-5">
     <div class="container">
       <div class="text-center">
-        <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
+        <NuxtLink :href="$localePath('/')">
+          <img width="132" height="32" src="/assets/images/logo/zaad-logo.svg" />
+        </NuxtLink>
         <h1>{{ $t("login.h1") }}</h1>
       </div>
 
@@ -134,28 +134,50 @@ onMounted(() => { });
         </div>
 
         <div class="mb-3">
-          <label for="emailInput" class="form-label">{{
-            $t("login.emailPhone")
-          }}</label>
-          <input :class="{ invalid: errors?.email?.length }" v-model="values.email" type="email" class="form-control"
-            id="emailInput" aria-describedby="emailHelp" :placeholder="$t('login.emailPhonePlace')" />
-          <div v-if="errors.email?.length" id="emailHelp" class="form-text text-danger text-sm">
+          <label for="emailInput" class="form-label">{{ $t("login.emailPhone") }}</label>
+          <input
+            :class="{ invalid: errors?.email?.length }"
+            v-model="values.email"
+            type="email"
+            class="form-control"
+            id="emailInput"
+            aria-describedby="emailHelp"
+            :placeholder="$t('login.emailPhonePlace')"
+          />
+          <div
+            v-if="errors.email?.length"
+            id="emailHelp"
+            class="form-text text-danger text-sm"
+          >
             {{ errors.email[0] }}
           </div>
         </div>
         <div class="mb-3">
-          <label for="passwordInput" class="form-label">{{
-            $t("login.password")
-          }}</label>
-          <input :class="{ invalid: errors?.password?.length }" v-model="values.password" type="password"
-            class="form-control" id="passwordInput" :placeholder="$t('login.passwordPlace')" />
-          <div v-if="errors.password?.length" id="emailHelp" class="form-text text-danger text-sm">
+          <label for="passwordInput" class="form-label">{{ $t("login.password") }}</label>
+          <input
+            :class="{ invalid: errors?.password?.length }"
+            v-model="values.password"
+            type="password"
+            class="form-control"
+            id="passwordInput"
+            :placeholder="$t('login.passwordPlace')"
+          />
+          <div
+            v-if="errors.password?.length"
+            id="emailHelp"
+            class="form-text text-danger text-sm"
+          >
             {{ errors.password[0] }}
           </div>
         </div>
         <div class="d-flex justify-content-between mb-3">
           <div class="form-check custom-check">
-            <input v-model="values.remember_me" class="form-check-input" type="checkbox" id="reminderCheck" />
+            <input
+              v-model="values.remember_me"
+              class="form-check-input"
+              type="checkbox"
+              id="reminderCheck"
+            />
             <label class="form-check-label" for="reminderCheck">
               {{ $t("login.remember") }}
             </label>
@@ -163,7 +185,9 @@ onMounted(() => { });
           <div class="forgot">
             <div>
               {{ $t("login.forgot") }}
-              <NuxtLink :href="$localePath('/account/forgot-password')">{{ $t("login.clickHere") }}</NuxtLink>
+              <NuxtLink :href="$localePath('/account/forgot-password')">{{
+                $t("login.clickHere")
+              }}</NuxtLink>
             </div>
           </div>
         </div>
@@ -292,7 +316,7 @@ section.auth-section {
   }
 
   /* Check icon */
-  .custom-check .form-check-input:checked+.form-check-label::after {
+  .custom-check .form-check-input:checked + .form-check-label::after {
     content: "✓";
     position: absolute;
     right: 3px;

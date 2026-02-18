@@ -218,21 +218,7 @@ const submitRate = async () => {
 };
 const { loggedIn } = useUserSession();
 
-const cantRate = computed(() => {
-  if (!loggedIn.value) {
-    return "سجل الدخول للتقيم";
-  }
-  console.log(
-    productDetails.value?.rates.can_rate != true,
-    "productDetails.value?.rates.can_rateproductDetails.value?.rates.can_rate"
-  );
 
-  if (productDetails.value?.rates.can_rate != true) {
-    return "لا تستطيع التقييم";
-  }
-
-  return "";
-});
 </script>
 <template>
   <section class="mt-4">

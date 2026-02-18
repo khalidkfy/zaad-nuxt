@@ -8,7 +8,7 @@ const category_id = computed(() => {
 });
 // definePageMeta({});
 const activeCategory = productsCategs.value.find(
-  (item: any) => item.id == category_id.value,
+  (item: any) => item.id == category_id.value
 );
 let title = category_id.value
   ? `${t("links.products")} - ${activeCategory?.name}`
@@ -18,8 +18,13 @@ useSeo({
   title: t("meta.setMeta", { meta: title }),
 });
 
-const { getProducts, productsRes, getProductsLoading, currentPage, hasMore } =
-  useProducts();
+const {
+  getProducts,
+  productsRes,
+  getProductsLoading,
+  currentPage,
+  hasMore,
+} = useProducts();
 
 const query = route.query;
 
@@ -46,9 +51,7 @@ const loadMore = async () => {
 };
 
 const handleWhishRemove = ({ item, value }) => {
-  const product = productsRes.value.resources.find(
-    (p: any) => p.id === item.id,
-  );
+  const product = productsRes.value.resources.find((p: any) => p.id === item.id);
   if (product) {
     product.favorite_item = value;
   }
@@ -62,6 +65,24 @@ const filterItems = async (search: string) => {
     append: false,
     search: search,
   });
+};
+
+const selectedFilters = reactive<any>({});
+
+const filterByFilterTypes = async () => {
+  console.log(selectedFilters, "selectedFiltersselectedFilters");
+
+  await getProducts({
+    categId: null,
+    append: false,
+    search: pageSearch.value,
+  }, selectedFilters);
+};
+
+const onFilterChange = ({ slug, value }) => {
+  selectedFilters[slug] = value;
+
+  filterByFilterTypes();
 };
 </script>
 
@@ -77,10 +98,7 @@ const filterItems = async (search: string) => {
         </NuxtLink>
         <template v-if="category_id && activeCategory">
           <div>/</div>
-          <NuxtLink
-            active-class="active"
-            :href="$localePath(`/products/${category_id}`)"
-          >
+          <NuxtLink active-class="active" :href="$localePath(`/products/${category_id}`)">
             {{ activeCategory?.name }}
           </NuxtLink></template
         >
@@ -91,20 +109,15 @@ const filterItems = async (search: string) => {
     <div class="container">
       <div class="row">
         <div class="col-md-3 mb-4">
-          <ProductsCategsFilter
-            @filter="filterItems"
-            :activeCateg="category_id"
-          />
+          <ProductsCategsFilter @filter="filterItems" :activeCateg="category_id" />
         </div>
         <div class="col-md-9">
-          <!-- <ProductsFilter :filters="productsRes?.filters" /> -->
+          <ProductsFilter @update="onFilterChange" :filters="productsRes?.filters" />
           <div class="items-container">
             <div v-if="getProductsLoading" class="overlay-loader">
               <span class="indicator-progress f-normal fs-20">
                 {{ t("general.wait") }}
-                <span
-                  class="spinner-border spinner-border-sm align-middle ms-2"
-                ></span>
+                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
               </span>
             </div>
             <div class="row">
@@ -114,29 +127,20 @@ const filterItems = async (search: string) => {
                   v-for="(product, i) in products"
                   :key="i"
                 >
-                  <ProductCard
-                    @removed="handleWhishRemove"
-                    :product="product"
-                  />
+                  <ProductCard @removed="handleWhishRemove" :product="product" />
                 </div>
               </template>
               <template v-else>
                 <div class="no-items">
                   <div>{{ $t("items.noData") }}</div>
-                  <NuxtLink
-                    :href="$localePath('/stores/products')"
-                    class="btn-zaad"
-                    >{{ $t("links.productsStores") }}</NuxtLink
-                  >
+                  <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad">{{
+                    $t("links.productsStores")
+                  }}</NuxtLink>
                 </div>
               </template>
             </div>
             <div class="text-center mt-4" v-if="hasMore">
-              <button
-                class="btn-zaad"
-                :disabled="getProductsLoading"
-                @click="loadMore"
-              >
+              <button class="btn-zaad" :disabled="getProductsLoading" @click="loadMore">
                 <span v-if="getProductsLoading">{{ $t("general.wait") }}</span>
                 <span v-else>{{ $t("general.showMore") }}</span>
               </button>

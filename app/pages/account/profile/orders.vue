@@ -202,7 +202,6 @@ const showReciptModal = async (order: any) => {
 onMounted(async () => {
   await getOrders();
   await getProblems();
-  // TODO ORDERS PAGINATOR
 });
 </script>
 <template>

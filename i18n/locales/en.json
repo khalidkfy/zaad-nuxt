@@ -113,6 +113,7 @@
     "logout": "Sign out"
   },
   "register": {
+    "remember": "Remember password ?",
     "register": "Register",
     "asSeller": "register as a seller",
     "asShipping": "register Shipping company",
@@ -210,7 +211,8 @@
   },
   "forgot": {
     "h1": "Reset Password",
-    "success": "A password reset link will be sent to your email address."
+    "success": "A password reset link will be sent to your email address.",
+    "weSendEmail":"we will send you a password reset link"
   },
   "reset": {
     "h1": "Reset Password",
@@ -297,7 +299,9 @@
   "faq": {
     "search": "What are you looking at?",
     "noResults": "No results found",
-    "tryDifferentKeyword": "Try searching with different keywords"
+    "tryDifferentKeyword": "Try searching with different keywords",
+    "h1":"Find out all your questions",
+    "p":"Discover the achievements that set us apart. From pioneering projects to prestigious industry awards, we are proud of our accomplishments."
   },
   "profile": {
     "uploadImg": "Uplaod image",
