@@ -112,7 +112,7 @@ const onFilterChange = ({ slug, value }) => {
           <ProductsCategsFilter @filter="filterItems" :activeCateg="category_id" />
         </div>
         <div class="col-md-9">
-          <ProductsFilter @update="onFilterChange" :filters="productsRes?.filters" />
+          <!-- <ProductsFilter @update="onFilterChange" :filters="productsRes?.filters" /> -->
           <div class="items-container">
             <div v-if="getProductsLoading" class="overlay-loader">
               <span class="indicator-progress f-normal fs-20">
