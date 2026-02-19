@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Slider from "@vueform/slider";
 import "@vueform/slider/themes/default.css";
 
@@ -16,32 +16,33 @@ watch(range, (val) => {
     value: `${val[0]},${val[1]}`,
   });
 });
+
+const { locale } = useI18n();
 </script>
 
 <template>
   <div class="range-filter">
-    <p>{{ filter.title }}</p>
+    <p class="title">{{ filter.title }}</p>
 
     <Slider
       v-model="range"
       :min="filter.min"
       :max="filter.max"
-      :rtl="true"
+      :rtl="locale == 'ar'"
       :tooltips="true"
       :showTooltip="'drag'"
-      :marks="{
-        [filter.min]: filter.min,
-        [filter.max]: filter.max,
-      }"
     />
-     <div class="slider-labels">
+    <div class="slider-labels">
       <span>{{ filter.min }}</span>
       <span>{{ filter.max }}</span>
     </div>
   </div>
 </template>
 <style>
-
+ p.title {
+    color: #4a4a4a;
+    font-weight: 500;
+  }
 .slider-labels {
   display: flex;
   justify-content: space-between;
@@ -49,7 +50,6 @@ watch(range, (val) => {
   font-size: 12px;
   color: #777;
 }
-
 
 /* Selected active range */
 .slider-connect {

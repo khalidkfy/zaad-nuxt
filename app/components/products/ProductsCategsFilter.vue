@@ -31,6 +31,7 @@ const filterByFilterTypes = async () => {
 </script>
 <template>
   <div class="products-categ-filter">
+    <h6>{{ $t("general.filter") }}</h6>
     <!-- <form @submit.prevent="filterItems">
       <div class="input-group">
         <input
@@ -77,6 +78,12 @@ const filterByFilterTypes = async () => {
 </template>
 <style lang="scss" scoped>
 .products-categ-filter {
+  > h6 {
+    font-weight: 500;
+    font-size: 16px;
+    color: #4A4A4A;
+    margin-bottom: 15px;
+  }
   .input-group {
     margin: 20px 0;
     input {
