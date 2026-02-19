@@ -4,17 +4,34 @@ const props = defineProps({
   activeCateg: {
     required: false,
   },
+  filters: {
+    required: true,
+  },
 });
 
 const emit = defineEmits(["filter"]);
 const searchTerm = ref("");
 const filterItems = () => {
-  emit('filter', searchTerm?.value);
+  emit("filter", searchTerm?.value);
+};
+const selectedFilters = reactive<any>({});
+
+const priceFilter = computed(() => props.filters.find((f) => f.slug === "price"));
+const onFilterChange = ({ slug, value }) => {
+  selectedFilters[slug] = value;
+
+  filterByFilterTypes();
+};
+
+const filterByFilterTypes = async () => {
+  console.log(selectedFilters, "selectedFiltersselectedFilters");
+
+  emit("filter", selectedFilters);
 };
 </script>
 <template>
   <div class="products-categ-filter">
-    <form @submit.prevent="filterItems">
+    <!-- <form @submit.prevent="filterItems">
       <div class="input-group">
         <input
           type="text"
@@ -29,7 +46,12 @@ const filterItems = () => {
           </button>
         </div>
       </div>
-    </form>
+    </form> -->
+    <ProductRangeFilter
+      v-if="priceFilter"
+      :filter="priceFilter"
+      @change="onFilterChange"
+    />
     <p class="title">{{ $t("categs.allCategs") }}</p>
     <div class="categs">
       <div v-for="(categ, i) in productsCategs" :key="i">

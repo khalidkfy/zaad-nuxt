@@ -27,14 +27,16 @@ const {
 } = useProducts();
 
 const query = route.query;
+const selectedFilters = reactive<any>({});
 
 await getProducts({
   categId: category_id.value,
   append: false,
   search: query?.search ?? "",
-});
+}, selectedFilters);
 
 const products = computed(() => productsRes.value.resources);
+const filters = computed(() => productsRes.value.filters);
 
 const loadMore = async () => {
   if (!productsRes.value.next_page_url) return;
@@ -58,32 +60,33 @@ const handleWhishRemove = ({ item, value }) => {
 };
 
 const pageSearch = ref("");
-const filterItems = async (search: string) => {
-  pageSearch.value = search;
+const filterItems = async (filters: any) => {
+  // pageSearch.value = search;
   await getProducts({
     categId: category_id.value,
     append: false,
-    search: search,
-  });
-};
-
-const selectedFilters = reactive<any>({});
-
-const filterByFilterTypes = async () => {
-  console.log(selectedFilters, "selectedFiltersselectedFilters");
-
-  await getProducts({
-    categId: null,
-    append: false,
     search: pageSearch.value,
-  }, selectedFilters);
+  }, filters);
 };
 
-const onFilterChange = ({ slug, value }) => {
-  selectedFilters[slug] = value;
 
-  filterByFilterTypes();
-};
+// const filterByFilterTypes = async () => {
+//   console.log(selectedFilters, "selectedFiltersselectedFilters");
+
+//   await getProducts({
+//     categId: null,
+//     append: false,
+//     search: pageSearch.value,
+//   }, selectedFilters);
+// };
+
+// const onFilterChange = ({ slug, value }) => {
+//   selectedFilters[slug] = value;
+
+//   filterByFilterTypes();
+// };
+
+const priceFilter = computed(() => filters.value.find((f) => f.slug === "price"));
 </script>
 
 <template>
@@ -109,10 +112,11 @@ const onFilterChange = ({ slug, value }) => {
     <div class="container">
       <div class="row">
         <div class="col-md-3 mb-4">
-          <ProductsCategsFilter @filter="filterItems" :activeCateg="category_id" />
+          <ProductsCategsFilter :filters="filters" @filter="filterItems" :activeCateg="category_id" />
         </div>
         <div class="col-md-9">
           <!-- <ProductsFilter @update="onFilterChange" :filters="productsRes?.filters" /> -->
+        
           <div class="items-container">
             <div v-if="getProductsLoading" class="overlay-loader">
               <span class="indicator-progress f-normal fs-20">

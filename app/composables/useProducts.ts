@@ -36,16 +36,27 @@ export const useProducts = () => {
   const hasMore = ref(false);
   const getProducts = async (options: {
     categId: any, append?: boolean, search: any
-  }) => {
+  }, filters: any) => {
     try {
       getProductsLoading.value = true
 
-      const reqQuery = {
-        category_id: options.categId || null,
+      let reqQuery = {
         page: currentPage.value ?? 1,
       }
       if (!options?.append) {
         reqQuery.page = 1;
+      }
+
+      if (options.categId) {
+        reqQuery.category_id = options.categId || null
+      }
+
+
+      if (filters) {
+        reqQuery = {
+          ...reqQuery,
+          ...filters
+        }
       }
 
       if (options?.search?.length) {
