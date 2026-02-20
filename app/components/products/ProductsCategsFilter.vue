@@ -9,10 +9,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["filter"]);
+const emit = defineEmits(["filter", "search"]);
 const searchTerm = ref("");
 const filterItems = () => {
-  emit("filter", searchTerm?.value);
+  emit("search", searchTerm?.value);
 };
 const selectedFilters = reactive<any>({});
 
@@ -32,7 +32,7 @@ const filterByFilterTypes = async () => {
 <template>
   <div class="products-categ-filter">
     <h6>{{ $t("general.filter") }}</h6>
-    <!-- <form @submit.prevent="filterItems">
+    <form @submit.prevent="filterItems">
       <div class="input-group">
         <input
           type="text"
@@ -47,14 +47,30 @@ const filterByFilterTypes = async () => {
           </button>
         </div>
       </div>
-    </form> -->
+    </form>
     <ProductRangeFilter
       v-if="priceFilter"
       :filter="priceFilter"
       @change="onFilterChange"
     />
-    <p class="title">{{ $t("categs.allCategs") }}</p>
+    <p class="title mt-3">{{ $t("categs.allCategs") }}</p>
     <div class="categs">
+      <NuxtLink
+        :class="{ active: !activeCateg }"
+        :href="$localePath(`/products`)"
+      >
+        <img
+          :src="
+            !activeCateg
+              ? '/assets/images/check.svg'
+              : '/assets/images/nocheck.svg'
+          "
+          width="18"
+          height="18"
+          alt="check"
+        />
+        <span>{{ $t("categs.allCategs") }}</span>
+      </NuxtLink>
       <div v-for="(categ, i) in productsCategs" :key="i">
         <NuxtLink
           :class="{ active: activeCateg == categ.id }"
@@ -81,7 +97,7 @@ const filterByFilterTypes = async () => {
   > h6 {
     font-weight: 500;
     font-size: 16px;
-    color: #4A4A4A;
+    color: #4a4a4a;
     margin-bottom: 15px;
   }
   .input-group {

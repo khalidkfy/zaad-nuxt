@@ -18,6 +18,13 @@ watch(range, (val) => {
 });
 
 const { locale } = useI18n();
+
+const displayRange = computed(() => {
+  if (locale.value === "ar") {
+    return [range.value[1], range.value[0]]; // swap for tooltip display
+  }
+  return range.value;
+});
 </script>
 
 <template>
@@ -28,21 +35,21 @@ const { locale } = useI18n();
       v-model="range"
       :min="filter.min"
       :max="filter.max"
-      :rtl="locale == 'ar'"
+      :rtl="locale === 'ar'"
       :tooltips="true"
       :showTooltip="'drag'"
     />
     <div class="slider-labels">
-      <span>{{ filter.min }}</span>
-      <span>{{ filter.max }}</span>
+      <span>{{ displayRange[0] }}</span>
+      <span>{{ displayRange[1] }}</span>
     </div>
   </div>
 </template>
 <style>
- p.title {
-    color: #4a4a4a;
-    font-weight: 500;
-  }
+p.title {
+  color: #4a4a4a;
+  font-weight: 500;
+}
 .slider-labels {
   display: flex;
   justify-content: space-between;
