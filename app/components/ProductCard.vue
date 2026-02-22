@@ -35,55 +35,37 @@ const {
 const emit = defineEmits(["removed", "added"]);
 
 const handleWhishSubmit = async (product: any) => {
-  if (props.styleFor === "whish") {
-    try {
+  try {
+    if (props.styleFor === "whish") {
       await removeFromWhish(product, "product_id");
       emit("removed");
-    } catch (err) {
-      console.error(err);
+      return;
     }
-  } else {
-    if (product?.favorite_item == true) {
-      try {
-        await removeFromWhish(product, "product");
-        emit("removed", { item: product, value: false });
-      } catch (err) {
-        console.error(err);
-      }
+
+    if (product?.favorite_item) {
+      await removeFromWhish(product, "product");
+      emit("removed", { item: product, value: false });
     } else {
-      try {
-        await addToWhish(product?.id);
-        emit("removed", { item: product, value: true });
-      } catch (err) {
-        console.error(err);
-      }
+      await addToWhish(product?.id);
+      emit("removed", { item: product, value: true });
     }
+  } catch (err) {
+    console.error(err);
   }
 };
 
-watch(addToCartErr, (val) => {
-  if (val && cartRef.value) {
-    cartRef.value.classList.remove("shake");
-    void cartRef.value.offsetWidth; // force reflow
-    cartRef.value.classList.add("shake");
-  }
-});
+const shake = (el: Ref<HTMLElement | null>) => {
+  if (!el.value) return;
+  el.value.classList.remove("shake");
+  void el.value.offsetWidth;
+  el.value.classList.add("shake");
+};
 
-watch(addToWhishErr, (val) => {
-  if (val && whishRef.value) {
-    whishRef.value.classList.remove("shake");
-    void whishRef.value.offsetWidth; // force reflow
-    whishRef.value.classList.add("shake");
-  }
-});
+watch(addToCartErr, (val) => val && shake(cartRef));
 
-watch(removeWhishErr, (val) => {
-  if (val && whishRef.value) {
-    whishRef.value.classList.remove("shake");
-    void whishRef.value.offsetWidth; // force reflow
-    whishRef.value.classList.add("shake");
-  }
-});
+watch(addToWhishErr, (val) => val && shake(whishRef));
+
+watch(removeWhishErr, (val) => val && shake(whishRef));
 
 const fallback = "/assets/images/logo/zaad-logo.svg"; // put in /public/images
 
@@ -94,6 +76,33 @@ const imageSrc = ref(
 const onError = () => {
   imageSrc.value = fallback;
 };
+const isFavorite = computed(() => {
+  return props.styleFor === "whish" || props.product?.favorite_item === true;
+});
+
+const hasGallery = computed(() => {
+  return Array.isArray(props.product?.images) && props.product.images.length > 1;
+});
+const currentImageIndex = ref(0);
+const galleryImages = computed(() => {
+  if (!hasGallery.value) return [imageSrc.value];
+
+  return props.product.images.map((img: any) => img?.src).filter(Boolean);
+});
+const currentImage = computed(() => {
+  return galleryImages.value[currentImageIndex.value] || fallback;
+});
+const nextImage = () => {
+  if (!hasGallery.value) return;
+  currentImageIndex.value = (currentImageIndex.value + 1) % galleryImages.value.length;
+};
+
+const prevImage = () => {
+  if (!hasGallery.value) return;
+  currentImageIndex.value =
+    (currentImageIndex.value - 1 + galleryImages.value.length) %
+    galleryImages.value.length;
+};
 </script>
 <template>
   <div class="product-card" :class="styleFor" :aria-label="`Product: ${product?.title}`">
@@ -101,6 +110,7 @@ const onError = () => {
       <div
         v-if="styleFor !== 'mega'"
         class="cart"
+        aria-label="Add to cart"
         ref="cartRef"
         :class="{ secColor: cartBg }"
         :title="$t('cart.add')"
@@ -122,12 +132,8 @@ const onError = () => {
         v-if="loggedIn"
         ref="whishRef"
         class="whish"
-        :class="{ fav: product?.favorite_item == true || styleFor === 'whish' }"
-        :title="
-          product?.favorite_item == true || styleFor === 'whish'
-            ? $t('whish.remove')
-            : $t('whish.add')
-        "
+        :class="{ fav: isFavorite }"
+        :title="isFavorite ? $t('whish.remove') : $t('whish.add')"
         @click.prevent="handleWhishSubmit(product)"
       >
         <svg
@@ -165,12 +171,33 @@ const onError = () => {
         {{ product?.category?.title || product?.category_title }}
       </div>
       <div v-if="product?.discount" class="discount-label">-{{ product?.discount }}%</div>
-      <!-- <div v-if="product?.customOffer" class="custom-offer">{{ product?.customOffer }}</div> -->
+
+      <button
+        v-if="hasGallery"
+        class="nav prev"
+        type="button"
+        aria-label="Previous image"
+        @click.prevent="prevImage"
+      >
+        ‹
+      </button>
+
+      <button
+        v-if="hasGallery"
+        class="nav next"
+        type="button"
+        aria-label="Next image"
+        @click.prevent="nextImage"
+      >
+        ›
+      </button>
       <NuxtImg
         class="product"
         loading="lazy"
         width="185"
-        :src="imageSrc"
+        height="185"
+        sizes="(max-width: 768px) 50vw, 185px"
+        :src="currentImage"
         :alt="product?.title"
         :title="product?.title"
         @error="onError"
@@ -289,7 +316,8 @@ const onError = () => {
     transition: var(--trans);
     padding: 15px;
     background-color: #f9f9f9;
-    height: 200px;
+    aspect-ratio: 1 / 1;
+    height: auto;
     display: flex;
     /* flex-direction: column; */
     justify-content: center;
@@ -390,6 +418,41 @@ const onError = () => {
       z-index: 1;
       background-color: #000;
       color: #fff;
+    }
+
+    .nav {
+      position: absolute;
+      z-index: 5;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--trans);
+      backdrop-filter: blur(4px);
+    }
+
+    .prev {
+      inset-inline-start: 8px;
+    }
+
+    .next {
+      inset-inline-end: 8px;
+    }
+
+    &:hover {
+      .nav {
+        opacity: 1;
+      }
     }
   }
 

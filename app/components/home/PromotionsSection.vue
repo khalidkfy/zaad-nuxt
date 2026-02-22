@@ -7,14 +7,14 @@ const items = promotionsSection.value?.items;
         <div class="container">
 
             <div class="row">
-                <div v-for="(item, i) in items" :key="i" class="col-md-6">
+                <NuxtLink href="" v-for="(item, i) in items" :key="i" class="col-md-6">
                     <picture>
                         <source :srcset="item.mobile_image" media="(max-width: 768px)" />
 
                         <NuxtImg loading="lazy" class="d-block w-100" :src="item.src" :alt="item.title"
                             sizes="(max-width: 768px) 100vw, 1200px" />
                     </picture>
-                </div>
+                </NuxtLink>
             </div>
         </div>
     </section>

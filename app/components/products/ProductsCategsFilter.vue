@@ -142,7 +142,7 @@ const filterByFilterTypes = async () => {
       border-radius: 8px;
       transition: var(--trans);
       button {
-        background-color: 0;
+        background-color: #fff;
         padding: 0;
         border: 0;
         outline: none;
