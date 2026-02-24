@@ -76,7 +76,7 @@ const loadMore = async () => {
             <NuxtImg width="100" height="100" :src="seller?.store_logo"></NuxtImg>
             <h1>{{ seller?.store_name }}</h1>
             <p>{{ seller?.store_address }}</p>
-            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/${seller?.category_id}`)">
+            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/${seller?.category_slug}`)">
               {{ seller?.store_category }}
             </NuxtLink>
           </div>

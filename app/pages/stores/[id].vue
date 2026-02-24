@@ -94,8 +94,8 @@ useSeo({
 }
 
 .stores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(12px, 4vw, 40px);
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: clamp(12px, 4vw, 40px);
 }
 </style>

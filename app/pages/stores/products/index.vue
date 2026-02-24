@@ -34,7 +34,7 @@ await getProductsStores();
             <div class="category">
               <div class="head">
                 <h4>{{ categ?.localeTitle }}</h4>
-                <NuxtLink :href="$localePath(`/stores/${categ?.id}`)">
+                <NuxtLink :href="$localePath(`/stores/${categ?.slug}`)">
                   {{ $t("general.showMore") }}
                 </NuxtLink>
               </div>
