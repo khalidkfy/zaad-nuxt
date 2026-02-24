@@ -255,7 +255,7 @@ const { loggedIn } = useUserSession();
             <div>
               <NuxtLink
                 class="categ"
-                :href="$localePath(`/products/${productDetails?.category_id}`)"
+                :href="$localePath(`/products/${productDetails?.category?.name}`)"
                 >{{
                   productDetails?.category?.title || productDetails?.category?.name
                 }}</NuxtLink
