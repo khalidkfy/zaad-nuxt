@@ -244,7 +244,7 @@ onMounted(async () => {
           class="marquee-item"
           v-for="categ in categs"
           :key="categ.id"
-          :href="$localePath(`/products/${categ.id}`)"
+          :href="$localePath(`/products/${categ.slug}`)"
         >
           {{ categ.name }}
         </NuxtLink>

@@ -17,6 +17,7 @@ export interface SeoMeta {
   keywords?: string;
   twitter_desc?: string;
   twitter_image?: string;
+  robots?: string;
 }
 
 export const useSeo = (meta: SeoMeta) => {
@@ -33,26 +34,33 @@ export const useSeo = (meta: SeoMeta) => {
 
   const config = useRuntimeConfig();
   // const baseUrl = "zaad.com";
-  
+
   const baseUrl = config.public.baseUrl ?? `https://new.zaad.om`;
+
+  const isSearch = typeof route.query.search === "string" && route.query.search.length > 0;
+
+  const cleanPath = route.path; // removes query automatically
+
+  const canonicalUrl = isSearch
+    ? `${baseUrl}${locale.value === "en" ? "/en" : ""}${cleanPath}`
+    : `${baseUrl}${locale.value === "en" ? "/en" : ""}${route.fullPath}`;
 
   const baseGraph = [
     {
       "@type": "Organization",
-      "@id": "https://www.zaad.com/#organization",
-      name: "Zaad",
-      url: "https://www.zaad.com",
-      logo: "https://www.zaad.com/assets/images/svg/Logo-for-desktop.svg",
+      "@id": `${baseUrl}#organization`,
+      name: "ZaadOman",
+      url: baseUrl,
+      logo: `${baseUrl}/assets/images/logo/zaad-logo.svg`,
       copyrightYear: "2025",
       copyrightHolder: {
         "@type": "Organization",
-        name: "zaad",
+        name: "ZaadOman",
       },
-      description:
-        "zaad description",
+      description: t("meta.default.desc"),
       contactPoint: {
         "@type": "ContactPoint",
-        email: "support@zaad.com",
+        email: "rowwad.om2020@gmail.com", // support email
         contactType: "support center",
         areaServed: "Worldwide",
         availableLanguage: [
@@ -61,20 +69,23 @@ export const useSeo = (meta: SeoMeta) => {
         ],
       },
       sameAs: [
-        "https://www.facebook.com/zaad/",
-        "https://www.instagram.com/zaad/",
-        "https://x.com/zaad",
-        "https://www.youtube.com/channel/zaad",
-        "https://www.linkedin.com/company/zaadapp",
+        "https://www.facebook.com/ZaadOman",
+        "https://www.instagram.com/ZaadOman",
+        "https://x.com/ZaadOman",
       ],
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.zaad.com/#website",
-      name: "zaad  ",
-      url: "https://www.zaad.com",
-      description:
-        " ",
+      "@id": `${baseUrl}#website`,
+      name: "ZaadOman",
+      inLanguage: locale.value,
+      url: baseUrl,
+      description: t("meta.default.desc"),
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${baseUrl}${locale.value === "en" ? "/en" : ""}/products?search={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      }
     },
   ];
 
@@ -83,7 +94,7 @@ export const useSeo = (meta: SeoMeta) => {
   if (breadcrumbs?.length) {
     baseGraph.push({
       "@type": "BreadcrumbList",
-      "@id": `https://www.zaad.com${route.path}#breadcrumbs`,
+      "@id": `${baseUrl}${cleanPath}#breadcrumbs`,
       itemListElement: breadcrumbs.map((crumb, i) => ({
         "@type": "ListItem",
         position: i + 1,
@@ -121,11 +132,6 @@ export const useSeo = (meta: SeoMeta) => {
         media: "(prefers-color-scheme: dark)",
       },
       {
-        name: "theme-color",
-        content: "#004A98",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
         name: "msvalidate.01",
         content: "EF022A48B7D836C010F933D493ADD18C",
       },
@@ -143,15 +149,15 @@ export const useSeo = (meta: SeoMeta) => {
       },
       {
         name: "apple-mobile-web-app-title",
-        content: "Zaad",
+        content: "ZaadOman",
       },
       { name: "referrer", content: "no-referrer-when-downgrade" },
       meta.keywords
         ? { name: "keywords", content: meta.keywords }
-        : { name: "keywords", content: meta.keywords },
+        : { name: "keywords", content: t("meta.default.keywords") },
       // should ignoore for some pages like profile -> content: "noindex, nofollow"
-      { name: "robots", content: "index, follow" },
-      { name: "application-name", content: "Zaad" },
+      { name: "robots", content: meta.robots || "index, follow" },
+      { name: "application-name", content: "ZaadOman" },
 
       // Open Graph
       {
@@ -168,7 +174,7 @@ export const useSeo = (meta: SeoMeta) => {
       // handle per page og:image, og:image:width, og:image:height
       meta.og_image
         ? { property: "og:image", content: meta.og_image }
-        : "https://zaad.com/assets/images/logos/logo.png",
+        : { property: "og:image", content: `${baseUrl}/assets/images/logo/zaad-logo.svg` },
       meta.og_image
         ? { property: "og:image:width", content: meta.og_image_width }
         : { property: "og:image:width", content: 1200 },
@@ -180,11 +186,11 @@ export const useSeo = (meta: SeoMeta) => {
       // NEED TO HANDLE PER PAGE og:url
       {
         property: "og:url",
-        content: `${baseUrl}${route.fullPath}`,
+        content: canonicalUrl,
       },
       {
         property: "og:site_name",
-        content: `Zaad`,
+        content: `ZaadOman`,
       },
       {
         property: "og:locale",
@@ -204,22 +210,22 @@ export const useSeo = (meta: SeoMeta) => {
         ? { name: "twitter:card", content: meta.twitter_card }
         : { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:description", content: meta.twitter_desc },
-      { name: "twitter:site", content: "@Zaad" },
+      { name: "twitter:site", content: "@ZaadOman" },
       {
         name: "twitter:image",
-        content: meta?.twitter_image ?? ''
+        content: meta?.twitter_image ?? `${baseUrl}/assets/images/logo/zaad-logo.svg`
       },
     ].filter(Boolean),
     link: [
       // canonical
       {
         rel: "canonical",
-        href: `${baseUrl}${locale.value == "en" ? "/en" : ""}${path}`,
+        href: canonicalUrl,
       },
       // hreflangs
-      { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${path}` },
-      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${path}`},
-      { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${path}` },
+      { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${cleanPath}` },
+      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${cleanPath}` },
+      { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${cleanPath}` },
     ].filter(Boolean),
     script: [
       {

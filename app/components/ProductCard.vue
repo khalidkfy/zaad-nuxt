@@ -214,7 +214,7 @@ const prevImage = () => {
       <NuxtLink
         :style="{ color: textColor ? textColor : '' }"
         v-if="showCateg && (styleFor === 'store' || styleFor === 'mega')"
-        :href="$localePath(`/products/${product?.category?.id}`)"
+        :href="$localePath(`/products/${product?.category?.slug || product?.category?.name}`)"
         class="categ"
         >{{ product?.category?.title || product?.category_title }}
       </NuxtLink>

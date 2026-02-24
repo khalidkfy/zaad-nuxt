@@ -51,7 +51,7 @@ useSeo({
 
       <div class="stores">
         <div class="row">
-          <div class="col mb-3" v-for="store in data?.stores?.data">
+          <div class="col-md-2 mb-3" v-for="store in data?.stores?.data">
             <StoreCard class="h-100 w-100" :store="store" />
           </div>
         </div>

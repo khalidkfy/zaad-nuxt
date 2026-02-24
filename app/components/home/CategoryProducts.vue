@@ -6,6 +6,8 @@ const props = defineProps({
 });
 
 const getCategId = (categ) => {
+    return categ.slug;
+
   const text = categ.action;
   const params = new URLSearchParams(text.split("?")[1]);
   const categoryId = params.get("category_id");

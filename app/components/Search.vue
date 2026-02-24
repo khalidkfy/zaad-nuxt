@@ -7,7 +7,7 @@ const router = useRouter();
 const activeCateg = ref(null);
 const handleSearch = () => {
   if (activeCateg.value) {
-    router.push(`/products/${activeCateg.value?.id}?search=${search.value}`);
+    router.push(`/products/${activeCateg.value?.slug}?search=${search.value}`);
     return;
   }
 

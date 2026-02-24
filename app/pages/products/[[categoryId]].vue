@@ -8,14 +8,20 @@ const category_id = computed(() => {
 });
 // definePageMeta({});
 const activeCategory = productsCategs.value.find(
-  (item: any) => item.id == category_id.value
+  (item: any) => item.slug == category_id.value
 );
 let title = category_id.value
   ? `${t("links.products")} - ${activeCategory?.name}`
   : t("links.products");
+const query = route.query;
+
+const isSearch = computed(() => {
+  return typeof route.query.search === "string" && route.query.search.length > 0;
+});
 
 useSeo({
   title: t("meta.setMeta", { meta: title }),
+  robots: isSearch.value ? "noindex, follow" : "index, follow",
 });
 
 const {
@@ -26,7 +32,6 @@ const {
   hasMore,
 } = useProducts();
 
-const query = route.query;
 const selectedFilters = reactive<any>({});
 
 await getProducts(
@@ -208,8 +213,6 @@ watch(isDrawerOpen, (val) => {
             :activeCateg="category_id"
           />
         </div>
-
-     
       </div>
     </transition>
   </section>

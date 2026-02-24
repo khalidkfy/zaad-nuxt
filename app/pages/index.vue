@@ -16,6 +16,22 @@ useSeo({
 const { getPage1, categoryProducts } = usePages();
 await getPage1();
 
+
+/**
+ * 1️⃣ Organization Schema
+ */
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Your Store Name",
+  url: baseUrl,
+  logo: `${baseUrl}/logo.png`,
+  sameAs: [
+    "https://facebook.com/yourstore",
+    "https://instagram.com/yourstore"
+  ]
+}
+
 </script>
 <template>
     <!-- Slider -->

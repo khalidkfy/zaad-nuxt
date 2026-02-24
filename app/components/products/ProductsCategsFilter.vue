@@ -74,7 +74,7 @@ const filterByFilterTypes = async () => {
       <div v-for="(categ, i) in productsCategs" :key="i">
         <NuxtLink
           :class="{ active: activeCateg == categ.id }"
-          :href="$localePath(`/products/${categ.id}`)"
+          :href="$localePath(`/products/${categ.slug}`)"
         >
           <img
             :src="

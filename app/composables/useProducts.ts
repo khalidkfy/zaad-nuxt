@@ -48,7 +48,7 @@ export const useProducts = () => {
       }
 
       if (options.categId) {
-        reqQuery.category_id = options.categId || null
+        reqQuery.category_slug = options.categId || null
       }
 
 
