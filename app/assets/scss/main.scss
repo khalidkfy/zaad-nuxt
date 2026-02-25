@@ -1,4 +1,46 @@
 /* Start General */
+/* =========================
+   Modern iziToast Theme
+========================= */
+
+/* Base */
+.iziToast {
+  // border-radius: 14px !important;
+  // padding: 16px 18px !important;
+  // backdrop-filter: blur(8px);
+  // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.iziToast,
+.iziToast * {
+  color: #ffffff !important;
+}
+
+/* SUCCESS */
+.iziToast.iziToast-color-green {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+/* ERROR  */
+.iziToast.iziToast-color-red {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+}
+
+/* INFO */
+.iziToast.iziToast-color-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+}
+
+/* WARNING */
+.iziToast.iziToast-color-yellow {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+/* Progress bar */
+.iziToast-progressbar > div {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
 
 /*regular*/
 @font-face {

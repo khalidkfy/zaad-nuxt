@@ -61,6 +61,12 @@ import "swiper/css/navigation";
 onMounted(async () => {
   await getMegaMenu();
 });
+
+const router = useRouter();
+
+router.afterEach(() => {
+  isMegaMenuOpen.value = false;
+});
 </script>
 <template>
   <div class="container position-relative">
