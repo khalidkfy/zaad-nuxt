@@ -105,6 +105,13 @@ router.afterEach(() => {
           />
           <span class="ps-2">{{ $t("categs.services") }}</span>
         </button> -->
+        <NuxtLink
+          class="me-2 stores-link"
+          :title="$t('links.productsStores')"
+          :href="$localePath('/stores/products')"
+        >
+          {{ $t("links.productsStores") }}
+        </NuxtLink>
       </div>
 
       <!-- Mega Menu Dropdown - MOVED OUTSIDE fixed-categs -->
@@ -170,7 +177,11 @@ router.afterEach(() => {
                               v-for="(item, index) in activeCateg.items.slice(0, 6)"
                               :key="item.id"
                             >
-                              <LazyProductCard style-for="mega" :product="item"  :key="item.id"/>
+                              <LazyProductCard
+                                style-for="mega"
+                                :product="item"
+                                :key="item.id"
+                              />
                             </SwiperSlide>
                           </Swiper>
                         </div>
@@ -259,6 +270,22 @@ router.afterEach(() => {
   </div>
 </template>
 <style scoped lang="scss">
+.stores-link {
+  width: auto;
+  white-space: nowrap;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: var(--trans);
+  display: inline-block;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: 10001;
+  color:#000
+}
 .holder {
   position: relative;
   align-items: center;
