@@ -21,12 +21,20 @@ if (!productsStoreItems.value) {
     statusMessage: "not found",
   });
 }
-
+const title = computed(() => {
+  return [
+    productsStoreItems?.value?.seller?.store_name,
+    productsStoreItems?.value?.seller?.store_category,
+    t("meta.appName")
+  ]
+    .filter(Boolean) // removes null, undefined, empty string
+    .join(" - ");
+});
 useSeo({
   description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
   // title: `${productsStoreItems?.value?.seller?.store_name}`,
-  title: `${productsStoreItems?.value?.seller?.store_name} - ${productsStoreItems?.value?.seller?.store_category} - ${t("meta.appName")}`,
-  og_image: productsStoreItems?.value?.seller.store_logo,
+  title: `${title.value}`,
+  og_image: productsStoreItems?.value?.seller?.store_logo,
 });
 const seller = computed(() => {
   return productsStoreItems?.value?.seller;
