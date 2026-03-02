@@ -8,6 +8,8 @@ export default defineNuxtConfig({
     apiBase: process.env.API_URL,
     baseUrl: process.env.BASE_URL,
     public: {
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
+
       TEST_KEY: process.env.NUXT_PUBLIC_TEST_KEY
     }
   },

@@ -18,6 +18,8 @@ export interface SeoMeta {
   twitter_desc?: string;
   twitter_image?: string;
   robots?: string;
+  type?: "website" | "article" | "product" | "collection";
+  noindex?: boolean;
 }
 
 export const useSeo = (meta: SeoMeta) => {
@@ -94,7 +96,7 @@ export const useSeo = (meta: SeoMeta) => {
   if (breadcrumbs?.length) {
     baseGraph.push({
       "@type": "BreadcrumbList",
-      "@id": `${baseUrl}${cleanPath}#breadcrumbs`,
+      "@id": `${canonicalUrl}#breadcrumbs`,
       itemListElement: breadcrumbs.map((crumb, i) => ({
         "@type": "ListItem",
         position: i + 1,
@@ -116,6 +118,18 @@ export const useSeo = (meta: SeoMeta) => {
     "@context": "https://schema.org",
     "@graph": baseGraph,
   };
+
+  baseGraph.push({
+    "@type": "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: meta.title || t("meta.default.title"),
+    description: meta.description || t("meta.default.desc"),
+    inLanguage: locale.value,
+    isPartOf: {
+      "@id": `${baseUrl}#website`,
+    },
+  });
 
   let path = route.fullPath.replace(/^\/(en|ar)/, "");
   useHead({
@@ -156,8 +170,7 @@ export const useSeo = (meta: SeoMeta) => {
         ? { name: "keywords", content: meta.keywords }
         : { name: "keywords", content: t("meta.default.keywords") },
       // should ignoore for some pages like profile -> content: "noindex, nofollow"
-      { name: "robots", content: meta.robots || "index, follow" },
-      { name: "application-name", content: "ZaadOman" },
+      { name: "robots", content: meta.noindex ? "noindex, follow" : (meta.robots || "index, follow") }, { name: "application-name", content: "ZaadOman" },
 
       // Open Graph
       {
@@ -200,16 +213,19 @@ export const useSeo = (meta: SeoMeta) => {
         property: "og:locale:alternate",
         content: allOgLocales,
       },
-      {
-        property: "og:type",
-        content: "website",
-      },
+
 
       // Twitter
       meta.twitter_card
         ? { name: "twitter:card", content: meta.twitter_card }
         : { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:description", content: meta.twitter_desc },
+      {
+        name: "twitter:description",
+        content:
+          meta.twitter_desc ||
+          meta.description ||
+          t("meta.default.desc"),
+      },
       { name: "twitter:site", content: "@ZaadOman" },
       {
         name: "twitter:image",
