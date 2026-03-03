@@ -288,7 +288,7 @@ watch(isDrawerOpen, (val) => {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 999999;
+    z-index: 400;
     background-color: #fff;
     opacity: 0.9;
     text-align: center;

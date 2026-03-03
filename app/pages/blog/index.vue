@@ -1,16 +1,54 @@
 <script setup lang="ts">
-const { t } = useI18n();
-useSeo({
-  title: t("meta.setMeta", { meta: t("blog.title") }),
+const { t, locale } = useI18n();
+const config = useRuntimeConfig();
 
-  description: t("blog.desc"),
-  keywords: t("blog.keywords"),
-});
-
-const { blogList, getBlogList, viewMore, currentBlogPage, lastBlogPage } =
-  useBlog();
+const { blogList, getBlogList, viewMore, currentBlogPage, lastBlogPage } = useBlog();
 
 await getBlogList();
+
+const baseUrl = config.public.baseUrl;
+const localizedBase = locale.value === "en" ? `${baseUrl}/en` : `${baseUrl}`;
+
+const blogSchema = blogList.value.length
+  ? {
+      "@type": "CollectionPage",
+      "@id": `${localizedBase}/blog#collection`,
+      url: `${localizedBase}/blog`,
+      name: t("blog.title"),
+      description: t("blog.desc"),
+      inLanguage: locale.value,
+      isPartOf: {
+        "@id": `${baseUrl}#website`,
+      },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: blogList.value.map((blog: any, index: number) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: `${localizedBase}/blog/${blog.slug}`,
+        })),
+      },
+    }
+  : null;
+
+useSeo({
+  title: t("meta.setMeta", { meta: t("blog.title") }),
+  description: t("blog.desc"),
+  keywords: t("blog.keywords"),
+  type: "collection",
+
+  breadcrumbs: [
+    {
+      label: t("home"),
+      url: `${localizedBase}/`,
+    },
+    {
+      label: t("blog.title"),
+      url: `${localizedBase}/blog`,
+    },
+  ],
+  jsonld: blogSchema ? [blogSchema] : [],
+});
 </script>
 <template>
   <section class="mt-5">

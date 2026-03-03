@@ -81,7 +81,7 @@ const checkout = async () => {
     items: [
       {
         item_id: productDetails?.value?.id,
-        quantity: productDetails?.value?.quantity,
+        quantity: qty.value || 1,
       },
     ],
     seller: productDetails?.value?.seller,

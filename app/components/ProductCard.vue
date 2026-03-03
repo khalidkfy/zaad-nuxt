@@ -348,7 +348,7 @@ const prevImage = () => {
       background-color: var(--main-color);
       border-radius: 50%;
       width: 39px;
-      z-index: 999;
+      z-index: 399;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -369,7 +369,7 @@ const prevImage = () => {
       background-color: #fff;
       border-radius: 50%;
       width: 0;
-      z-index: 99993;
+      z-index: 123;
       align-items: center;
       justify-content: center;
       height: 0;

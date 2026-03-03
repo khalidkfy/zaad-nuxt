@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t , locale} = useI18n();
+const { t, locale } = useI18n();
 useSeo({
   title: t("meta.setMeta", { meta: t("meta.pages.contact.title") }),
   description: `${t("meta.pages.contact.desc")}`,
@@ -83,7 +83,27 @@ const handleSubmit = async () => {
   if (!validateAll() || hasErrors.value) return;
   formLoading.value = true;
   try {
-    console.log(123123);
+    const WHATSAPP_NUMBER = "972597443082"; //no +, no spaces
+    // Build WhatsApp message
+    const message = [
+      "New Contact Request",
+      "",
+      `First Name: ${values.firstName}`,
+      `Last Name: ${values.lastName}`,
+      `Email: ${values.email}`,
+      `Phone: ${values.mobile}`,
+      "",
+      "Message:",
+      values.msg,
+    ].join("\n");
+    // Encode message
+    const encodedMessage = encodeURIComponent(message);
+
+    // WhatsApp URL
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+    // Open WhatsApp
+    window.open(whatsappUrl, "_blank");
 
     setTimeout(() => {
       resetForm();
@@ -93,7 +113,7 @@ const handleSubmit = async () => {
         rtl: locale.value === "ar",
       });
       formLoading.value = false;
-    }, 2000);
+    }, 1000);
   } catch (err) {
     console.log(err);
   } finally {
@@ -246,7 +266,7 @@ const confirm = ref(false);
                   </label>
                 </div>
                 <button
-                  :disabled=" !confirm || formLoading"
+                  :disabled="!confirm || formLoading"
                   type="submit"
                   class="btn-zaad w-30"
                 >

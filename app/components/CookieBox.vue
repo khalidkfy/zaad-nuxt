@@ -57,7 +57,7 @@ const acceptCookies = () => {
   align-items: center;
   position: fixed;
   width: 100%;
-  z-index: 1920921;
+  z-index: 9999;
   top: 0;
   font-size: 12px;
 

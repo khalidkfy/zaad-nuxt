@@ -37,15 +37,19 @@ export const useSeo = (meta: SeoMeta) => {
   const config = useRuntimeConfig();
   // const baseUrl = "zaad.com";
 
-  const baseUrl = config.public.baseUrl ?? `https://new.zaad.om`;
+  const baseUrl = config.public.baseUrl ?? `https://www.zaad.om`;
 
   const isSearch = typeof route.query.search === "string" && route.query.search.length > 0;
 
   const cleanPath = route.path; // removes query automatically
 
-  const canonicalUrl = isSearch
-    ? `${baseUrl}${locale.value === "en" ? "/en" : ""}${cleanPath}`
-    : `${baseUrl}${locale.value === "en" ? "/en" : ""}${route.fullPath}`;
+  const path = isSearch ? cleanPath : route.fullPath;
+
+  // normalize accidental double locale
+  const normalizedPath = path.replace(/^\/(en|ar)\/\1/, "/$1");
+
+  const canonicalUrl = `${baseUrl}${normalizedPath}`;
+
 
   const baseGraph = [
     {
@@ -114,11 +118,6 @@ export const useSeo = (meta: SeoMeta) => {
     }
   }
 
-  const finalJsonLd = {
-    "@context": "https://schema.org",
-    "@graph": baseGraph,
-  };
-
   baseGraph.push({
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
@@ -129,9 +128,28 @@ export const useSeo = (meta: SeoMeta) => {
     isPartOf: {
       "@id": `${baseUrl}#website`,
     },
+
+    publisher: {
+      "@id": `${baseUrl}#organization`,
+    },
+
+    breadcrumb: meta.breadcrumbs?.length
+      ? { "@id": `${canonicalUrl}#breadcrumbs` }
+      : undefined,
+
+    mainEntity: meta.type === "collection"
+      ? { "@id": `${canonicalUrl}#collection` }
+      : undefined,
   });
 
-  let path = route.fullPath.replace(/^\/(en|ar)/, "");
+  const finalJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": baseGraph,
+  };
+
+
+
+  // let path = route.fullPath.replace(/^\/(en|ar)/, "");
   useHead({
     title: meta.title || t("meta.default.title"),
     meta: [
