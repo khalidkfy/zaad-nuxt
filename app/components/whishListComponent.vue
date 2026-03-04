@@ -17,13 +17,13 @@ await getFavCount();
     <img
     loading="lazy"
       class="me-2"
-      width="28"
-      height="28"
+      :width="showText ? 28 : 22"
+      :height="showText ? 28 : 22"
       alt="location"
       src="/assets/images/whish.svg"
     />
     <div class="whish">
-      <span class="whish-badge">{{ favCount }}</span>
+      <span v-if="showText" class="whish-badge">{{ favCount }}</span>
       <span v-if="showText">{{ $t("whish.title") }}</span>
     </div>
   </NuxtLink>

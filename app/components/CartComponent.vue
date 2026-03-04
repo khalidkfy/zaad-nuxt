@@ -17,13 +17,13 @@ await getCartCount();
     <img
       loading="lazy"
       class="me-2"
-      width="28"
-      height="28"
+      :width="showText ? 28 : 22"
+      :height="showText ? 28 : 22"
       alt="location"
       src="/assets/images/cart.svg"
     />
     <div class="cart">
-      <span class="cart-badge">{{ cartCount }}</span>
+      <span v-if="showText" class="cart-badge">{{ cartCount }}</span>
       <span v-if="showText">{{ $t("cart.title") }}</span>
     </div>
   </NuxtLink>

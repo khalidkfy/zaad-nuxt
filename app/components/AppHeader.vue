@@ -31,7 +31,6 @@ const loginLink = computed(() => ({
 }));
 
 const { joinTexts } = useGlobal();
-
 </script>
 <template>
   <header>
@@ -41,7 +40,7 @@ const { joinTexts } = useGlobal();
     </ClientOnly>
 
     <!-- Header Actions -->
-    <section class="actions-section"> 
+    <section class="actions-section">
       <HeaderActions />
     </section>
 
@@ -150,11 +149,21 @@ const { joinTexts } = useGlobal();
                 <div class="d-flex">
                   <span>{{ $t("navbar.deliverOrReceive") }}</span>
                   <span
-                    :title="joinTexts(userAddresses[0].address_line_1, userAddresses[0].address_line_2, userAddresses[0].address_line_3)"
+                    :title="
+                      joinTexts(
+                        userAddresses[0].address_line_1,
+                        userAddresses[0].address_line_2,
+                        userAddresses[0].address_line_3
+                      )
+                    "
                     class="truncate"
                   >
                     {{
-                     joinTexts(userAddresses[0].address_line_1, userAddresses[0].address_line_2, userAddresses[0].address_line_3)
+                      joinTexts(
+                        userAddresses[0].address_line_1,
+                        userAddresses[0].address_line_2,
+                        userAddresses[0].address_line_3
+                      )
                     }}
                   </span>
                 </div>
@@ -507,44 +516,63 @@ const { joinTexts } = useGlobal();
     <!-- Mobile -->
 
     <div v-if="loggedIn" class="bottom-menu">
-      <div class="d-flex align-items-center">
+      <div class="bottom-link">
         <NuxtLink :href="$localePath('/account/profile')">
           <img
             loading="lazy"
             class="me-2"
-            width="28"
-            height="28"
+            width="22"
+            height="22"
             alt="location"
             :src="'/assets/images/user.svg'"
           />
         </NuxtLink>
+        <span>{{ $t("links.accountInfo") }}</span>
       </div>
-      <!-- Whish -->
-      <WhishListComponent :showText="false" />
 
-      <!-- <ClientOnly> -->
-      <CartComponent :showText="false" v-if="loggedIn" class="ms-3" />
-      <!-- </ClientOnly> -->
+      <div class="bottom-link">
+        <!-- Whish -->
+        <WhishListComponent :showText="false" />
+          <span>{{ $t("whish.title") }}</span>
+      </div>
 
-      <div v-if="userAddresses?.length" class="location">
-        <img
-          loading="lazy"
-          class="me-2"
-          width="28"
-          height="28"
-          alt="location"
-          src="/assets/images/location.svg"
-        />
-        <NuxtLink :href="$localePath('/account/profile/addresses')">
-          <div class="d-flex">
-            <span
-              :title="`${userAddresses[0]?.address_line_1} - ${userAddresses[0]?.address_line_2} - ${userAddresses[0]?.address_line_3}`"
-              class=""
-            >
-              {{ `${userAddresses[0]?.address_line_1}` }}
-            </span>
-          </div>
-        </NuxtLink>
+      <div class="bottom-link">
+        <CartComponent :showText="false" v-if="loggedIn" class="ms-3" />
+        <span>{{ $t("cart.title") }}</span>
+      </div>
+
+
+      <div class="bottom-link">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <g clip-path="url(#clip0_170_3055)">
+            <path
+              d="M10 16V8H12.5C13.163 8 13.7989 8.26339 14.2678 8.73223C14.7366 9.20107 15 9.83696 15 10.5C15 11.163 14.7366 11.7989 14.2678 12.2678C13.7989 12.7366 13.163 13 12.5 13H10"
+              stroke="#4A4A4A"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z"
+              stroke="#4A4A4A"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_170_3055">
+              <rect width="24" height="24" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+        <span> {{ $t("links.orders") }}</span>
       </div>
     </div>
   </header>
@@ -571,6 +599,14 @@ const { joinTexts } = useGlobal();
 
   @media (max-width: 992px) {
     display: flex;
+    align-items: center;
+  }
+  .bottom-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    color: #4a4a4a;
   }
 }
 
