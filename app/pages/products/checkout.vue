@@ -306,6 +306,8 @@ watch(selectedAddress, async (newAddress, oldAddress) => {
 const handleNewAddress = async () => {
   await initCheckout();
 };
+
+const { joinTexts } = useGlobal();
 </script>
 <template>
   <section class="mt-4">
@@ -538,7 +540,11 @@ const handleNewAddress = async () => {
                       v-model="selectedAddress"
                     />
                     {{
-                      `${address?.address_line_1} - ${address?.address_line_2} - ${address?.address_line_3}`
+                      joinTexts(
+                        address?.address_line_1,
+                        address?.address_line_2,
+                        address?.address_line_3
+                      )
                     }}</label
                   >
                 </div>

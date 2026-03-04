@@ -29,6 +29,9 @@ const loginLink = computed(() => ({
   path: "/account/login",
   query: { redirect: route.fullPath },
 }));
+
+const { joinTexts } = useGlobal();
+
 </script>
 <template>
   <header>
@@ -147,12 +150,11 @@ const loginLink = computed(() => ({
                 <div class="d-flex">
                   <span>{{ $t("navbar.deliverOrReceive") }}</span>
                   <span
-                    :title="`${userAddresses[0]?.address_line_1} - ${userAddresses[0]?.address_line_2} - ${userAddresses[0]?.address_line_3}`"
+                    :title="joinTexts(userAddresses[0].address_line_1, userAddresses[0].address_line_2, userAddresses[0].address_line_3)"
                     class="truncate"
                   >
                     {{
-                      `${userAddresses[0]?.address_line_1} - ${userAddresses[0]?.address_line_2} -
-                    ${userAddresses[0]?.address_line_3}`
+                     joinTexts(userAddresses[0].address_line_1, userAddresses[0].address_line_2, userAddresses[0].address_line_3)
                     }}
                   </span>
                 </div>

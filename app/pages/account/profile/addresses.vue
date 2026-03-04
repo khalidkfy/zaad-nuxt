@@ -95,6 +95,9 @@ const editAddress = async (address: any) => {
   addressToEdit.value = address;
   await showModal();
 };
+
+const { joinTexts } = useGlobal();
+
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
@@ -144,7 +147,7 @@ const editAddress = async (address: any) => {
           </div>
           <div>
             <span>{{ $t("profile.streetAddress") }}</span>
-            <span>{{ `${adress.address_line_1} - ${adress.address_line_2}` }}</span>
+            <span>{{ joinTexts(adress.address_line_1, adress.address_line_2, adress.address_line_3) }}</span>
           </div>
         </div>
       </div>
