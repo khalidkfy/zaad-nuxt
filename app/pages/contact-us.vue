@@ -83,7 +83,7 @@ const handleSubmit = async () => {
   if (!validateAll() || hasErrors.value) return;
   formLoading.value = true;
   try {
-    const WHATSAPP_NUMBER = "972597443082"; //no +, no spaces
+    const WHATSAPP_NUMBER = "96899373793"; //no +, no spaces
     // Build WhatsApp message
     const message = [
       "New Contact Request",

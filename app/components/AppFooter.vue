@@ -71,7 +71,7 @@ const getMenuLink = (item: any) => {
               <div class="col-6 col-md-4 mt-5">
                 <h5 class="mb-4">{{ $t("footer.downloadApp") }}</h5>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 mb-2">
                     <NuxtLink
                       href="https://play.google.com/store/apps/details?id=om.zaad.buy"
                       target="_blank"
@@ -91,7 +91,7 @@ const getMenuLink = (item: any) => {
                       </div>
                     </NuxtLink>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 mb-2">
                     <NuxtLink
                       href="https://apps.apple.com/om/app/zaad-buy/id1500632798"
                       target="_blank"
