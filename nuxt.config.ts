@@ -146,11 +146,11 @@ export default defineNuxtConfig({
     '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
     '/images/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
     '/sitemap.xml': {
-      proxy: 'https://www.zaad.om/sitemap.xml'
+      proxy: 'https://zaad.om/sitemap.xml'
     },
 
     '/sitemaps/**': {
-      proxy: 'https://www.zaad.om/sitemaps/**'
+      proxy: 'https://zaad.om/sitemaps/**'
     }
   },
   image: {
