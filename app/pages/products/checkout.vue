@@ -912,6 +912,7 @@ button.action {
 
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
 
   a {
     font-size: 14px;

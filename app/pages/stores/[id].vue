@@ -62,6 +62,7 @@ useSeo({
 <style scss lang="scss">
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
 
   a {
     font-size: 14px;

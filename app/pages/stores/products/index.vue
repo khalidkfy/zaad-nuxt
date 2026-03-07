@@ -72,6 +72,7 @@ await getProductsStores();
 <style lang="scss" scoped>
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
 
   a {
     font-size: 14px;
