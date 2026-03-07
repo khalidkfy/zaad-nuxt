@@ -145,6 +145,13 @@ export default defineNuxtConfig({
     // Cache  manual assets and images
     '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
     '/images/**': { headers: { 'Cache-Control': 'public, max-age=31536000, s-maxage=31536000' } },
+    '/sitemap.xml': {
+      proxy: 'https://www.zaad.om/sitemap.xml'
+    },
+
+    '/sitemaps/**': {
+      proxy: 'https://www.zaad.om/sitemaps/**'
+    }
   },
   image: {
     domains: ['s3.eu-central-1.amazonaws.com'],

@@ -10,9 +10,14 @@ const category_id = computed(() => {
 const activeCategory = productsCategs.value.find(
   (item: any) => item.slug == category_id.value
 );
-let title = category_id.value
-  ? `${t("links.products")} - ${activeCategory?.name}`
-  : t("links.products");
+const {joinTexts} = useGlobal();
+let title = computed(() => {
+  category_id.value
+    ? `${t("links.products")} - ${activeCategory?.name}`
+    : t("links.products");
+    return joinTexts(t("links.products"), activeCategory?.name);    
+
+});
 const query = route.query;
 
 const isSearch = computed(() => {
@@ -20,7 +25,7 @@ const isSearch = computed(() => {
 });
 
 useSeo({
-  title: t("meta.setMeta", { meta: title }),
+  title: t("meta.setMeta", { meta: title.value }),
   robots: isSearch.value ? "noindex, follow" : "index, follow",
 });
 

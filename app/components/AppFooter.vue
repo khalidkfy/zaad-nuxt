@@ -21,7 +21,7 @@ const getMenuLink = (item: any) => {
       return "/faq";
       break;
     case "pages/200":
-      return "/about-us";
+      return "/about";
       break;
     case "contact-us":
       return "/contact-us";
