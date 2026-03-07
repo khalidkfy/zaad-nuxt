@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const name = match[1] 
 
   const xml = await $fetch(
-    `https://eltager.test/website-api/sitemaps/${name}.xml`
+    `https://api.zaad.om/website-api/sitemaps/${name}.xml`
   )
 
   setHeader(event, 'Content-Type', 'application/xml')
