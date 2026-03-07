@@ -116,7 +116,7 @@ const config = useRuntimeConfig();
 onMounted(() => {});
 </script>
 <template>
-  <section class="auth-section p-5">
+  <section class="auth-section">
     <div class="container">
       <div class="text-center">
         <NuxtLink :href="$localePath('/')">
@@ -215,9 +215,11 @@ section.auth-section {
   justify-content: center;
   margin: auto;
   width: 40%;
+  padding: 40px;
 
   @media (max-width: 992px) {
     width: 100%;
+    padding:0;
   }
 
   img {

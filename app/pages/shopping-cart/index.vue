@@ -482,6 +482,9 @@ const checkoutSellerAll = async (cartItem: any) => {
           width: 67%;
           display: flex;
           justify-content: space-between;
+          @media (max-width:992px) {
+            display: block;
+          }
           .product-price {
             font-weight: bold;
             font-size: 24px;
