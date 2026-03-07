@@ -41,14 +41,11 @@ export const useSeo = (meta: SeoMeta) => {
 
   const isSearch = typeof route.query.search === "string" && route.query.search.length > 0;
 
-  const cleanPath = route.path; // removes query automatically
+  const localePath = useLocalePath()
 
-  const path = isSearch ? cleanPath : route.fullPath;
+  const localizedPath = localePath(route.path)
 
-  // normalize accidental double locale
-  const normalizedPath = path.replace(/^\/(en|ar)\/\1/, "/$1");
-
-  const canonicalUrl = `${baseUrl}${normalizedPath}`;
+  const canonicalUrl = `${baseUrl}${localizedPath}`;
 
 
   const baseGraph = [
@@ -147,9 +144,14 @@ export const useSeo = (meta: SeoMeta) => {
     "@graph": baseGraph,
   };
 
+  const switchLocalePath = useSwitchLocalePath()
 
 
   // let path = route.fullPath.replace(/^\/(en|ar)/, "");
+
+
+const hreflangEn = switchLocalePath("en").split("?")[0]
+const hreflangAr = switchLocalePath("ar").split("?")[0]
   useHead({
     title: meta.title || t("meta.default.title"),
     meta: [
@@ -188,7 +190,7 @@ export const useSeo = (meta: SeoMeta) => {
         ? { name: "keywords", content: meta.keywords }
         : { name: "keywords", content: t("meta.default.keywords") },
       // should ignoore for some pages like profile -> content: "noindex, nofollow"
-      { name: "robots", content: meta.noindex ? "noindex, follow" : (meta.robots || "index, follow") }, { name: "application-name", content: "ZaadOman" },
+      { name: "robots", content: meta.F ? "noindex, follow" : (meta.robots || "index, follow") }, { name: "application-name", content: "ZaadOman" },
 
       // Open Graph
       {
@@ -257,9 +259,9 @@ export const useSeo = (meta: SeoMeta) => {
         href: canonicalUrl,
       },
       // hreflangs
-      { rel: "alternate", hreflang: "en", href: `${baseUrl}/en${cleanPath}` },
-      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${cleanPath}` },
-      { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${cleanPath}` },
+      { rel: "alternate", hreflang: "en", href: `${baseUrl}${hreflangEn}` },
+      { rel: "alternate", hreflang: "ar", href: `${baseUrl}${hreflangAr}` },
+      { rel: "alternate", hreflang: "x-default", href: `${baseUrl}${hreflangAr}` },
     ].filter(Boolean),
     script: [
       {
