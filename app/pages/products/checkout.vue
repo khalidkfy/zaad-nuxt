@@ -38,6 +38,9 @@ const checkoutItems = ref([]);
 const itemRefs = ref<Record<number, HTMLElement | null>>({});
 
 const newAddressLoading = ref(false);
+
+const selectedShippingService = ref(null);
+const shippingServices = ref([]);
 const getCheckout = async (loadingType = null) => {
   try {
     if (loadingType == "newAddress") {
@@ -73,6 +76,22 @@ const getCheckout = async (loadingType = null) => {
 
       return item;
     });
+
+    const servicesMap = new Map();
+    checkoutItems.value.forEach((item) => {
+      (item?.ShippingServices || []).forEach((service) => {
+        servicesMap.set(service.id, service);
+      });
+    });
+    shippingServices.value = Array.from(servicesMap.values());
+
+    if (shippingServices.value.length) {
+      selectedShippingService.value = shippingServices.value.reduce(
+        (cheapest, service) => {
+          return service.price < cheapest.price ? service : cheapest;
+        }
+      );
+    }
   } catch (err) {
   } finally {
     getCheckoutLoading.value = false;
@@ -112,13 +131,10 @@ const getSellerPaymentMethods = async () => {
 const getTotolShippingPrice = computed(() => {
   let total = 0;
 
-  for (const item in checkoutItems.value) {
-    let ShippingServices = checkoutItems.value[item]?.selectedShipping;
-    if (ShippingServices) {
-      total += Number(ShippingServices?.price);
-    }
+  if (selectedShippingService.value) {
+    total = Number(selectedShippingService.value.price);
   }
-  return total;
+  return Number(total).toFixed(2);
 });
 const getTotalItems = () => {
   const items = [];
@@ -135,7 +151,7 @@ const getTotalCart = computed(() => {
     let product = checkoutItems.value[item]?.item;
     total += Number(product?.regular_price) * Number(product?.quantity);
   }
-  return Number(total).toFixed(2);
+  return Number(total) + Number(getTotolShippingPrice.value);
 });
 
 const couponDetails = computed(() => {
@@ -166,7 +182,7 @@ const requestItems = computed(() => {
     items.push({
       item_id: product?.item?.id,
       quantity: product?.item?.quantity,
-      service_id: product?.selectedShipping ? product?.selectedShipping?.id : null,
+      service_id: selectedShippingService.value ? selectedShippingService.value.id : null,
     });
   }
   return items;
@@ -191,7 +207,7 @@ const handleSuccessCreateOrder = async (res: any) => {
   }
 };
 const hasUnselectedShipping = computed(() => {
-  return checkoutItems.value.some((item) => !item?.selectedShipping);
+  return !selectedShippingService.value;
 });
 
 const checkItemsShippingService = () => {
@@ -200,23 +216,6 @@ const checkItemsShippingService = () => {
     message: t("checkout.selectShippingForAllItems"),
     rtl: locale.value === "ar",
   });
-
-  // Scroll to first invalid item
-  const firstInvalidIndex = checkoutItems.value.findIndex(
-    (item) => !item.selectedShipping
-  );
-
-  if (firstInvalidIndex !== -1) {
-    const el = itemRefs.value[firstInvalidIndex];
-    el?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-
-    // trigger animation
-    el?.classList.add("shake");
-    setTimeout(() => el?.classList.remove("shake"), 600);
-  }
 
   return;
 };
@@ -308,6 +307,10 @@ const handleNewAddress = async () => {
 };
 
 const { joinTexts } = useGlobal();
+
+const getItemTotal = (item: any) => {
+  return Number(item?.item?.quantity * item?.item?.regular_price).toFixed(2);
+};
 </script>
 <template>
   <section class="mt-4">
@@ -340,8 +343,8 @@ const { joinTexts } = useGlobal();
                   <tr>
                     <th>{{ $t("general.img") }}</th>
                     <th>{{ $t("general.product") }}</th>
-                    <th>{{ $t("checkout.shippingService") }}</th>
-                    <th>{{ $t("checkout.shippingPrice") }}</th>
+                    <th>{{ $t("order.store") }}</th>
+                    <!-- <th>{{ $t("checkout.shippingPrice") }}</th> -->
                     <th>{{ $t("general.price") }}</th>
                     <th>{{ $t("general.qty") }}</th>
                     <th>{{ $t("cart.total") }}</th>
@@ -373,6 +376,11 @@ const { joinTexts } = useGlobal();
                       </NuxtLink>
                     </td>
                     <td>
+                      <NuxtLink :href="$localePath(`/stores/products/${item?.item?.seller?.store_id}`)">
+                        {{ item?.item?.seller?.storeName }}
+                      </NuxtLink>
+                    </td>
+                    <!-- <td>
                       <div class="dropdown shipping">
                         <button
                           v-if="item.ShippingServices.length"
@@ -418,7 +426,7 @@ const { joinTexts } = useGlobal();
                             : "--"
                         }}
                       </span>
-                    </td>
+                    </td> -->
                     <td>
                       {{
                         $t("general.curr_value", {
@@ -507,9 +515,7 @@ const { joinTexts } = useGlobal();
                       <span class="fw-bold">
                         {{
                           $t("general.curr_value", {
-                            value: Number(
-                              item?.item?.quantity * item?.item?.regular_price
-                            ).toFixed(2),
+                            value: getItemTotal(item),
                           })
                         }}</span
                       >
@@ -583,6 +589,42 @@ const { joinTexts } = useGlobal();
                   <!-- TODO:: handle is_available -->
                   <span>{{ $t("checkout.availableItems") }}</span>
                   <span>{{ getTotalItems().length }}</span>
+                </div>
+                <div class="value">
+                  <span>{{ $t("checkout.shippingService") }}</span>
+                  <div v-if="shippingServices.length" class="dropdown shipping">
+                    <button
+                      class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {{
+                        selectedShippingService
+                          ? selectedShippingService.title
+                          : $t("checkout.chooseShipping")
+                      }}
+                    </button>
+                    <!-- <button
+                     
+                      class="nav-link d-inline-block dropdown-toggle shipping-dropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {{ $t("checkout.itemHasNoShippingOptions") }}
+                    </button> -->
+                    <ul class="dropdown-menu">
+                      <li
+                        @click="selectedShippingService = shippingService"
+                        v-for="(shippingService, i) in shippingServices"
+                        :key="shippingService.id"
+                      >
+                        {{ shippingService?.title }}
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-else class="text-danger">
+                    {{ $t("checkout.noShippingServicesAddr") }}
+                  </div>
                 </div>
                 <div class="value">
                   <span>{{ $t("checkout.totolShippingPrice") }}</span>
@@ -675,13 +717,14 @@ const { joinTexts } = useGlobal();
                 </NuxtLink>
               </div>
               <div v-if="!all_verified" class="flags">
-                <div v-if="!email_verified" class="fw-">
+                <p class="fw-bold text-danger m-0">{{ $t("checkout.forCompleteBuy") }}</p>
+                <div v-if="!email_verified" class="">
                   {{ $t("checkout.email_verified") }}
                   <NuxtLink :href="$localePath('/account/profile')">{{
                     $t("checkout.verify")
                   }}</NuxtLink>
                 </div>
-                <div v-if="!mobile_verified" class="">
+                <div v-if="!mobile_verified" class=" ">
                   {{ $t("checkout.mobile_verified") }}
                   <NuxtLink :href="$localePath('/account/profile')">{{
                     $t("checkout.verify")

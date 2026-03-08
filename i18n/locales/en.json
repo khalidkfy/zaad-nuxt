@@ -377,9 +377,11 @@
     "orderSuccess": "Your order has been placed successfully!",
     "selectShippingForAllItems": "Please select a shipping method for all items.",
     "itemHasNoShippingOptions": "This item cannot be shipped to the selected address",
-    "email_verified": "Please verify you email",
-    "mobile_verified": "Please verify you mobile",
-    "verify": "verify"
+    "email_verified": "verify you email",
+    "mobile_verified": "verify you mobile",
+    "verify": "verify",
+    "forCompleteBuy":"To complete the purchase please:",
+    "noShippingServicesAddr": "No shipping services available for the selected address"
   },
   "status": {
     "waiting_payment": "Waiting payment",
