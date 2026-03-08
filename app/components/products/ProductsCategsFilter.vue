@@ -24,8 +24,7 @@ const onFilterChange = ({ slug, value }) => {
 };
 
 const filterByFilterTypes = async () => {
-  console.log(selectedFilters, "selectedFiltersselectedFilters");
-
+ 
   emit("filter", selectedFilters);
 };
 </script>

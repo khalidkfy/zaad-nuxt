@@ -100,7 +100,7 @@ const handleSubmit = async () => {
     const encodedMessage = encodeURIComponent(message);
 
     // WhatsApp URL
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
 
     // Open WhatsApp
     window.open(whatsappUrl, "_blank");

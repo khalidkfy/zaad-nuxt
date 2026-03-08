@@ -4,8 +4,7 @@ const route = useRoute();
 
 const { type } = route.query;
 
-console.log(type, "Asdasdasdadasdasdadtypwef");
-
+ 
 useSeo({
   title: t("meta.setMeta", { meta: t("links.terms") }),
   description: t("meta.setMeta", { meta: t("links.terms") }),

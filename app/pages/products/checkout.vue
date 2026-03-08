@@ -244,8 +244,7 @@ const createOrder = async () => {
       },
     });
 
-    console.log(res, "ASdadasd");
-
+ 
     if (res && res.status == true) {
       await handleSuccessCreateOrder(res);
     }

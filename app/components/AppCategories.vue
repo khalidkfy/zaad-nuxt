@@ -38,8 +38,7 @@ const getMegaMenu = async () => {
 
     megaData.value = res?.data;
 
-    console.log(res, "asdadasd");
-  } catch (err) {
+   } catch (err) {
     console.error(err);
   } finally {
     megaLoading.value = false;

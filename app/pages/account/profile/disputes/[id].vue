@@ -70,8 +70,7 @@ const informAdmin = async () => {
 
     await getDispute();
 
-    console.log(res, "res");
-  } catch (err) {
+   } catch (err) {
   } finally {
     informAdminLoading.value = false;
   }
@@ -101,8 +100,7 @@ const closeDispute = async () => {
 
     await getDispute();
 
-    console.log(res, "res");
-  } catch (err) {
+   } catch (err) {
   } finally {
     closeDisputeLoading.value = false;
   }

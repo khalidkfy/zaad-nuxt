@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    href="https://wa.me/96899373793"
+    href="https://api.whatsapp.com/send?phone=96899373793"
     target="_blank"
     rel="noopener noreferrer"
     class="float-contact"

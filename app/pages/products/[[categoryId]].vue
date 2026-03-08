@@ -48,6 +48,20 @@ await getProducts(
   selectedFilters
 );
 
+watch(
+  () => [route.query.search, route.params.categoryId],
+  async () => {
+    await getProducts(
+      {
+        categId: route.params.categoryId,
+        append: false,
+        search: route.query.search ?? "",
+      },
+      selectedFilters
+    );
+  }
+);
+
 const products = computed(() => productsRes.value.resources);
 const filters = computed(() => productsRes.value.filters);
 

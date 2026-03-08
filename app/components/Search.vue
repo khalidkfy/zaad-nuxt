@@ -1,18 +1,30 @@
 <script setup lang="ts">
-const search = ref("");
+const route = useRoute()
+
+const search = ref(route.query.search || "")
+
+watch(
+  () => route.query.search,
+  (val) => {
+    search.value = val || ""
+  }
+)
 const { productsCategs: categs } = useCategs();
 
 const router = useRouter();
 
 const activeCateg = ref(null);
-const handleSearch = () => {
-  if (activeCateg.value) {
-    router.push(`/products/${activeCateg.value?.slug}?search=${search.value}`);
-    return;
-  }
 
-  router.push(`/products?search=${search.value}`);
-};
+const handleSearch = () => {
+  router.push({
+    path: activeCateg.value
+      ? `/products/${activeCateg.value.slug}`
+      : "/products",
+    query: {
+      search: search.value || undefined
+    }
+  });
+};  
 </script>
 <template>
   <div class="search-container">
