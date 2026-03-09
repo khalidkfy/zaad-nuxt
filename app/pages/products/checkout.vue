@@ -151,7 +151,9 @@ const getTotalCart = computed(() => {
     let product = checkoutItems.value[item]?.item;
     total += Number(product?.regular_price) * Number(product?.quantity);
   }
-  return Number(total) + Number(getTotolShippingPrice.value);
+  let finTotal = Number(total) + Number(getTotolShippingPrice.value);
+
+  return Number(finTotal).toFixed(2)
 });
 
 const couponDetails = computed(() => {
@@ -719,13 +721,13 @@ const getItemTotal = (item: any) => {
                 <p class="fw-bold text-danger m-0">{{ $t("checkout.forCompleteBuy") }}</p>
                 <div v-if="!email_verified" class="">
                   {{ $t("checkout.email_verified") }}
-                  <NuxtLink :href="$localePath('/account/profile')">{{
+                  <NuxtLink :href="$localePath('/account/profile/security')">{{
                     $t("checkout.verify")
                   }}</NuxtLink>
                 </div>
                 <div v-if="!mobile_verified" class=" ">
                   {{ $t("checkout.mobile_verified") }}
-                  <NuxtLink :href="$localePath('/account/profile')">{{
+                  <NuxtLink :href="$localePath('/account/profile/security')">{{
                     $t("checkout.verify")
                   }}</NuxtLink>
                 </div>

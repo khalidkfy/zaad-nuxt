@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// TODO:: MOVE Each setting in single comp
 const { t, locale } = useI18n();
 useSeo({
   title: t("meta.setMeta", { meta: t("links.accountsecurity") }),
@@ -154,6 +155,7 @@ const { profileData, getProfileRes } = useProfile();
 const isMobileEdit = ref(false);
 const isEmailEdit = ref(false);
 
+// email verify
 const isEmailActivateLoading = ref(false);
 const activateEmailErrs = ref([]);
 
@@ -229,13 +231,148 @@ const verifyEmailCode = async () => {
     isEmailverifyLoading.value = false;
   }
 };
+
+//mobile verify
+const isMobileActivateLoading = ref(false);
+const activateMobileErrs = ref([]);
+
+const sendMobileCode = async () => {
+  try {
+    isMobileActivateLoading.value = true;
+    activateMobileErrs.value = [];
+    const res = await $fetch("/api/profile/send-mobile-code", {
+      headers: {
+        Lang: locale.value,
+      },
+      query: {
+        userId: profileData.value?.id,
+      },
+    });
+
+    if (res?.status != 200) {
+      activateMobileErrs.value = getAnyError(res?.errors) ?? [t("submit.errorP")];
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById("mobileCodeModal"));
+    if (modal) {
+      modal.show();
+    }
+  } catch (err) {
+    console.log("err =>", err.data.data);
+    activateMobileErrs.value = err?.data?.data?.errors ?? [t("submit.errorP")];
+  } finally {
+    isMobileActivateLoading.value = false;
+  }
+};
+
+const isMobileverifyLoading = ref(false);
+const verifyMobileErrs = ref([]);
+const mobileCode = ref("");
+const verifyMobileCode = async () => {
+  try {
+    if (!mobileCode.value.length) {
+      verifyEmailErrs.value = [t("validations.requiredField")];
+      return;
+    }
+    isEmailverifyLoading.value = true;
+    verifyMobileErrs.value = [];
+    const res = await $fetch("/api/profile/verify-mobile-code", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        userId: profileData.value?.id,
+        code: mobileCode.value,
+      },
+    });
+
+    if (res?.status != 200) {
+      verifyMobileErrs.value = [res?.message];
+    }
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("mobileCodeModal"));
+    if (modal) {
+      modal.hide();
+    }
+    await getProfileRes();
+    toast.success({
+      title: t("profile.mobilelVerified"),
+      message: "",
+      rtl: locale.value === "ar",
+    });
+  } catch (err) {
+    console.log("err =>", err.data.data);
+    verifyMobileErrs.value = err?.data?.data?.errors ?? [t("submit.errorP")];
+  } finally {
+    isMobileverifyLoading.value = false;
+  }
+};
+
+// email update
+const mobile = ref("");
+const mobileRegion = ref("OM");
+const mobilePassword = ref("");
+const updateMobileLoading = ref(false);
+const invalidMobileUpdate = ref("");
+const mobileErrs = ref({});
+const updateMobile = async () => {
+  invalidMobileUpdate.value = "";
+  mobileErrs.value = {};
+  if (!mobile.value || !mobilePassword.value) {
+    invalidMobileUpdate.value = t("validations.422");
+    toast.error({
+      title: t("submit.error"),
+      message: t("validations.422"),
+      rtl: locale.value === "ar",
+    });
+    return;
+  }
+  try {
+    updateMobileLoading.value = true;
+    const res = await $fetch("/api/profile/update-mobile", {
+      method: "POST",
+      headers: {
+        Lang: locale.value,
+      },
+      body: {
+        mobile: mobile.value,
+        region: mobileRegion.value,
+        password: mobilePassword.value,
+      },
+    });
+
+    if (res?.status != 200) {
+      const errMsg = getAnyError(res?.errors);
+      toast.error({
+        title: t("submit.error"),
+        message: errMsg,
+        rtl: locale.value === "ar",
+      });
+      invalidMobileUpdate.value = errMsg;
+    } else {
+      toast.success({
+        title: t("profile.mobileUpdated"),
+        message: "",
+        rtl: locale.value === "ar",
+      });
+      isMobileEdit.value = false;
+      await getProfileRes();
+    }
+  } catch (err) {
+    console.log(err.data);
+    mobileErrs.value = err.data.data.errors;
+  } finally {
+    updateMobileLoading.value = false;
+  }
+};
 </script>
 <template>
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="section-title">{{ $t("links.accountsecurity") }}</h1>
   </div>
   <div class="content mt-3">
-    <form>
+    <form @submit.prevent="updateMobile">
       <h3>{{ $t("links.phoneSettings") }}</h3>
       <div class="row mt-3">
         <div class="col-md-6">
@@ -244,7 +381,7 @@ const verifyEmailCode = async () => {
               <label class="">{{ $t("register.phone") }}</label>
               <div class="input-group mb-3">
                 <div class="input-group-text">
-                  <select id="mobile_region" class="form-select">
+                  <select dir="ltr" v-model="mobileRegion" id="mobile_region" class="form-select">
                     <template v-if="locale == 'ar'">
                       <option value="OM" selected>عُمان +968</option>
                       <option value="KW">الكويت +965</option>
@@ -269,10 +406,15 @@ const verifyEmailCode = async () => {
                 </div>
 
                 <input
+                dir="ltr"
                   type="text"
+                  v-model="mobile"
                   class="form-control"
                   :placeholder="$t('register.phonePlace')"
                 />
+              </div>
+              <div class="text-danger" v-if="mobileErrs?.mobile?.length">
+                {{ mobileErrs.mobile[0] }}
               </div>
             </div>
             <div class="mb-3">
@@ -280,15 +422,26 @@ const verifyEmailCode = async () => {
 
               <div class="input-group mb-3">
                 <input
+                
                   type="password"
+                  v-model="mobilePassword"
                   class="form-control"
                   :placeholder="$t('register.passwordPlace')"
                 />
               </div>
+              <div class="text-danger" v-if="mobileErrs.password?.length">
+                {{ mobileErrs.password[0] }}
+              </div>
             </div>
             <div class="mb-3">
-              <button class="btn-zaad me-2">{{ $t("general.update") }}</button>
-              <button @click.prevent="isMobileEdit = false" class="btn-zaad cancel">
+              <button type="submit" :disabled="updateMobileLoading" class="btn-zaad me-2">
+                {{ $t("general.update") }}
+              </button>
+              <button
+                type="button"
+                @click.prevent="isMobileEdit = false"
+                class="btn-zaad cancel"
+              >
                 {{ $t("general.cancel") }}
               </button>
             </div>
@@ -308,12 +461,55 @@ const verifyEmailCode = async () => {
                 readonly
                 :value="profileData?.mobile"
               />
+
+              <div
+                v-if="!profileData.mobile_verified_at"
+                :class="{ 'activate-loading': isMobileActivateLoading }"
+                class="alert alert-warning d-flex align-items-center mt-2"
+                role="alert"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="me-2"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091
+             1.767.982 1.767h13.707c.89 0 1.438-.99.982-1.767L8.982
+             1.566zM8 5c.535 0 .954.462.9.995l-.35
+             3.507a.552.552 0 0 1-1.1 0L7.1
+             5.995A.905.905 0 0 1 8 5zm.002
+             6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                  />
+                </svg>
+
+                <div class="fs-14">
+                  {{ $t("profile.mobileNotVerified") }}
+                  <span @click="sendMobileCode" class="alert-link">{{
+                    $t("profile.mobileNotVerifiedClick")
+                  }}</span
+                  >.
+                  <span v-if="isMobileActivateLoading">{{ $t("general.wait") }}</span>
+                </div>
+              </div>
+              <div v-else class="text-success">{{ $t("profile.mobileIsVerified") }}</div>
+
+              <div class="err" v-if="activateMobileErrs.length">
+                {{ activateMobileErrs[0] }}
+              </div>
             </div>
           </template>
         </div>
       </div>
+      <div class="err" v-if="invalidMobileUpdate.length">
+        {{ invalidMobileUpdate }}
+      </div>
       <hr />
-      <!-- TODO update phone number, security questions -->
+
+      <!-- TODO, security questions -->
     </form>
     <form @submit.prevent="updateEmail">
       <h3>{{ $t("links.emailSettings") }}</h3>
@@ -346,7 +542,11 @@ const verifyEmailCode = async () => {
               <button type="submit" :disabled="updateEmailLoading" class="btn-zaad me-2">
                 {{ $t("general.update") }}
               </button>
-              <button @click.prevent="isEmailEdit = false" class="btn-zaad cancel">
+              <button
+                @click.prevent="isEmailEdit = false"
+                type="button"
+                class="btn-zaad cancel"
+              >
                 {{ $t("general.cancel") }}
               </button>
             </div>
@@ -399,6 +599,7 @@ const verifyEmailCode = async () => {
                   <span v-if="isEmailActivateLoading">{{ $t("general.wait") }}</span>
                 </div>
               </div>
+              <div v-else class="text-success">{{ $t("profile.emailIsVerified") }}</div>
               <div class="err" v-if="activateEmailErrs.length">
                 {{ activateEmailErrs[0] }}
               </div>
@@ -466,6 +667,7 @@ const verifyEmailCode = async () => {
       </div>
     </form>
   </div>
+  <!-- verify email modal -->
   <div class="modal fade" id="emailCodeModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -501,6 +703,47 @@ const verifyEmailCode = async () => {
             id="submitCodeBtn"
           >
             {{ isEmailverifyLoading ? $t("general.wait") : $t("submit.VerifyCode") }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- verify mobile modal -->
+  <div class="modal fade" id="mobileCodeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ $t("profile.verifyYourMobile") }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <p>{{ $t("profile.enterVerificationCodeMobile") }}</p>
+
+          <input
+            type="text"
+            class="form-control"
+            v-model="mobileCode"
+            id="mobileCodeInput"
+            :class="{ invalid: verifyMobileErrs.length }"
+            :placeholder="$t('submit.Enter verification code')"
+          />
+          <div class="mt-2">
+            <div class="err">{{ verifyMobileErrs[0] }}</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-zaad cancel" data-bs-dismiss="modal">
+            {{ $t("general.cancel") }}
+          </button>
+          <button
+            :disabled="isMobileverifyLoading"
+            @click.prevent="verifyMobileCode"
+            class="btn-zaad"
+            id="submitCodeBtnMobile"
+          >
+            {{ isMobileverifyLoading ? $t("general.wait") : $t("submit.VerifyCode") }}
           </button>
         </div>
       </div>

@@ -206,15 +206,15 @@
       "msgPlaceholder": "Enter Your Your Message",
       "confirm": "confirme that all my information is correct."
     },
-    "email":"Email address",
-    "hotline":"Hotline",
+    "email": "Email address",
+    "hotline": "Hotline",
     "h1": "Contact us we will listen",
     "p": "We guarantee the highest standards of protection and confidentiality for your personal data, so you can shop with peace of mind. Your trust is the foundation of our success, and your privacy is a responsibility we uphold at every step."
   },
   "forgot": {
     "h1": "Reset Password",
     "success": "A password reset link will be sent to your email address.",
-    "weSendEmail":"we will send you a password reset link"
+    "weSendEmail": "we will send you a password reset link"
   },
   "reset": {
     "h1": "Reset Password",
@@ -302,16 +302,24 @@
     "search": "What are you looking at?",
     "noResults": "No results found",
     "tryDifferentKeyword": "Try searching with different keywords",
-    "h1":"Find out all your questions",
-    "p":"Discover the achievements that set us apart. From pioneering projects to prestigious industry awards, we are proud of our accomplishments."
+    "h1": "Find out all your questions",
+    "p": "Discover the achievements that set us apart. From pioneering projects to prestigious industry awards, we are proud of our accomplishments."
   },
   "profile": {
-    "emailVerified":"Your email has been verified successfully.",
-    "verifyYourEmail":"Verify Your Email",
-    "enterVerificationCode":"Please enter the verification code sent to your email",
+    "mobileUpdated": "Your mobile has been updated successfully..",
+    "emailIsVerified": "Your email is verified.",
+    "mobileIsVerified": "Your phone number is verified.",
+    "emailVerified": "Your email has been verified successfully.",
+    "mobilelVerified": "Your phone number has been verified successfully.",
+    "verifyYourEmail": "Verify Your Email",
+    "verifyYourMobile": "Verify Your Phone Number",
+    "enterVerificationCode": "Please enter the verification code sent to your email",
+    "enterVerificationCodeMobile": "Please enter the verification code sent to your phone number",
     "uploadImg": "Uplaod image",
-    "emailNotVerified":"Your email address is not verified.",
-    "emailNotVerifiedClick":"Click here to verify your email",
+    "emailNotVerified": "Your email address is not verified.",
+    "emailNotVerifiedClick": "Click here to verify your email",
+    "mobileNotVerified": "Your phone number is not verified.",
+    "mobileNotVerifiedClick": "Click here to verify your phone number",
     "privacySettings": "Privacy settings",
     "removeImg": "Remove",
     "showEmail": "Show Email:",
@@ -346,8 +354,8 @@
     "successP": "Your action was completed successfully.",
     "error": "Error!",
     "errorP": "There was an error processing your request. Please try again.",
-    "VerifyCode":"Verify Code",
-    "Enter verification code":"Enter verification code"
+    "VerifyCode": "Verify Code",
+    "Enter verification code": "Enter verification code"
   },
   "stores": {
     "products": {
@@ -389,7 +397,7 @@
     "email_verified": "verify you email",
     "mobile_verified": "verify you mobile",
     "verify": "verify",
-    "forCompleteBuy":"To complete the purchase please:",
+    "forCompleteBuy": "To complete the purchase please:",
     "noShippingServicesAddr": "No shipping services available for the selected address"
   },
   "status": {
