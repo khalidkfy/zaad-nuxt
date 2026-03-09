@@ -164,6 +164,17 @@ a {
     background-color: #2c76c4;
     cursor: no-drop;
   }
+  &.cancel {
+    background-color: #e4e4e4;
+    color: #000;
+
+    &:hover {
+      background-color: #c8c8c8;
+    }
+  }
+}
+.fs-14 {
+  font-size: 14px;
 }
 
 .section-header {

@@ -46,8 +46,10 @@
   "general": {
     "search": "What are you looking at?",
     "buyNow": "Buy now",
+    "activate": "Activate",
     "retry": "Retry",
     "close": "Close",
+    "cancel": "Cancel",
     "img": "Image",
     "product": "Product",
     "productNotFound": "Product Not Found",
@@ -304,7 +306,12 @@
     "p":"Discover the achievements that set us apart. From pioneering projects to prestigious industry awards, we are proud of our accomplishments."
   },
   "profile": {
+    "emailVerified":"Your email has been verified successfully.",
+    "verifyYourEmail":"Verify Your Email",
+    "enterVerificationCode":"Please enter the verification code sent to your email",
     "uploadImg": "Uplaod image",
+    "emailNotVerified":"Your email address is not verified.",
+    "emailNotVerifiedClick":"Click here to verify your email",
     "privacySettings": "Privacy settings",
     "removeImg": "Remove",
     "showEmail": "Show Email:",
@@ -338,7 +345,9 @@
     "success": "Success!.",
     "successP": "Your action was completed successfully.",
     "error": "Error!",
-    "errorP": "There was an error processing your request. Please try again."
+    "errorP": "There was an error processing your request. Please try again.",
+    "VerifyCode":"Verify Code",
+    "Enter verification code":"Enter verification code"
   },
   "stores": {
     "products": {

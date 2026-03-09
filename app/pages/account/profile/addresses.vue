@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
-useSeo({});
+useSeo({
+  title:t("meta.setMeta", {meta:t("links.accountaddresses")}),
+  description:t("meta.setMeta", {meta:t("links.accountaddresses")}),
+});
 definePageMeta({
   layout: "profile",
   middleware: "authenticated",

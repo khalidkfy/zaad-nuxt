@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n();
-useSeo({});
+useSeo({
+  title:t("meta.setMeta", {meta:t("links.bank-transfers")}),
+  description:t("meta.setMeta", {meta:t("links.bank-transfers")}),
+});
 definePageMeta({
   layout: "profile",
   middleware: "authenticated",
