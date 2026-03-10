@@ -292,7 +292,8 @@ const cantCreateOrder = computed(() => {
     !selectedAddress.value ||
     !selectedPaymentMethod.value ||
     createOrderLoading.value ||
-    !all_verified.value
+    // !all_verified.value
+    !email_verified.value
   );
 });
 
@@ -725,12 +726,12 @@ const getItemTotal = (item: any) => {
                     $t("checkout.verify")
                   }}</NuxtLink>
                 </div>
-                <div v-if="!mobile_verified" class=" ">
+                <!-- <div v-if="!mobile_verified" class=" ">
                   {{ $t("checkout.mobile_verified") }}
                   <NuxtLink :href="$localePath('/account/profile/security')">{{
                     $t("checkout.verify")
                   }}</NuxtLink>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
