@@ -35,11 +35,11 @@ const displayRange = computed(() => {
       v-model="range"
       :min="filter.min"
       :max="filter.max"
-      :rtl="locale === 'ar'"
+      :direction="locale === 'ar' ? 'rtl': 'ltr'"
       :tooltips="true"
       :showTooltip="'drag'"
     />
-    <div class="slider-labels">
+    <div :class="{'flex-row-reverse': locale === 'ar'}" class="slider-labels">
       <span>{{ displayRange[0] }}</span>
       <span>{{ displayRange[1] }}</span>
     </div>

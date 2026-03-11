@@ -718,7 +718,9 @@ const getItemTotal = (item: any) => {
                   {{ $t("cart.edit") }}
                 </NuxtLink>
               </div>
-              <div v-if="!all_verified" class="flags">
+                            <!-- <div v-if="!all_verified" class="flags"> -->
+
+              <div v-if="!email_verified" class="flags">
                 <p class="fw-bold text-danger m-0">{{ $t("checkout.forCompleteBuy") }}</p>
                 <div v-if="!email_verified" class="">
                   {{ $t("checkout.email_verified") }}

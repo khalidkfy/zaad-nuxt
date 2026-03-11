@@ -11,7 +11,7 @@ export const useCart = () => {
         },
       });
 
-      if (data?.cart_count) cartCount.value = data?.cart_count
+      cartCount.value = data?.cart_count
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,8 +80,8 @@ export const useCart = () => {
           Lang: locale.value,
         },
       });
- 
-     cartItems.value = data?.data?.cart;
+
+      cartItems.value = data?.data?.cart;
 
 
     } catch (error) {
