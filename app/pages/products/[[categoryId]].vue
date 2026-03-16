@@ -124,7 +124,6 @@ watch(isDrawerOpen, (val) => {
 </script>
 
 <template>
-  <!-- TODO:: h1 tag -->
   <section class="mt-4">
     <div class="container">
       <div class="breadcrumbs">
@@ -154,6 +153,7 @@ watch(isDrawerOpen, (val) => {
             @search="searchFilter"
             @filter="filterItems"
             :activeCateg="category_id"
+            :activeCategory="activeCategory"
           />
         </div>
         <div class="col-md-9">
