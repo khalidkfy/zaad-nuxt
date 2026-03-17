@@ -22,20 +22,70 @@ const metas = computed(() => {
 });
 
 const getMeta = (key: string): string | undefined => {
-  const meta = metas.value?.find(
-    (m: any) => m.name === key || m.property === key,
-  );
+  const meta = metas.value?.find((m: any) => m.name === key || m.property === key);
 
   return meta?.content;
 };
+const config = useRuntimeConfig();
+const { locale } = useI18n();
+const localePath = useLocalePath();
 
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+
+const articleUrl = `${baseUrl}${localePath(`/blog/${blog.data.slug}`)}`;
+
+const blogSchema = {
+  "@type": "BlogPosting",
+  "url": articleUrl,
+  "@id": `${articleUrl}#article`,
+  headline: blog.data.title,
+  description: getMeta("description") || blog.data.title,
+  image: blog.data.image || `${baseUrl}/assets/images/logo/zaad-logo.svg`,
+  author: {
+    "@type": "Organization",
+    name: "ZaadOman",
+  },
+  publisher: {
+    "@id": `${baseUrl}#organization`,
+  },
+  datePublished: blog.data.created_at
+    ? new Date(blog.data.created_at).toISOString()
+    : undefined,
+  dateModified: blog.data.created_at
+    ? new Date(blog.data.created_at).toISOString()
+    : undefined,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${articleUrl}#webpage`,
+  },
+  inLanguage: locale.value,
+};
 useSeo({
-  title: t("meta.setMeta", {meta:blog?.data?.meta?.title}),
+  title: t("meta.setMeta", { meta: blog?.data?.meta?.title }),
   description: getMeta("description"),
   keywords: getMeta("keywords"),
   og_image: getMeta("og:image"),
   twitter_desc: getMeta("twitter:description"),
   twitter_image: getMeta("twitter:image"),
+
+  type: "article",
+
+  breadcrumbs: [
+    {
+      label: t("links.home"),
+      url: `${baseUrl}${localePath("/")}`,
+    },
+    {
+      label: t("links.blog"),
+      url: `${baseUrl}${localePath("/blog")}`,
+    },
+    {
+      label: blog.data.title,
+      url: articleUrl,
+    },
+  ],
+
+  jsonld: blogSchema,
 });
 </script>
 <template>
@@ -57,19 +107,24 @@ useSeo({
   <section class="mt-5 blog">
     <div class="container">
       <h1>{{ blog?.data?.title }}</h1>
-      <div class="blog-banner" :style="{
-        backgroundImage: blog?.data?.image
-          ? `url(${blog.data.image})`
-          : 'none'
-      }">
+      <div
+        class="blog-banner"
+        :style="{
+          backgroundImage: blog?.data?.image ? `url(${blog.data.image})` : 'none',
+        }"
+      >
         <div class="overlay"></div>
 
-        <div class="banner-content">
-
-        </div>
+        <div class="banner-content"></div>
       </div>
       <div class="time">
-        <img loading="lazy" src="/assets/images/time.svg" alt="time" width="18" height="18" />
+        <img
+          loading="lazy"
+          src="/assets/images/time.svg"
+          alt="time"
+          width="18"
+          height="18"
+        />
         <span> {{ blog?.data?.created_at }}</span>
       </div>
     </div>
@@ -167,8 +222,6 @@ h1 {
 }
 
 section.blog {
-
-
   .time {
     margin-top: 12px;
     display: flex;
