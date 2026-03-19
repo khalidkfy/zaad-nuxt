@@ -10,13 +10,12 @@ const category_id = computed(() => {
 const activeCategory = productsCategs.value.find(
   (item: any) => item.slug == category_id.value
 );
-const {joinTexts} = useGlobal();
+const { joinTexts } = useGlobal();
 let title = computed(() => {
   category_id.value
     ? `${t("links.products")} - ${activeCategory?.name}`
     : t("links.products");
-    return joinTexts(t("links.products"), activeCategory?.name);    
-
+  return joinTexts(t("links.products"), activeCategory?.name);
 });
 const query = route.query;
 
@@ -24,10 +23,37 @@ const isSearch = computed(() => {
   return typeof route.query.search === "string" && route.query.search.length > 0;
 });
 
-useSeo({
-  title: t("meta.setMeta", { meta: title.value }),
-  robots: isSearch.value ? "noindex, follow" : "index, follow",
+const config = useRuntimeConfig();
+const localePath = useLocalePath();
+
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const pageUrl = `${baseUrl}${localePath(route.path)}`;
+
+const productsSchema = computed(() => {
+  if (!products.value?.length) return null;
+
+  return {
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#collection`,
+    url: pageUrl,
+    name: title.value,
+    description: t("meta.default.desc"),
+    inLanguage: locale.value,
+    isPartOf: {
+      "@id": `${baseUrl}#website`,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: products.value.map((product: any, index: number) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        "name": product?.title,
+        url: `${baseUrl}${localePath(`/products/item/${product.id}`)}`,
+      })),
+    },
+  };
 });
+
 
 const {
   getProducts,
@@ -120,6 +146,31 @@ const isDrawerOpen = ref(false);
 
 watch(isDrawerOpen, (val) => {
   document.body.style.overflow = val ? "hidden" : "";
+});
+
+useSeo({
+  title: t("meta.setMeta", { meta: title.value }),
+  robots: isSearch.value ? "noindex, follow" : "index, follow",
+  type: "collection",
+  breadcrumbs: [
+    {
+      label: t("links.home"),
+      url: `${baseUrl}${localePath("/")}`,
+    },
+    {
+      label: t("links.products"),
+      url: `${baseUrl}${localePath("/products")}`,
+    },
+    ...(category_id.value && activeCategory
+      ? [
+          {
+            label: activeCategory.name,
+            url: `${baseUrl}${localePath(`/products/${category_id.value}`)}`,
+          },
+        ]
+      : []),
+  ],
+  jsonld: productsSchema.value ? [productsSchema.value] : [],
 });
 </script>
 
