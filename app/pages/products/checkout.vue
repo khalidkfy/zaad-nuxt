@@ -32,8 +32,7 @@ const loadCheckoutData = () => {
 };
 const coupon = ref("");
 const getCheckoutLoading = ref(true);
-// TODO:: email_sms_verification and able to checkout
-const checkoutItems = ref([]);
+ const checkoutItems = ref([]);
 
 const itemRefs = ref<Record<number, HTMLElement | null>>({});
 

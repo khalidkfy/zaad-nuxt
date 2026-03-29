@@ -134,9 +134,12 @@ export const useSeo = (meta: SeoMeta) => {
       ? { "@id": `${canonicalUrl}#breadcrumbs` }
       : undefined,
 
-    mainEntity: meta.type === "collection"
-      ? { "@id": `${canonicalUrl}#collection` }
-      : undefined,
+    mainEntity:
+      meta.type === "collection"
+        ? { "@id": `${canonicalUrl}#collection` }
+        : meta.type === "product"
+          ? { "@id": `${canonicalUrl}#product` }
+          : undefined,
   });
 
   const finalJsonLd = {
@@ -150,8 +153,8 @@ export const useSeo = (meta: SeoMeta) => {
   // let path = route.fullPath.replace(/^\/(en|ar)/, "");
 
 
-const hreflangEn = switchLocalePath("en").split("?")[0]
-const hreflangAr = switchLocalePath("ar").split("?")[0]
+  const hreflangEn = switchLocalePath("en").split("?")[0]
+  const hreflangAr = switchLocalePath("ar").split("?")[0]
   useHead({
     title: meta.title || t("meta.default.title"),
     meta: [
@@ -190,7 +193,7 @@ const hreflangAr = switchLocalePath("ar").split("?")[0]
         ? { name: "keywords", content: meta.keywords }
         : { name: "keywords", content: t("meta.default.keywords") },
       // should ignoore for some pages like profile -> content: "noindex, nofollow"
-      { name: "robots", content: meta.F ? "noindex, follow" : (meta.robots || "index, follow") }, { name: "application-name", content: "ZaadOman" },
+      { name: "robots", content: meta.noindex ? "noindex, follow" : (meta.robots || "index, follow") }, { name: "application-name", content: "ZaadOman" },
 
       // Open Graph
       {
@@ -229,10 +232,10 @@ const hreflangAr = switchLocalePath("ar").split("?")[0]
         property: "og:locale",
         content: currentOgLocale,
       },
-      {
+      ...allOgLocales.map((loc) => ({
         property: "og:locale:alternate",
-        content: allOgLocales,
-      },
+        content: loc,
+      })),
 
 
       // Twitter

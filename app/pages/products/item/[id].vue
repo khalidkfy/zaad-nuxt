@@ -37,14 +37,49 @@ if (!productDetails.value || (productDetails.value as any).error) {
     statusMessage: t("general.productNotFound"),
   });
 }
+// TODO Handle meta for item => keywords, og , etc
+const config = useRuntimeConfig();
+const localePath = useLocalePath();
 
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const pageUrl = `${baseUrl}${localePath(route.path)}`;
 useSeo({
-  description:
-    productDetails.value?.seo.description || productDetails.value?.short_description,
   title: t("meta.setMeta", {
     meta: productDetails.value?.seo.title || productDetails.value?.title,
   }),
+  description:
+    productDetails.value?.seo.description ||
+    productDetails.value?.short_description,
   og_image: productDetails.value?.src,
+
+  type: "product",
+
+  jsonld: {
+    "@type": "Product",
+    "@id": `${pageUrl}#product`,
+
+    name: productDetails.value?.title,
+    description: productDetails.value?.short_description,
+    image: [productDetails.value?.src, ...(productDetails.value?.images || [])],
+
+    sku: productDetails.value?.id,
+
+    brand: {
+      "@type": "Brand",
+      name: "ZaadOman",
+    },
+
+    offers: {
+      "@type": "Offer",
+      price: productDetails.value?.regular_price,
+      priceCurrency: "OMR",
+      availability:
+        productDetails.value?.quantity > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      url: pageUrl,
+    },
+  },
 });
 
 const galleryImages = computed(() => {

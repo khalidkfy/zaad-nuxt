@@ -1,16 +1,45 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-useSeo({
-  title: t("meta.setMeta", { meta: t("links.productsStores") }),
-  description: t("meta.pages.productsStores.desc"),
-});
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+const canonicalUrl = `${baseUrl}${localePath('/stores/products')}`;
+
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 const { getProductsStores, productsStores } = useStores();
 await getProductsStores();
+
+
+useSeo({
+  title: t("meta.setMeta", { meta: t("links.productsStores") }),
+  description: t("meta.pages.productsStores.desc"),
+
+  type: "collection",
+
+  jsonld: {
+    "@type": "CollectionPage",
+    "@id": `${canonicalUrl}#collection`,
+    name: t("links.productsStores"),
+    description: t("meta.pages.productsStores.desc"),
+
+    hasPart: productsStores.value?.map((categ: any, index: number) => ({
+      "@type": "ItemList",
+      name: categ?.localeTitle,
+       "@id": `${canonicalUrl}#${categ?.slug}`,
+
+      itemListElement: categ?.stores?.slice(0, 6).map((store: any, i: number) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: store?.name,
+        url: `${baseUrl}/stores/products/${store?.id}`,
+      })),
+    })),
+  },
+});
 </script>
 <template>
   <section class="mt-4">

@@ -30,12 +30,7 @@ const title = computed(() => {
     .filter(Boolean) // removes null, undefined, empty string
     .join(" - ");
 });
-useSeo({
-  description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
-  // title: `${productsStoreItems?.value?.seller?.store_name}`,
-  title: `${title.value}`,
-  og_image: productsStoreItems?.value?.seller?.store_logo,
-});
+
 const seller = computed(() => {
   return productsStoreItems?.value?.seller;
 });
@@ -59,6 +54,48 @@ const loadMore = async () => {
 
   await getProductsStoreItems(id, true);
 };
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+const canonicalUrl = `${baseUrl}${localePath(`/stores/products/${id}`)}`;
+useSeo({
+  title: `${title.value}`,
+  description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
+  og_image: productsStoreItems?.value?.seller?.store_logo,
+
+  type: "collection",
+
+  jsonld: [
+    // 1. Store (main entity)
+    {
+      "@type": "Store",
+      "@id": `${canonicalUrl}#store`,
+      name: seller.value?.store_name,
+      image: seller.value?.store_logo,
+      description: seller.value?.store_description || seller.value?.store_name,
+
+      url: canonicalUrl,
+    },
+
+    // 2. Products list
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonicalUrl}#collection`,
+      name: seller.value?.store_name,
+      description: seller.value?.store_name,
+
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: products.value?.map((product: any, i: number) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: product?.title,
+          url: `${baseUrl}/products/item/${product?.id}`,
+        })),
+      },
+    },
+  ],
+});
 </script>
 <template>
   <section class="mt-4">
