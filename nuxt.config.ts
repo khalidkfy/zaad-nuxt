@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   css: ["~/assets/scss/main.scss"],
   runtimeConfig: {
     apiBase: process.env.API_URL,
-    baseUrl: process.env.BASE_URL,
+    // baseUrl: process.env.BASE_URL,
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
 
