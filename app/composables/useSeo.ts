@@ -20,6 +20,7 @@ export interface SeoMeta {
   robots?: string;
   type?: "website" | "article" | "product" | "collection";
   noindex?: boolean;
+  mainEntity?: Record<string, any>;
 }
 
 export const useSeo = (meta: SeoMeta) => {
@@ -134,8 +135,9 @@ export const useSeo = (meta: SeoMeta) => {
       ? { "@id": `${canonicalUrl}#breadcrumbs` }
       : undefined,
 
-    mainEntity:
-      meta.type === "collection"
+    mainEntity: meta.mainEntity
+      ? meta.mainEntity
+      : meta.type === "collection"
         ? { "@id": `${canonicalUrl}#collection` }
         : meta.type === "product"
           ? { "@id": `${canonicalUrl}#product` }

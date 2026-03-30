@@ -83,9 +83,6 @@ useSeo({
           "@id": `${canonicalUrl}#collection`,
         },
       },
-      isPartOf: {
-        "@id": `${canonicalUrl}#store`,
-      },
     },
 
     {
@@ -93,7 +90,9 @@ useSeo({
       "@id": `${canonicalUrl}#collection`,
       name: seller.value?.store_name,
       description: seller.value?.store_name,
-
+      isPartOf: {
+        "@id": `${canonicalUrl}#store`,
+      },
       mainEntity: {
         "@type": "ItemList",
         itemListElement: products.value?.map((product: any, i: number) => ({

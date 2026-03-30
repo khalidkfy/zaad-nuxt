@@ -22,11 +22,45 @@ const {
 
 await getCategoryStores(id);
 
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+const canonicalUrl = `${baseUrl}${localePath(`/stores/${id}`)}`;
 useSeo({
-  description: t("meta.pages.categoryStores.desc", { categ: data.value?.localeTitle }),
   title: t("meta.setMeta", {
     meta: `${t("links.productsStores")} - ${data.value?.localeTitle}`,
   }),
+
+  description: t("meta.pages.categoryStores.desc", {
+    categ: data.value?.localeTitle,
+  }),
+
+  type: "collection",
+
+  jsonld: [
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonicalUrl}#collection`,
+      name: data.value?.localeTitle,
+      description: data.value?.localeTitle,
+
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: data.value?.stores?.data?.map((store: any, i: number) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "Store",
+            "@id": `${baseUrl}/stores/products/${store?.id}#store`,
+
+            name: store?.store_name,
+            url: `${baseUrl}/stores/products/${store?.id}`,
+            image: store?.store_logo,
+          },
+        })),
+      },
+    },
+  ],
 });
 </script>
 <template>
