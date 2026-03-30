@@ -25,7 +25,7 @@ const title = computed(() => {
   return [
     productsStoreItems?.value?.seller?.store_name,
     productsStoreItems?.value?.seller?.store_category,
-    t("meta.appName")
+    t("meta.appName"),
   ]
     .filter(Boolean) // removes null, undefined, empty string
     .join(" - ");
@@ -60,24 +60,34 @@ const localePath = useLocalePath();
 const canonicalUrl = `${baseUrl}${localePath(`/stores/products/${id}`)}`;
 useSeo({
   title: `${title.value}`,
-  description: `${t("links.productsStores")} - ${productsStoreItems?.value?.seller?.store_name}`,
+  description: `${t("links.productsStores")} - ${
+    productsStoreItems?.value?.seller?.store_name
+  }`,
   og_image: productsStoreItems?.value?.seller?.store_logo,
 
-  type: "collection",
-
   jsonld: [
-    // 1. Store (main entity)
     {
       "@type": "Store",
       "@id": `${canonicalUrl}#store`,
       name: seller.value?.store_name,
       image: seller.value?.store_logo,
       description: seller.value?.store_description || seller.value?.store_name,
-
       url: canonicalUrl,
+      mainEntityOfPage: {
+        "@id": `${canonicalUrl}#webpage`,
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: seller.value?.store_name,
+        itemListElement: {
+          "@id": `${canonicalUrl}#collection`,
+        },
+      },
+      isPartOf: {
+        "@id": `${canonicalUrl}#store`,
+      },
     },
 
-    // 2. Products list
     {
       "@type": "CollectionPage",
       "@id": `${canonicalUrl}#collection`,
@@ -91,6 +101,7 @@ useSeo({
           position: i + 1,
           name: product?.title,
           url: `${baseUrl}/products/item/${product?.id}`,
+          image: product?.src,
         })),
       },
     },
@@ -121,7 +132,11 @@ useSeo({
             <NuxtImg width="100" height="100" :src="seller?.store_logo"></NuxtImg>
             <h1>{{ seller?.store_name }}</h1>
             <p>{{ seller?.store_address }}</p>
-            <NuxtLink active-class="active" class="main-color" :href="$localePath(`/stores/${seller?.category_slug}`)">
+            <NuxtLink
+              active-class="active"
+              class="main-color"
+              :href="$localePath(`/stores/${seller?.category_slug}`)"
+            >
               {{ seller?.store_category }}
             </NuxtLink>
           </div>
@@ -138,7 +153,8 @@ useSeo({
             <div class="row text-center">
               <div class="col">
                 <div class="mb-4">{{ $t("items.noData") }}</div>
-                <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad">{{ $t("links.productsStores") }}
+                <NuxtLink :href="$localePath('/stores/products')" class="btn-zaad"
+                  >{{ $t("links.productsStores") }}
                 </NuxtLink>
               </div>
             </div>
