@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
-useSeo({
-  title: t("meta.setMeta", { meta: t("meta.pages.contact.title") }),
-  description: `${t("meta.pages.contact.desc")}`,
-  keywords: `${t("meta.pages.contact.keywords")}`,
-});
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+const canonicalUrl = `${baseUrl}${localePath("/contact-us")}`;
+
+
 const { constants } = useConstants();
 
 const { values, errors, validateAll, reset, hasErrors } = useFormValidator(
@@ -119,6 +120,44 @@ const handleSubmit = async () => {
   } finally {
   }
 };
+useSeo({
+  title: t("meta.setMeta", { meta: t("meta.pages.contact.title") }),
+  description: t("meta.pages.contact.desc"),
+  keywords: t("meta.pages.contact.keywords"),
+
+  jsonld: [
+    {
+      "@type": "ContactPage",
+      "@id": `${canonicalUrl}#contact`,
+      name: t("meta.pages.contact.title"),
+      description: t("meta.pages.contact.desc"),
+      inLanguage: locale.value,
+
+      mainEntity: {
+        "@type": "Organization",
+        "@id": `${baseUrl}#organization`,
+
+        name: "ZaadOman",
+        url: baseUrl,
+
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: constants?.resources?.contacts?.hotline,
+            email: constants?.resources?.contacts?.email,
+            contactType: "customer support",
+            areaServed: "OM",
+            availableLanguage: ["Arabic", "English"],
+          },
+        ],
+      },
+    },
+  ],
+
+  mainEntity: {
+    "@id": `${canonicalUrl}#contact`,
+  },
+});
 const confirm = ref(false);
 </script>
 <template>

@@ -7,9 +7,35 @@ const { t } = useI18n();
 const { aboutPage, getAboutPage, getPage1 } = usePages();
 await getPage1();
 await getAboutPage();
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+const canonicalUrl = `${baseUrl}${localePath(`/about`)}`;
 useSeo({
   title: t("meta.setMeta", { meta: t("links.aboutUs") }),
   description: t("meta.setMeta", { meta: t("links.aboutUs") }),
+
+  jsonld: [
+    {
+      "@type": "AboutPage",
+      "@id": `${canonicalUrl}#about`,
+      name: t("links.aboutUs"),
+      description: t("meta.setMeta", { meta: t("links.aboutUs") }),
+      url: canonicalUrl,
+
+      isPartOf: {
+        "@id": `${baseUrl}#website`,
+      },
+
+      about: {
+        "@id": `${baseUrl}#organization`,
+      },
+    },
+  ],
+
+  mainEntity: {
+    "@id": `${canonicalUrl}#about`,
+  },
 });
 </script>
 <template>
