@@ -4,10 +4,6 @@ definePageMeta({
 });
 const { t, locale } = useI18n();
 
-useSeo({
-  title: t("meta.setMeta", { meta: t("links.faq") }),
-  description: t("meta.setMeta", { meta: t("links.faq") }),
-});
 
 const questions = ref([]);
 const getFaqs = async () => {
@@ -65,6 +61,43 @@ const filteredQuestions = computed(() => {
 
 const hasResults = computed(() => {
   return Object.keys(filteredQuestions.value).length > 0;
+});
+
+const config = useRuntimeConfig();
+const baseUrl = config.public.baseUrl ?? "https://www.zaad.om";
+const localePath = useLocalePath();
+
+const canonicalUrl = `${baseUrl}${localePath('/faq')}`;
+
+const faqEntities = computed(() => {
+  if (!questions.value) return [];
+
+  return Object.values(questions.value)
+    .flat()
+    .map((faq: any) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    }));
+});
+useSeo({
+  title: t("meta.setMeta", { meta: t("links.faq") }),
+  description: t("meta.setMeta", { meta: t("links.faq") }),
+
+  jsonld: [
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      mainEntity: faqEntities.value,
+    },
+  ],
+
+  mainEntity: {
+    "@id": `${canonicalUrl}#faq`,
+  },
 });
 </script>
 <template>
